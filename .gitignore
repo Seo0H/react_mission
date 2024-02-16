@@ -1,0 +1,10 @@
+/front
+SCORE.md
+
+# dependencies
+/node_modules
+
+# production
+/dist
+
+/.vscode
