@@ -1,5 +1,5 @@
 import APIFactory from '@/api/factory';
-import { FormAPIResponseType } from '@/types/response';
+import { FormAPIResponseType } from '@/api/types/response';
 
 const getCommonQuestion = async () => {
   const client = new APIFactory<FormAPIResponseType>('/api/question/common/index.json');
