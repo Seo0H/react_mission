@@ -25,26 +25,28 @@ type Validate =
 
 type ValidateType = Validate['type'];
 
+export type Form = {
+  name: string; // form 작성 후 서버에 보낼 때의 이름
+  question: string; // user에게 보여줘야 하는 질문
+  required: boolean; // 필수 질문 여부
+  type: FormType; // form type;
+  placeholder:
+    | string
+    | number
+    | boolean
+    | {
+        label: string;
+        value: string;
+        checked: boolean;
+      }[]; // user가 선택 전 default로 선택된 value;
+  validate: Validate[];
+};
+
 export type FormAPIResponseType = {
   status: number;
   data: {
     userId?: string; // userId는 typeID가 common인 특수한 경우에만 리턴된다.
-    forms: {
-      name: string; // form 작성 후 서버에 보낼 때의 이름
-      question: string; // user에게 보여줘야 하는 질문
-      required: boolean; // 필수 질문 여부
-      type: FormType; // form type;
-      placeholder:
-        | string
-        | number
-        | boolean
-        | {
-            label: string;
-            value: string;
-            checked: boolean;
-          }[]; // user가 선택 전 default로 선택된 value;
-      validate: Validate[];
-    }[];
+    forms: Form[];
     escapeValidate: {
       name: string;
       type: ValidateType;
