@@ -30,15 +30,7 @@ export type Form = {
   question: string; // user에게 보여줘야 하는 질문
   required: boolean; // 필수 질문 여부
   type: FormType; // form type;
-  placeholder:
-    | string
-    | number
-    | boolean
-    | {
-        label: string;
-        value: string;
-        checked: boolean;
-      }[]; // user가 선택 전 default로 선택된 value;
+  placeholder: Placeholder;
   validate: Validate[];
 };
 
@@ -54,3 +46,11 @@ export type FormAPIResponseType = {
     }[]; // if name에 해당하는 value가 있고, 해당 validate를 통과하지 못하면 `no_target`으로 리다이렉트 시킨다.
   };
 };
+
+export type Placeholder = string | number | boolean | RadioAnswer[]; // user가 선택 전 default로 선택된 value;
+
+export interface RadioAnswer {
+  label: string;
+  value: string;
+  checked: boolean;
+}
