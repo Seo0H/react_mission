@@ -1,8 +1,8 @@
 export interface CheckboxOptions {}
 
 export interface CheckboxState {
-  isChecked: boolean;
-  isDisabled: boolean;
+  isChecked: boolean | undefined;
+  isDisabled: boolean | undefined;
 }
 
 export interface UseCheckboxProps {
