@@ -15,8 +15,8 @@ export interface UseCheckboxGroupProps {
 export const useCheckboxGroup = (props: UseCheckboxGroupProps = {}) => {
   const { onChange: onChangeProp, values: valuesProp, defaultValue, name: nameProp, isDisabled, ...htmlProps } = props;
 
-  const [valuesState, setValues] = useState<string[]>([defaultValue || '']);
-  const isControlled = !!valuesProp?.length;
+  const [valuesState, setValues] = useState<string[]>(defaultValue === undefined ? [] : [defaultValue]);
+  const isControlled = valuesProp !== undefined;
   const values = isControlled ? valuesProp : valuesState;
 
   /**
@@ -33,7 +33,7 @@ export const useCheckboxGroup = (props: UseCheckboxGroupProps = {}) => {
       if (!isControlled) {
         const isHasValue = valuesState.find((value) => value === nextValue);
 
-        if (isHasValue) {
+        if (typeof isHasValue === 'string') {
           setValues((prevValues) => prevValues.filter((value) => value !== nextValue));
         } else setValues((prevValues) => [...prevValues, nextValue]);
       }

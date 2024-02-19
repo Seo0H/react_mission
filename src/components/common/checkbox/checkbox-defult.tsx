@@ -12,8 +12,8 @@ interface DefaultCheckboxProps {
 export const DefaultCheckbox = ({ contexts, onChange, value, name }: DefaultCheckboxProps) => {
   return (
     <CheckBoxGroup onChange={onChange} values={[...value]} name={name}>
-      {contexts.map(({ label, value }) => (
-        <Checkbox value={value} key={`${name}-checkbox-${label}`}>
+      {contexts.map(({ label, value: thisValue }) => (
+        <Checkbox value={thisValue} key={`${name}-checkbox-${label}`}>
           {label}
         </Checkbox>
       ))}
