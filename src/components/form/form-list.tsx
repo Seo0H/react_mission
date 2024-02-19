@@ -35,7 +35,6 @@ const FormList = ({ forms }: { forms: ClientForm[] }) => {
           {...{ form }}
         />
       ))}
-      <input type='' />
       <button type='submit'>다음</button>
     </form>
   );
