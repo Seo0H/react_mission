@@ -5,7 +5,7 @@ import { makeClientForm } from '@/routes/utils';
 export const loaders = {
   async mainPage() {
     try {
-      const response = await formAPI.getTestApi();
+      const response = await formAPI.getCommonQuestion();
       if (isError(response)) throw new Error('error');
 
       return { ...response, data: { ...response.data, forms: makeClientForm(response.data.forms) } };
