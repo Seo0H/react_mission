@@ -1,10 +1,11 @@
 import { useLoaderData } from 'react-router';
 
-import { FormAPIResponseType } from '@/api/types/response';
 import FormList from '@/components/form/form-list';
 
+import type { ClientFormData } from '@/constants/client-types';
+
 const App = () => {
-  const { data } = useLoaderData() as FormAPIResponseType;
+  const { data } = useLoaderData() as { data: ClientFormData };
 
   return (
     <>
