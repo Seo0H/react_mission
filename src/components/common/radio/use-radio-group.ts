@@ -1,15 +1,8 @@
 import { useCallback, useId, useRef, useState } from 'react';
 
-import { isObject } from '@/utils/is';
-import { InputDOMAttributes, PropGetter } from '@/utils/prop-type';
+import { isInputEvent } from '@/components/common/utils';
 
-type EventOrValue = React.ChangeEvent<HTMLInputElement> | string | number;
-
-function isInputEvent(value: unknown): value is { target: HTMLInputElement } {
-  return !!value && isObject(value) && isObject(value.target);
-}
-
-type OnChangeProp = string | React.ChangeEvent<HTMLInputElement>;
+import type { EventOrValue, OnChangeProp } from '@/components/common/type';
 
 export interface UseRadioGroupProps {
   value?: string;
