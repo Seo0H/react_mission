@@ -10,7 +10,7 @@ interface DefaultCheckboxProps {
   value: string;
 }
 
-const DefaultCheckbox = ({ contexts, onChange, value, name }: DefaultCheckboxProps) => {
+export const DefaultCheckbox = ({ contexts, onChange, value, name }: DefaultCheckboxProps) => {
   return (
     <CheckBoxGroup onChange={onChange} values={[value]} name={name}>
       {contexts.map(({ label, value }) => (
@@ -21,5 +21,3 @@ const DefaultCheckbox = ({ contexts, onChange, value, name }: DefaultCheckboxPro
     </CheckBoxGroup>
   );
 };
-
-export default DefaultCheckbox;
