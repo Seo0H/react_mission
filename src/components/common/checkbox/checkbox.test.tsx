@@ -1,8 +1,7 @@
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
 
-import Checkbox from '@/components/common/checkbox/checkbox';
-import CheckBoxGroup from '@/components/common/checkbox/checkbox-group';
+import '@testing-library/jest-dom';
+import { Checkbox, CheckBoxGroup } from '@/components/common/checkbox';
 
 test('Checkbox Test', () => {
   const utils = render(<Checkbox value='test' id='id' name='name' data-testid='checkbox' />);
