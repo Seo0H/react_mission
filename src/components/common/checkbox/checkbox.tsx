@@ -7,7 +7,7 @@ import { callAll } from '@/utils/call-all-handlers';
 
 interface CheckboxProps extends UseCheckboxProps, Omit<ComponentPropsWithRef<'input'>, 'value'> {}
 
-const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(props, ref) {
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(props, ref) {
   const { children, onChange: onChangeProp, value, isDisabled, ...rest } = props;
 
   const group = useCheckboxGroupContext();
@@ -33,5 +33,3 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(p
     </label>
   );
 });
-
-export default Checkbox;

@@ -1,7 +1,6 @@
 import { ChangeEvent } from 'react';
 
-import Checkbox from '@/components/common/checkbox/checkbox';
-import CheckBoxGroup from '@/components/common/checkbox/checkbox-group';
+import { Checkbox, CheckBoxGroup } from '@/components/common/checkbox';
 
 interface DefaultCheckboxProps {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
