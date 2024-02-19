@@ -56,3 +56,5 @@ export interface Selection {
   value: string;
   checked: boolean;
 }
+
+export type Value = string | string[];

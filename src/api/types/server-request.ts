@@ -1,4 +1,4 @@
-import { Placeholder, Selection } from '@/api/types/server-response';
+import { Placeholder, Selection, Value } from '@/api/types/server-response';
 
 // Form 제출 시 사용하는 타입
 export interface RequestFormAPI {
@@ -7,7 +7,7 @@ export interface RequestFormAPI {
 }
 
 export type UserAnswers = {
-  [name: string]: string;
+  [name: string]: Value; // string[] - checkbox type
 };
 
 export type UserAnswer = string;

@@ -2,14 +2,13 @@ import { ChangeEvent } from 'react';
 
 import ConditionalInput from '@/components/form/conditional-input';
 
-import type { SingleInputAnswer, UserAnswer } from '@/api/types/server-request';
-import type { Placeholder, Selection } from '@/api/types/server-response';
+import type { Value } from '@/api/types/server-response';
 import type { ClientForm } from '@/constants/client-types';
 
 interface FormProps {
   form: ClientForm;
   placeholder: string;
-  value: string;
+  value: Value;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -19,7 +18,7 @@ const Form = (props: FormProps) => {
   return (
     <>
       <label htmlFor={name}>{question}</label>
-      <ConditionalInput key={form.name} {...form} selections={form.radioContext} {...rest} />
+      <ConditionalInput key={form.name} selections={form.radioContext} {...rest} {...form} />
     </>
   );
 };
