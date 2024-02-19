@@ -1,7 +1,7 @@
-import { ChangeEvent, FormEvent, FormEventHandler, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 import Form from '@/components/form/form';
-import { makeUserAnswerState } from '@/components/form/utils';
+import { makeUserAnswerState, setValueToType } from '@/components/form/utils';
 
 import type { ClientForm } from '@/constants/client-types';
 
@@ -11,11 +11,13 @@ const FormList = ({ forms }: { forms: ClientForm[] }) => {
   const handleUserAnswer = (e: ChangeEvent<HTMLInputElement>) => {
     const targetName = e.target.name;
     const targetValue = e.target.value;
+    const targetType = e.target.type;
 
     const targetUserAnswer = userAnswers[targetName];
 
     if (targetUserAnswer === undefined) throw new Error('name이 없습니다.');
-    setUserAnswers((prev) => ({ ...prev, [targetName]: targetValue }));
+
+    setUserAnswers((prev) => ({ ...prev, [targetName]: setValueToType(prev[targetName], targetValue, targetType) }));
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -33,6 +35,7 @@ const FormList = ({ forms }: { forms: ClientForm[] }) => {
           {...{ form }}
         />
       ))}
+      <input type='' />
       <button type='submit'>다음</button>
     </form>
   );

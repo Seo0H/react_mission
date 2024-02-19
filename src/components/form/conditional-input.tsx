@@ -7,7 +7,7 @@ import { DefaultRadio, RadioNumber, RadioWithInput } from '@/components/common/r
 import { isMultiInputAnswer } from '@/components/form/utils';
 import { isArray } from '@/utils/is';
 
-import type { Form, FormType, Selection } from '@/api/types/server-response';
+import type { Form, FormType, Selection, Value } from '@/api/types/server-response';
 
 type Omitted = 'value' | 'value' | 'onChange';
 
@@ -20,7 +20,7 @@ interface ConditionalInputProps {
   name: string;
   type: Form['type'];
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  value: string;
+  value: Value;
   selections?: Selection[];
 }
 
@@ -34,8 +34,9 @@ const inputComponents: { [key in Form['type']]: InputComponent } = {
     return <NumberInput value={Number(value)} {...rest} />;
   },
   checkbox: ({ value, selections, ...rest }) => {
-    if (!isSelection(selections)) throw new Error('Radio must have multi answer value');
-    return <DefaultCheckbox contexts={selections} value={String(value)} {...rest} />;
+    if (!isSelection(selections)) throw new Error('Checkbox must have multi answer value');
+    if (!isArray(value)) throw new Error('Checkbox value must string[]');
+    return <DefaultCheckbox contexts={selections} value={value} {...rest} />;
   },
   radio: ({ value, selections, ...rest }) => {
     if (!isSelection(selections)) throw new Error('Radio must have multi answer value');
