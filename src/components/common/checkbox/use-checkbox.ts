@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { useCheckboxGroupContext } from '@/components/common/checkbox/checkbox-group';
 import { callAllHandlers } from '@/utils/call-all-handlers';
 import { PropGetter } from '@/utils/prop-type';
 
@@ -8,9 +9,9 @@ import type { CheckboxState, UseCheckboxProps } from '@/components/common/checkb
 export function useCheckbox(props: UseCheckboxProps = {}) {
   const {
     name,
-    value,
+    value: valueProps,
     id,
-    isDisabled: disabledProp,
+    isDisabled: isDisabledProp,
     isReadOnly,
     isChecked: checkedProp,
     isRequired,
@@ -19,11 +20,15 @@ export function useCheckbox(props: UseCheckboxProps = {}) {
     ...htmlProps
   } = props;
 
-  const [checkedState, setCheckedState] = useState(!!defaultChecked);
+  const group = useCheckboxGroupContext();
+
+  const isValueIncludedGroup = !!group?.values?.find((groupValue) => groupValue === valueProps);
+
+  const [checkedState, setCheckedState] = useState(!!defaultChecked || isValueIncludedGroup);
 
   const isControlled = checkedProp !== undefined;
   const isChecked = isControlled ? checkedProp : checkedState;
-  const isDisabled = !!disabledProp;
+  const isDisabled = isDisabledProp ?? group?.isDisabled;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isReadOnly || isDisabled) {
@@ -41,10 +46,11 @@ export function useCheckbox(props: UseCheckboxProps = {}) {
   const getInputProps: PropGetter = (props = {}, ref = null) => {
     return {
       ...props,
+      ...htmlProps,
       ref,
       type: 'checkbox',
       name,
-      value,
+      value: valueProps,
       id,
       onChange: callAllHandlers(props.onChange, handleChange),
       required: isRequired,
@@ -62,6 +68,5 @@ export function useCheckbox(props: UseCheckboxProps = {}) {
   return {
     state,
     getInputProps,
-    htmlProps,
   };
 }
