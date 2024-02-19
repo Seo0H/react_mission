@@ -20,7 +20,10 @@ export const useCheckboxGroupContext = () => {
   return value;
 };
 
-const CheckBoxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(function CheckboxGroup(props, ref = createRef()) {
+export const CheckBoxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(function CheckboxGroup(
+  props,
+  ref = createRef(),
+) {
   const { children, isDisabled, ...rest } = props;
   const { values, onChange, name } = useCheckboxGroup(rest);
 
@@ -37,4 +40,3 @@ const CheckBoxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(function Ch
     </CheckboxGroupContext.Provider>
   );
 });
-export default CheckBoxGroup;
