@@ -9,10 +9,12 @@ function isInputEvent(value: unknown): value is { target: HTMLInputElement } {
   return !!value && isObject(value) && isObject(value.target);
 }
 
+type OnChangeProp = string | React.ChangeEvent<HTMLInputElement>;
+
 export interface UseRadioGroupProps {
   value?: string;
   defaultValue?: string;
-  onChange?(nextValue: string): void;
+  onChange?(prop: OnChangeProp): void;
   isDisabled?: boolean;
   name?: string;
 }
@@ -41,7 +43,11 @@ export const useRadioGroup = (props: UseRadioGroupProps = {}) => {
         setValue(nextValue);
       }
 
-      onChangeProp?.(String(nextValue));
+      if (isInputEvent(eventOrValue)) {
+        onChangeProp?.(eventOrValue);
+      } else {
+        onChangeProp?.(String(nextValue));
+      }
     },
     [onChangeProp, isControlled],
   );
