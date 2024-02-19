@@ -1,11 +1,9 @@
 import { type ComponentPropsWithRef, type ReactElement, type ChangeEvent } from 'react';
 
-import DefaultCheckbox from '@/components/common/checkbox/checkbox-defult';
+import { DefaultCheckbox } from '@/components/common/checkbox';
 import { Input } from '@/components/common/input';
 import { NumberInput } from '@/components/common/number-input';
-import DefaultRadio from '@/components/common/radio/radio-default';
-import { RadioWithInput } from '@/components/common/radio/radio-input';
-import { RadioNumber } from '@/components/common/radio/radio-number';
+import { DefaultRadio, RadioNumber, RadioWithInput } from '@/components/common/radio';
 import { isMultiInputAnswer } from '@/components/form/utils';
 import { isArray } from '@/utils/is';
 

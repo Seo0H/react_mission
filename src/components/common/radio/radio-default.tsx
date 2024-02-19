@@ -10,7 +10,7 @@ interface DefaultRadioProps {
   value: string;
 }
 
-const DefaultRadio = ({ contexts, onChange, value, name }: DefaultRadioProps) => {
+export const DefaultRadio = ({ contexts, onChange, value, name }: DefaultRadioProps) => {
   return (
     <RadioGroup onChange={onChange} value={value} name={name}>
       {contexts.map(({ label, value }) => {
@@ -23,5 +23,3 @@ const DefaultRadio = ({ contexts, onChange, value, name }: DefaultRadioProps) =>
     </RadioGroup>
   );
 };
-
-export default DefaultRadio;

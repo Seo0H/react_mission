@@ -4,27 +4,7 @@ import { useRadioGroupContext } from '@/components/common/radio/radio-group';
 import { callAllHandlers } from '@/utils/call-all-handlers';
 import { InputDOMAttributes, PropGetter } from '@/utils/prop-type';
 
-export interface UseRadioProps {
-  name?: string;
-  id?: string;
-  value?: string;
-  defaultChecked?: boolean;
-  isChecked?: boolean;
-  isDisabled?: boolean;
-  isRequired?: boolean;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-interface RadioState {
-  // isInvalid: boolean | undefined;
-  // isFocused: boolean;
-  isChecked: boolean;
-  // isActive: boolean;
-  // isHovered: boolean;
-  isDisabled: boolean | undefined;
-  // isReadOnly: boolean | undefined;
-  isRequired: boolean | undefined;
-}
+import type { RadioState, UseRadioProps } from '@/components/common/radio/types';
 
 export const useRadio = (props: UseRadioProps = {}) => {
   const {

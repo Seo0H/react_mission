@@ -19,7 +19,7 @@ export const useRadioGroupContext = () => {
 export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(function RadioGroup(props, ref) {
   const { children, isDisabled, ...rest } = props;
 
-  const { value, onChange, name, htmlProps } = useRadioGroup(rest);
+  const { value, onChange, name } = useRadioGroup(rest);
 
   const group = {
     name,

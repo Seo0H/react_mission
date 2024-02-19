@@ -19,8 +19,6 @@ export const useRadioGroup = (props: UseRadioGroupProps = {}) => {
   const isControlled = typeof valueProp !== 'undefined';
   const value = isControlled ? valueProp : valueState;
 
-  const ref = useRef<any>(null);
-
   /**
    * All radio options must use the same name
    */
@@ -48,7 +46,6 @@ export const useRadioGroup = (props: UseRadioGroupProps = {}) => {
   return {
     value,
     name,
-    ref,
     setValue,
     onChange,
     isDisabled,
