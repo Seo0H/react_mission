@@ -34,9 +34,9 @@ export type Form = {
   validate: Validate[];
 };
 
-export type FormAPIResponseType = {
+export type APIResponse<DataType extends FormData | PostResponseData> = {
   status: number;
-  data: FormData; // if name에 해당하는 value가 있고, 해당 validate를 통과하지 못하면 `no_target`으로 리다이렉트 시킨다.
+  data: DataType; // if name에 해당하는 value가 있고, 해당 validate를 통과하지 못하면 `no_target`으로 리다이렉트 시킨다.
 };
 
 export type FormData = {
@@ -47,6 +47,12 @@ export type FormData = {
     type: ValidateType;
     target: TargetType;
   }[]; // if name에 해당하는 value가 있고, 해당 validate를 통과하지 못하면 `no_target`으로 리다이렉트 시킨다.
+};
+
+export type PostResponseData = {
+  isSuccess: boolean;
+  nextTypeId?: string;
+  userId?: string;
 };
 
 export type Placeholder = string | Selection[]; // user가 선택 전 default로 선택된 value;

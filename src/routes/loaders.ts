@@ -3,9 +3,9 @@ import { isError } from '@/api/type';
 import { makeClientForm } from '@/routes/utils';
 
 export const loaders = {
-  async mainPage() {
+  async mainPage(params: string) {
     try {
-      const response = await formAPI.getCommonQuestion();
+      const response = await formAPI.getQuestionWithId(params);
       if (isError(response)) throw new Error('error');
 
       return { ...response, data: { ...response.data, forms: makeClientForm(response.data.forms) } };
