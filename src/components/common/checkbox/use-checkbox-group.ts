@@ -1,8 +1,8 @@
 import { useCallback, useId, useState } from 'react';
 
+import type { EventOrValue, OnChangeProp } from '@/components/common/type';
 import { isInputEvent } from '@/components/common/utils';
 
-import type { EventOrValue, OnChangeProp } from '@/components/common/type';
 
 export interface UseCheckboxGroupProps {
   values?: string[];

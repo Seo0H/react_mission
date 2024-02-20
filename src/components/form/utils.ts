@@ -19,16 +19,28 @@ export function isMultiInputAnswer(answer: unknown): answer is MultiInputAnswer[
 
 type OriginInputType = React.InputHTMLAttributes<HTMLInputElement>['type'];
 
-export function setValueToType(
-  beforeValue: string | string[],
-  updateValue: string,
-  type: OriginInputType,
+/**
+ * 지정된 입력 유형에 따라 값을 업데이트합니다.
+ *
+ * @param {string | string[]} currentValue - 현재 값 또는 값 배열입니다.
+ * @param {string} updatedValue - 업데이트 또는 추가할 값입니다.
+ * @param {OriginInputType} inputType - 입력의 유형 (예: 'checkbox').
+ * @returns {string | string[]} - 업데이트된 값 또는 값 배열입니다.
+ */
+export function updateValueByInputType(
+  currentValue: string | string[],
+  updatedValue: string,
+  inputType: OriginInputType,
 ): string | string[] {
-  if (type === 'checkbox' && isArray(beforeValue)) {
-    const isExist = beforeValue.find((value) => value === updateValue);
-    if (isExist) return beforeValue.filter((value) => value !== updateValue);
-    else return [...beforeValue, updateValue];
+  if (inputType === 'checkbox' && isArray(currentValue)) {
+    const isExist = currentValue.find((value) => value === updatedValue);
+    if (isExist) return currentValue.filter((value) => value !== updatedValue);
+    else return [...currentValue, updatedValue];
   }
 
-  return updateValue;
+  return updatedValue;
+}
+
+export function isSelection(selections: unknown): selections is Selection[] {
+  return !!selections && isArray(selections);
 }

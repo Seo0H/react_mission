@@ -3,6 +3,7 @@ import { ComponentPropsWithRef, forwardRef } from 'react';
 import { useCheckboxGroupContext } from '@/components/common/checkbox/checkbox-group';
 import { UseCheckboxProps } from '@/components/common/checkbox/types';
 import { useCheckbox } from '@/components/common/checkbox/use-checkbox';
+
 import { callAll } from '@/utils/call-all-handlers';
 
 interface CheckboxProps extends UseCheckboxProps, Omit<ComponentPropsWithRef<'input'>, 'value'> {}
