@@ -1,11 +1,11 @@
 import { useState, type FormEvent, type ChangeEvent, useEffect } from 'react';
 
 import { useLoaderData } from 'react-router';
-import { redirect, useFetcher, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { formAPI } from '@/api/form';
-import FormList from '@/components/form/form-list';
-import { makeUserAnswerState, setValueToType } from '@/components/form/utils';
+import { FormList } from '@/components/form';
+import { makeUserAnswerState, updateValueByInputType } from '@/components/form/utils';
 
 import type { ClientFormData } from '@/constants/client-types';
 
@@ -15,6 +15,8 @@ const App = () => {
   const { data } = useLoaderData() as { data: ClientFormData };
   const [userAnswers, setUserAnswers] = useState(makeUserAnswerState(data.forms));
 
+  if (!id) throw navigate('/');
+
   useEffect(() => {
     setUserAnswers(makeUserAnswerState(data.forms));
   }, [data]);
@@ -23,28 +25,25 @@ const App = () => {
     const targetName = e.target.name;
     const targetValue = e.target.value;
     const targetType = e.target.type;
-
     const targetUserAnswer = userAnswers[targetName];
 
     if (targetUserAnswer === undefined) throw new Error('name이 없습니다.');
 
-    setUserAnswers((prev) => ({ ...prev, [targetName]: setValueToType(prev[targetName], targetValue, targetType) }));
+    setUserAnswers((prev) => ({
+      ...prev,
+      [targetName]: updateValueByInputType(prev[targetName], targetValue, targetType),
+    }));
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      if (!id) throw new Error('id is missing');
-
       const { data } = await formAPI.postCommonQuestion({ userAnswers, typeId: id });
-      console.log('🚀 ~ handleSubmit ~ data:', data);
-      if (!data.nextTypeId) {
-        navigate('/thanks');
-        return;
-      }
+      const isLastQuestionPage = !data.nextTypeId;
 
-      navigate(`/question/${data.nextTypeId}`);
+      if (isLastQuestionPage) navigate('/thanks');
+      else navigate(`/question/${data.nextTypeId}`);
     } catch (e) {
       console.log(e);
     }
