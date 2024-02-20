@@ -19,11 +19,13 @@ module.exports = () => {
       path: path.join(__dirname, '/dist'),
       filename: 'bundle.js',
       clean: true,
+      publicPath: '/',
     },
     devServer: {
       host: 'localhost',
       port: 3300,
       hot: true,
+      historyApiFallback: true,
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
