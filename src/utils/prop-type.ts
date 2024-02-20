@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Merge } from '@/utils/types';
 
 export interface IdProps {
@@ -23,7 +24,7 @@ export interface InputDOMProps extends IdProps, InputDOMEvents {
   name?: string;
   pattern?: string;
   placeholder?: string;
-  type?: 'text' | 'search' | 'url' | 'tel' | 'email' | 'password' | 'hidden' | (string & {});
+  type?: 'text' | 'search' | 'url' | 'tel' | 'email' | 'password' | 'hidden' | (string & unknown);
   inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
 }
 

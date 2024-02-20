@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react';
 
-import ConditionalInput from '@/components/form/conditional-input';
+import { ConditionalInput } from '@/components/form';
 
 import type { Value } from '@/api/form/types/server-response';
 import type { ClientForm } from '@/constants/client-types';
@@ -12,9 +12,9 @@ interface FormProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Form = (props: FormProps) => {
+export const Form = (props: FormProps) => {
   const { form, ...rest } = props;
-  const { name, question, type } = form;
+  const { name, question } = form;
   return (
     <>
       <label htmlFor={name}>{question}</label>
@@ -22,5 +22,3 @@ const Form = (props: FormProps) => {
     </>
   );
 };
-
-export default Form;

@@ -30,17 +30,13 @@
             "position": "before"
           },
           {
-            "pattern": "contentlayer/generated",
+            "pattern": "@/components/common/**/*",
             "group": "internal",
             "position": "before"
           }
         ],
         "pathGroupsExcludedImportTypes": ["react"],
-        "groups": [
-          ["builtin", "external"],
-          ["internal", "parent", "index"],
-          ["sibling", "type", "object"]
-        ],
+        "groups": [["builtin", "external"], ["internal"], ["parent", "index"], ["sibling", "type", "object"]],
         "alphabetize": {
           "order": "asc"
         }

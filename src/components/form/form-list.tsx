@@ -1,7 +1,7 @@
 import { type ChangeEvent } from 'react';
 
 import { UserAnswers } from '@/api/form/types/server-request';
-import Form from '@/components/form/form';
+import { Form } from '@/components/form/form';
 
 import type { ClientForm } from '@/constants/client-types';
 
@@ -11,7 +11,7 @@ interface FormListProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const FormList = ({ forms, userAnswers, onChange }: FormListProps) => {
+export const FormList = ({ forms, userAnswers, onChange }: FormListProps) => {
   return forms.map((form, idx) => (
     <Form
       key={`${form.name} ${idx}`}
@@ -22,5 +22,3 @@ const FormList = ({ forms, userAnswers, onChange }: FormListProps) => {
     />
   ));
 };
-
-export default FormList;

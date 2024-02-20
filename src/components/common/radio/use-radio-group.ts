@@ -1,8 +1,7 @@
-import { useCallback, useId, useRef, useState } from 'react';
-
-import { isInputEvent } from '@/components/common/utils';
+import { useCallback, useId, useState } from 'react';
 
 import type { EventOrValue, OnChangeProp } from '@/components/common/type';
+import { isInputEvent } from '@/components/common/utils';
 
 export interface UseRadioGroupProps {
   value?: string;
