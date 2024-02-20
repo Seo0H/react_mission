@@ -29,11 +29,11 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(pro
 
   const { getRadioProps } = useRadio({ ...rest, onChange, isChecked, name, value });
 
-  const radioInputProps = getRadioProps({ onChange, name });
+  const radioInputProps = getRadioProps({ onChange, name, ref });
 
   return (
     <label className='custom-radio'>
-      <input type='radio' ref={ref} {...radioInputProps} />
+      <input type='radio' {...radioInputProps} />
       <span className='custom-radio-control' />
       <span>{children}</span>
     </label>
