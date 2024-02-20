@@ -7,7 +7,7 @@ export default class APIFactory<APIResponse> implements API<APIResponse> {
   readonly abortSignal?: AbortSignal;
 
   constructor(endPoint: string, abortSignal?: AbortSignal) {
-    this.endPoint = endPoint;
+    this.endPoint = `${process.env.BACKEND_URL}${endPoint}`;
     if (abortSignal) this.abortSignal = abortSignal;
   }
 

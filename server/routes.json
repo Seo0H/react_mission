@@ -1,0 +1,4 @@
+{
+  "/api/answer/:typeId": "/answer/:typeId",
+  "/api/question/:typeId": "/question/:typeId"
+}
