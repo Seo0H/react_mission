@@ -4,6 +4,7 @@ import { loaders } from '@/routes/loaders';
 import App from '@/views';
 import ErrorPage from '@/views/error';
 import NoTargetPage from '@/views/no-target';
+import ThanksPage from '@/views/thanks';
 
 export const routes: RouteObject[] = [
   {
@@ -24,5 +25,9 @@ export const routes: RouteObject[] = [
     path: '/no_target',
     element: <NoTargetPage />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: '/thanks',
+    element: <ThanksPage />,
   },
 ];

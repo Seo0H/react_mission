@@ -1,7 +1,7 @@
 import { useState, type FormEvent, type ChangeEvent, useEffect } from 'react';
 
 import { useLoaderData } from 'react-router';
-import { redirect, useFetcher, useNavigate } from 'react-router-dom';
+import { redirect, useFetcher, useNavigate, useParams } from 'react-router-dom';
 
 import { formAPI } from '@/api/form';
 import FormList from '@/components/form/form-list';
@@ -11,6 +11,7 @@ import type { ClientFormData } from '@/constants/client-types';
 
 const App = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const { data } = useLoaderData() as { data: ClientFormData };
   const [userAnswers, setUserAnswers] = useState(makeUserAnswerState(data.forms));
 
@@ -32,9 +33,16 @@ const App = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
-      const { data } = await formAPI.postCommonQuestion({ userAnswers, typeId: 'common' });
-      if (!data.nextTypeId) throw new Error('data user id is undefined');
+      if (!id) throw new Error('id is missing');
+
+      const { data } = await formAPI.postCommonQuestion({ userAnswers, typeId: id });
+      console.log('🚀 ~ handleSubmit ~ data:', data);
+      if (!data.nextTypeId) {
+        navigate('/thanks');
+        return;
+      }
 
       navigate(`/question/${data.nextTypeId}`);
     } catch (e) {
