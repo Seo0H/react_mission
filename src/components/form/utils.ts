@@ -1,7 +1,7 @@
 import { ClientForm } from '@/constants/client-types';
 import { isArray } from '@/utils/is';
 
-import type { MultiInputAnswer, UserAnswers } from '@/api/types/server-request';
+import type { MultiInputAnswer, UserAnswers } from '@/api/form/types/server-request';
 
 export const makeUserAnswerState = (forms: ClientForm[]): UserAnswers => {
   return forms.reduce(

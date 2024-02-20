@@ -7,7 +7,7 @@ import { DefaultRadio, RadioNumber, RadioWithInput } from '@/components/common/r
 import { isMultiInputAnswer } from '@/components/form/utils';
 import { isArray } from '@/utils/is';
 
-import type { Form, FormType, Selection, Value } from '@/api/types/server-response';
+import type { Form, FormType, Selection, Value } from '@/api/form/types/server-response';
 
 type Omitted = 'value' | 'value' | 'onChange';
 

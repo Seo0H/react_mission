@@ -1,6 +1,6 @@
 import { ChangeEvent, useRef, useState } from 'react';
 
-import { Selection } from '@/api/types/server-response';
+import { Selection } from '@/api/form/types/server-response';
 import { Input } from '@/components/common/input';
 import { Radio } from '@/components/common/radio/radio';
 import { RadioGroup } from '@/components/common/radio/radio-group';

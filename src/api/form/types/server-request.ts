@@ -1,4 +1,4 @@
-import { Placeholder, Selection, Value } from '@/api/types/server-response';
+import { Placeholder, Selection, Value } from '@/api/form/types/server-response';
 
 // Form 제출 시 사용하는 타입
 export interface RequestFormAPI {

@@ -1,5 +1,5 @@
+import { isError } from '@/api/factory/type';
 import { formAPI } from '@/api/form';
-import { isError } from '@/api/type';
 import { makeClientForm } from '@/routes/utils';
 
 export const loaders = {
