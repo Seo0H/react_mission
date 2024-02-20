@@ -1,11 +1,17 @@
-import { render } from '@testing-library/react';
+import React from 'react';
+
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import '@testing-library/jest-dom';
 import { Radio } from '@/components/common/radio/radio';
 import { RadioGroup } from '@/components/common/radio/radio-group';
 
-describe('Radio', () => {
-  it('전달된 prop이 컴포넌트에 의도한대로 적용되어야 한다. ', () => {
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
+describe('Radio : 전달된 prop이 컴포넌트에 의도한대로 적용되어야 한다.', () => {
+  it('name, value, id prop test', () => {
     const utils = render(<Radio name='name' value='' id='id' data-testid='input' />);
 
     let input = utils.getByTestId('input');
@@ -23,10 +29,47 @@ describe('Radio', () => {
     expect(input).toBeChecked();
     expect(input).toBeRequired();
   });
+
+  it('제어 테스트', async () => {
+    const mock = jest.fn();
+
+    const Component = () => (
+      <Radio value='one' data-testid='input' onClick={mock}>
+        One
+      </Radio>
+    );
+
+    const utils = render(<Component />);
+    const input = await utils.findByTestId('input');
+
+    fireEvent.click(input);
+
+    expect(mock).toHaveBeenCalledTimes(1);
+  });
+
+  it('비제어 테스트', async () => {
+    const useRefSpy = jest.spyOn(React, 'useRef').mockReturnValueOnce({ current: document.createElement('button') });
+    const mock = jest.fn();
+
+    const Component = () => (
+      <Radio value='one' ref={mock}>
+        One
+      </Radio>
+    );
+
+    render(<Component />);
+
+    const one = await screen.getByLabelText('One');
+
+    fireEvent.click(one);
+
+    expect(one).toBeChecked();
+    expect(mock).toHaveBeenCalledTimes(1);
+  });
 });
 
-describe('RadioGroup', () => {
-  it('전달된 prop이 컴포넌트에 의도한대로 적용되어야 한다.', () => {
+describe('RadioGroup : 전달된 prop이 컴포넌트에 의도한대로 적용되어야 한다.', () => {
+  it('defaultValue prop 작동 테스트', () => {
     const utils = render(
       <RadioGroup defaultValue='b'>
         <Radio value='a'>a</Radio>
@@ -35,7 +78,9 @@ describe('RadioGroup', () => {
     );
 
     expect(utils.getByLabelText('b')).toBeChecked();
-
+  });
+  it('disabled prop 작동 테스트', () => {
+    // disabled test
     const Component = () => (
       <RadioGroup isDisabled>
         <Radio value='one' data-testid='input'>
@@ -50,7 +95,7 @@ describe('RadioGroup', () => {
       </RadioGroup>
     );
 
-    utils.rerender(<Component />);
+    const utils = render(<Component />);
 
     const [firstRadio, secondRadio, thirdRadio] = utils.getAllByTestId('input');
 

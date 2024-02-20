@@ -1,4 +1,4 @@
-import { useCallback, useId, useState } from 'react';
+import { useCallback, useId, useRef, useState } from 'react';
 
 import { useRadioGroupContext } from '@/components/common/radio/radio-group';
 import { callAllHandlers } from '@/utils/call-all-handlers';
@@ -49,7 +49,6 @@ export const useRadio = (props: UseRadioProps = {}) => {
     ...props,
     ...htmlProps,
     id,
-    ref,
     type: 'radio',
     name,
     value,
