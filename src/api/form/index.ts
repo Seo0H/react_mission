@@ -1,14 +1,8 @@
-import APIFactory from '@/api/factory';
-import { isError } from '@/api/type';
-import { UserAnswers } from '@/api/types/server-request';
+import APIFactory from '@/api/factory/factory';
+import { isError } from '@/api/factory/type';
+import { UserAnswers } from '@/api/form/types/server-request';
 
-import type { APIResponse, FormData, PostResponseData } from '@/api/types/server-response';
-
-const getCommonQuestion = async () => {
-  const client = new APIFactory<APIResponse<FormData>>('/api/question/common');
-  const data = await client.fetch();
-  return data;
-};
+import type { APIResponse, FormData, PostResponseData } from '@/api/form/types/server-response';
 
 const getQuestionWithId = async (id: string) => {
   const client = new APIFactory<APIResponse<FormData>>(`/api/question/${id}`);
@@ -41,7 +35,6 @@ const postCommonQuestion = async ({ userAnswers, typeId }: PostCommonQuestionPro
 };
 
 export const formAPI = {
-  getCommonQuestion,
   getQuestionWithId,
   postCommonQuestion,
 };

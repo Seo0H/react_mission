@@ -1,4 +1,4 @@
-import type { FormData as ServerFormData, Selection, Form as ServerForm } from '@/api/types/server-response';
+import type { FormData as ServerFormData, Selection, Form as ServerForm } from '@/api/form/types/server-response';
 
 export interface ClientForm extends ServerForm {
   radioContext?: Selection[] | undefined;

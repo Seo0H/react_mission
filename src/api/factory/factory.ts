@@ -1,4 +1,4 @@
-import { initialApiStatus, type API, type APIStatusType, type ErrorType } from '@/api/type';
+import { initialApiStatus, type API, type APIStatusType, type ErrorType } from '@/api/factory/type';
 
 export default class APIFactory<APIResponse> implements API<APIResponse> {
   endPoint: string;

@@ -1,6 +1,6 @@
 import { type ChangeEvent } from 'react';
 
-import { UserAnswers } from '@/api/types/server-request';
+import { UserAnswers } from '@/api/form/types/server-request';
 import Form from '@/components/form/form';
 
 import type { ClientForm } from '@/constants/client-types';
