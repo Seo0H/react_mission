@@ -1,4 +1,4 @@
-import { RouteObject } from 'react-router-dom';
+import { RouteObject, redirect } from 'react-router-dom';
 
 import { loaders } from '@/routes/loaders';
 import App from '@/views';
@@ -8,8 +8,16 @@ import NoTargetPage from '@/views/no-target';
 export const routes: RouteObject[] = [
   {
     path: '/',
+    loader: () => redirect('/question/common'),
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/question/:id',
     element: <App />,
-    loader: loaders.mainPage,
+    loader: async ({ params }) => {
+      if (!params.id) return new Response('params id is missing.', { status: 404 });
+      return await loaders.mainPage(params?.id);
+    },
     errorElement: <ErrorPage />,
   },
   {
