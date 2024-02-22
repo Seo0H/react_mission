@@ -8,7 +8,10 @@ export const loaders = {
       const response = await formAPI.getQuestionWithId(params);
       if (isError(response)) throw new Error('error');
 
-      return { ...response, data: { ...response.data, forms: makeClientForm(response.data.forms) } };
+      return {
+        ...response,
+        data: { ...response.data, forms: makeClientForm(response.data.forms) },
+      };
     } catch (e) {
       console.log(e);
       throw new Error('question data fetching 중 에러 발생');

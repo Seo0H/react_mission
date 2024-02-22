@@ -27,7 +27,13 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(pro
 
   const name = props?.name ?? group?.name;
 
-  const { getRadioProps } = useRadio({ ...rest, onChange, isChecked, name, value });
+  const { getRadioProps } = useRadio({
+    ...rest,
+    onChange,
+    isChecked,
+    name,
+    value,
+  });
 
   const radioInputProps = getRadioProps({ onChange, name, ref });
 
