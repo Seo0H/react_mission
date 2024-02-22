@@ -1,17 +1,17 @@
 /* eslint-disable no-unused-vars */
 import type { ComponentPropsWithRef, ReactElement } from 'react';
 
-import { DefaultCheckbox } from '@/components/common/checkbox';
+import { DefaultCheckbox } from '@/components/common/form/checkbox';
 import type { FieldValues } from '@/components/common/form/hook/types/fields';
 import type { UseFormRegister } from '@/components/common/form/hook/types/form';
-import { Input } from '@/components/common/input';
-import { NumberInput } from '@/components/common/number-input';
-import { DefaultRadio, RadioNumber, RadioWithInput } from '@/components/common/radio';
+import { Input } from '@/components/common/form/input';
+import { NumberInput } from '@/components/common/form/number-input';
+import { DefaultRadio, RadioNumber, RadioWithInput } from '@/components/common/form/radio';
 
-import { isMultiInputAnswer, isSelection } from '@/components/form/utils';
+import { isSelection } from '@/components/form/utils';
 import { isArray } from '@/utils/is';
 
-import type { Form, FormType } from '@/api/form/types/server-response';
+import type { Form } from '@/api/form/types/server-response';
 import type { ConditionalInputProps, Omitted } from '@/components/form/conditional-input';
 
 type InputComponentProps<T = Omit<ComponentPropsWithRef<'input'>, Omitted> & Omit<ConditionalInputProps, 'type'>> = (

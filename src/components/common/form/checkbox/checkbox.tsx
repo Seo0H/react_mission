@@ -1,8 +1,8 @@
 import { ComponentPropsWithRef, forwardRef } from 'react';
 
-import { useCheckboxGroupContext } from '@/components/common/checkbox/checkbox-group';
-import { UseCheckboxProps } from '@/components/common/checkbox/types';
-import { useCheckbox } from '@/components/common/checkbox/use-checkbox';
+import { useCheckboxGroupContext } from '@/components/common/form/checkbox/checkbox-group';
+import { UseCheckboxProps } from '@/components/common/form/checkbox/types';
+import { useCheckbox } from '@/components/common/form/checkbox/use-checkbox';
 
 import { callAll } from '@/utils/call-all-handlers';
 

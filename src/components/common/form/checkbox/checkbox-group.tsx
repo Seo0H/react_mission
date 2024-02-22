@@ -4,7 +4,7 @@ import {
   type UseCheckboxGroupReturn,
   type UseCheckboxGroupProps,
   useCheckboxGroup,
-} from '@/components/common/checkbox/use-checkbox-group';
+} from '@/components/common/form/checkbox/use-checkbox-group';
 
 interface CheckboxGroupContext extends Pick<UseCheckboxGroupReturn, 'isDisabled' | 'name' | 'onChange' | 'values'> {}
 

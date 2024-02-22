@@ -1,8 +1,8 @@
 import { type ComponentPropsWithRef, forwardRef, createRef } from 'react';
 
-import { useRadio } from '@/components/common/radio';
-import { useRadioGroupContext } from '@/components/common/radio/radio-group';
-import type { UseRadioProps } from '@/components/common/radio/types';
+import { useRadio } from '@/components/common/form/radio';
+import { useRadioGroupContext } from '@/components/common/form/radio/radio-group';
+import type { UseRadioProps } from '@/components/common/form/radio/types';
 
 import { callAll } from '@/utils/call-all-handlers';
 

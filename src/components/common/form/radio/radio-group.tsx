@@ -1,6 +1,6 @@
 import { ComponentPropsWithRef, createContext, forwardRef, useContext } from 'react';
 
-import { UseRadioGroupProps, UseRadioGroupReturn, useRadioGroup } from '@/components/common/radio/use-radio-group';
+import { UseRadioGroupProps, UseRadioGroupReturn, useRadioGroup } from '@/components/common/form/radio/use-radio-group';
 
 interface RadioGroupContext extends Pick<UseRadioGroupReturn, 'onChange' | 'value' | 'name' | 'isDisabled'> {}
 
