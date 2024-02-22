@@ -6,7 +6,11 @@ import type { ClientForm } from '@/constants/client-types';
 export function makeClientForm(serverFormList: ServerForm[]) {
   return serverFormList.map<ClientForm>((serverForm) => {
     if (isSelections(serverForm.placeholder)) {
-      return { ...serverForm, placeholder: '', radioContext: serverForm.placeholder };
+      return {
+        ...serverForm,
+        placeholder: '',
+        radioContext: serverForm.placeholder,
+      };
     }
     return { ...serverForm, placeholder: serverForm.placeholder };
   });
