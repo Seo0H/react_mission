@@ -9,7 +9,7 @@ interface FormProps {
   form: ClientForm;
   placeholder: string;
   value: Value;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const Form = (props: FormProps) => {
