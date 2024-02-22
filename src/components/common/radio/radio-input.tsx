@@ -19,7 +19,10 @@ type SelectExtraInputState = {
 
 // TODO: 로직 단훈화
 export const RadioWithInput = ({ context, value: currentValue, name, onChange }: InputRadioProps) => {
-  const [isSelectExtra, setSelectExtra] = useState<SelectExtraInputState>({ isDisabled: true, value: 'extra' });
+  const [isSelectExtra, setSelectExtra] = useState<SelectExtraInputState>({
+    isDisabled: true,
+    value: 'extra',
+  });
   const extraInputRef = useRef<HTMLInputElement>(null);
 
   const handleRadioExtraInput = (e: ChangeEvent<HTMLInputElement>) => {

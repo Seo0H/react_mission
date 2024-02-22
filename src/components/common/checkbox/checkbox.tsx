@@ -25,7 +25,14 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
 
   const name = props?.name ?? group?.name;
 
-  const { getInputProps } = useCheckbox({ ...rest, onChange, isChecked, name, value, isDisabled });
+  const { getInputProps } = useCheckbox({
+    ...rest,
+    onChange,
+    isChecked,
+    name,
+    value,
+    isDisabled,
+  });
 
   return (
     <label>

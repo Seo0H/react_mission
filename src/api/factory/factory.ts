@@ -15,7 +15,10 @@ export default class APIFactory<APIResponse> implements API<APIResponse> {
     try {
       this.status = { ...initialApiStatus, isLoading: true };
 
-      const response = await fetch(this.endPoint, { ...init, signal: this.abortSignal });
+      const response = await fetch(this.endPoint, {
+        ...init,
+        signal: this.abortSignal,
+      });
 
       if (!response.ok) {
         throw new Response('Something Wrong', { status: response.status });

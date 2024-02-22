@@ -36,7 +36,9 @@ interface RadioNumberOptions {
 }
 
 export const RadioNumber = ({ minScore, maxScore, step = 1, onChange, defaultValue, name }: RadioNumberOptions) => {
-  const radioNumberContext = Array.from({ length: (maxScore - minScore) * step + 1 }).map((_, idx) => (idx + 1) * step);
+  const radioNumberContext = Array.from({
+    length: (maxScore - minScore) * step + 1,
+  }).map((_, idx) => (idx + 1) * step);
   return (
     <RadioGroup onChange={onChange} name={name} defaultValue={String(defaultValue)}>
       {radioNumberContext.map((value) => (
