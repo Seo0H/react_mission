@@ -1,7 +1,7 @@
 import { ChangeEvent, createRef, forwardRef, useEffect, useReducer, useRef, useState } from 'react';
 
-import { Radio } from '@/components/common/radio/radio';
-import { RadioGroup } from '@/components/common/radio/radio-group';
+import { Radio } from '@/components/common/form/radio/radio';
+import { RadioGroup } from '@/components/common/form/radio/radio-group';
 
 interface RadioNumberOptions {
   /**
