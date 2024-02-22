@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, forwardRef, useRef, useState } from 'react';
 
 import { Input } from '@/components/common/input';
 import { Radio, RadioGroup } from '@/components/common/radio';
@@ -18,49 +18,79 @@ type SelectExtraInputState = {
 };
 
 // TODO: 로직 단훈화
-export const RadioWithInput = ({ context, value: currentValue, name, onChange }: InputRadioProps) => {
-  const [isSelectExtra, setSelectExtra] = useState<SelectExtraInputState>({
-    isDisabled: true,
-    value: 'extra',
-  });
-  const extraInputRef = useRef<HTMLInputElement>(null);
+export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
+  ({ context, value: currentValue, name, onChange }: InputRadioProps, ref) => {
+    const [isSelectExtra, setSelectExtra] = useState<SelectExtraInputState>({
+      isDisabled: true,
+      value: 'extra',
+    });
+    const extraInputRef = useRef<HTMLInputElement>(null);
+    const radioRefs = useRef<HTMLInputElement[]>([]);
 
-  const handleRadioExtraInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const targetValue = e.target.value;
-    const isExtraInput = targetValue === isSelectExtra.value;
+    const isControlled = !!currentValue;
 
-    if (!isExtraInput) {
-      if (extraInputRef.current?.value) extraInputRef.current.value = '';
-      setSelectExtra({ isDisabled: true, value: '' });
-    } else setSelectExtra({ isDisabled: false, value: targetValue });
-  };
+    const handleRadioExtraInput = (e: ChangeEvent<HTMLInputElement>) => {
+      const targetValue = e.target.value;
+      const isExtraInput = targetValue === isSelectExtra.value;
 
-  return (
-    <RadioGroup
-      onChange={onChange}
-      value={
-        isSelectExtra.isDisabled === false && typeof isSelectExtra.value === 'string'
-          ? isSelectExtra.value
-          : currentValue
+      if (!isExtraInput) {
+        if (extraInputRef.current?.value) extraInputRef.current.value = '';
+        setSelectExtra({ isDisabled: true, value: '' });
+      } else {
+        if (ref && typeof ref === 'function') ref(extraInputRef.current);
+        setSelectExtra({ isDisabled: false, value: targetValue });
       }
-      name={name}
-    >
-      {context.map(({ label, value }, idx) => {
-        if (value === 'extra') {
+    };
+
+    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+      if (ref && typeof ref === 'function') {
+        ref(e.target);
+      }
+
+      if (onChange) onChange(e);
+    };
+
+    return (
+      <RadioGroup
+        onChange={handleOnChange}
+        value={
+          isControlled
+            ? isSelectExtra.isDisabled === false && typeof isSelectExtra.value === 'string'
+              ? isSelectExtra.value
+              : currentValue
+            : undefined
+        }
+        name={name}
+      >
+        {context.map(({ label, value }, idx) => {
+          if (value === 'extra') {
+            return (
+              <Radio
+                key={`radio-${value}-${idx}`}
+                value={isSelectExtra.value}
+                onChange={handleRadioExtraInput}
+                ref={(el: HTMLInputElement) => (radioRefs.current[idx] = el)}
+              >
+                기타 :
+                <Input name={name} onChange={onChange} disabled={isSelectExtra.isDisabled} ref={extraInputRef} />
+              </Radio>
+            );
+          }
+
           return (
-            <Radio key={`radio-${value}-${idx}`} value={isSelectExtra.value} onChange={handleRadioExtraInput}>
-              기타 :
-              <Input name={name} onChange={onChange} disabled={isSelectExtra.isDisabled} ref={extraInputRef} />
+            <Radio
+              value={value}
+              key={crypto.randomUUID()}
+              onChange={handleRadioExtraInput}
+              ref={(el: HTMLInputElement) => (radioRefs.current[idx] = el)}
+            >
+              {label}
             </Radio>
           );
-        }
+        })}
+      </RadioGroup>
+    );
+  },
+);
 
-        return (
-          <Radio value={value} key={crypto.randomUUID()} onChange={handleRadioExtraInput}>
-            {label}
-          </Radio>
-        );
-      })}
-    </RadioGroup>
-  );
-};
+RadioWithInput.displayName = 'RadioWithInput';

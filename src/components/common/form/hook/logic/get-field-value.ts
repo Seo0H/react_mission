@@ -1,5 +1,8 @@
 import { isUndefined } from '@/utils/is';
 
+import { getRadioValue } from '../logic/get-radio-value';
+import { isRadioInput } from '../utils/is';
+
 import type { Field } from '../types/fields';
 
 export function getFieldValue(_f: Field['_f']) {
@@ -9,9 +12,9 @@ export function getFieldValue(_f: Field['_f']) {
     return;
   }
 
-  // if (isRadioInput(ref)) {
-  //   return getRadioValue(_f.refs).value;
-  // }
+  if (isRadioInput(ref)) {
+    return getRadioValue(_f.refs).value;
+  }
 
   return ref.value;
 }

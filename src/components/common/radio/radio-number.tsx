@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, createRef, forwardRef, useEffect, useReducer, useRef, useState } from 'react';
 
 import { Radio } from '@/components/common/radio/radio';
 import { RadioGroup } from '@/components/common/radio/radio-group';
@@ -35,17 +35,40 @@ interface RadioNumberOptions {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const RadioNumber = ({ minScore, maxScore, step = 1, onChange, defaultValue, name }: RadioNumberOptions) => {
+export const RadioNumber = forwardRef<HTMLInputElement, RadioNumberOptions>((props, ref = createRef()) => {
+  const { maxScore, minScore, step = 1, defaultValue, name, onChange } = props;
+
+  const radioRef = useRef<HTMLInputElement[]>([]);
+
   const radioNumberContext = Array.from({
     length: (maxScore - minScore) * step + 1,
   }).map((_, idx) => (idx + 1) * step);
+
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (ref) {
+      if (typeof ref === 'function') {
+        ref(event.target);
+      }
+    }
+
+    if (onChange) {
+      onChange(event);
+    }
+  };
+
   return (
-    <RadioGroup onChange={onChange} name={name} defaultValue={String(defaultValue)}>
-      {radioNumberContext.map((value) => (
-        <Radio value={String(value)} key={crypto.randomUUID()}>
+    <RadioGroup onChange={handleRadioChange} name={name} defaultValue={String(defaultValue)}>
+      {radioNumberContext.map((value, idx) => (
+        <Radio
+          value={String(value)}
+          key={crypto.randomUUID()}
+          ref={(el: HTMLInputElement) => (radioRef.current[idx] = el)}
+        >
           {value} 점
         </Radio>
       ))}
     </RadioGroup>
   );
-};
+});
+
+RadioNumber.displayName = 'RadioNumber';
