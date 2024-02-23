@@ -2,7 +2,6 @@ import React from 'react';
 
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import '@testing-library/jest-dom';
 import { Radio } from '@/components/common/form/radio/radio';
 import { RadioGroup } from '@/components/common/form/radio/radio-group';
 

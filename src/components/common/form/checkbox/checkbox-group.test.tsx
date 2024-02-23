@@ -1,6 +1,5 @@
 import { render } from '@testing-library/react';
 
-import '@testing-library/jest-dom';
 import { CheckBoxGroup, Checkbox } from '@/components/common/form/checkbox';
 
 test('Checkbox Group Test', async () => {
