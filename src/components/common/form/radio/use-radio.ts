@@ -55,7 +55,7 @@ export const useRadio = (props: UseRadioProps = {}) => {
     checked: isChecked,
     disabled: isDisabled,
     required: isRequired,
-    onChange: callAllHandlers(props.onChange, handleChange),
+    onChange: handleChange,
   });
 
   const state: RadioState = { isChecked, isDisabled, isRequired };
