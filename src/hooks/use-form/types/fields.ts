@@ -7,14 +7,13 @@ export type FieldValues = Record<string, any>;
 export type FieldElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 export type Ref = FieldElement;
 
-export type Field = {
+export interface Field extends RegisterOptions {
   _f: {
     ref: Ref;
     name: InternalFieldName;
     refs?: HTMLInputElement[];
-    // mount?: boolean;
-  } & RegisterOptions;
-};
+  };
+}
 
 export type FieldRefs = Partial<Record<InternalFieldName, Field>>;
 export type SetFieldValue<TFieldValues extends FieldValues> = FieldValue<TFieldValues>;

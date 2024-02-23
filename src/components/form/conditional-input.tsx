@@ -11,6 +11,7 @@ export interface ConditionalInputProps {
   name: string;
   type: Form['type'];
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  validate?: Form['validate'];
   selections?: Selection[];
 }
 
@@ -18,7 +19,7 @@ export const ConditionalInput = ({
   type,
   ...rest
 }: ConditionalInputProps & Omit<ComponentPropsWithRef<'input'>, Omitted>) => {
-  const { register } = useFormContext();
+  const context = useFormContext();
 
-  return inputComponents[type](rest, register);
+  return inputComponents[type](rest, context);
 };

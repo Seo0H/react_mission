@@ -1,3 +1,5 @@
+import { Validate } from '@/hooks/use-form/types/validator';
+
 export type APIResponse<DataType extends FormData | PostResponseData> = {
   status: number;
   data: DataType;
@@ -35,29 +37,6 @@ export interface Selection {
   value: string;
   checked: boolean;
 }
-
-type Validate =
-  | {
-      type: 'not';
-      target: '' | '-1' | [];
-    }
-  | {
-      type: 'minMax';
-      target: [min: number, max: number];
-    }
-  | {
-      type: 'sameAs';
-      target: string | number;
-    }
-  | {
-      type: 'pattern';
-      target: string;
-    }
-  | {
-      type: 'minMaxLength';
-      target: [min: number, max: number];
-      validateText: string;
-    };
 
 export type Value = string | string[];
 
