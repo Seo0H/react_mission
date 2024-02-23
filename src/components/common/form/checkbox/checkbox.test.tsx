@@ -1,9 +1,8 @@
 import { render } from '@testing-library/react';
 
-import '@testing-library/jest-dom';
-import { Checkbox, CheckBoxGroup } from '@/components/common/form/checkbox';
+import { Checkbox } from '@/components/common/form/checkbox';
 
-test('Checkbox Test', () => {
+test('Checkbox props 전달 테스트', () => {
   const utils = render(<Checkbox value='test' id='id' name='name' data-testid='checkbox' />);
 
   let checkbox = utils.getByTestId('checkbox');

@@ -20,6 +20,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src", "./**/*.ts", "./**/*.tsx"],
+  "include": ["./src", "./**/*.ts", "./**/*.tsx", "./jest.setup.js"],
   "exclude": ["node_modules"]
 }

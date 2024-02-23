@@ -1,8 +1,6 @@
-import { ChangeEvent, useState } from 'react';
+import { type ChangeEvent, useState } from 'react';
 
 import { fireEvent, render } from '@testing-library/react';
-
-import '@testing-library/jest-dom';
 
 import { DefaultCheckbox } from '@/components/common/form/checkbox/default/checkbox-defult';
 import { QuestionContext } from '@/components/common/form/type';
@@ -19,7 +17,7 @@ const mockQuestions: QuestionContext[] = [
 ];
 
 describe('DefaultCheckbox 동작 테스트', () => {
-  it('제어 상태일일때 컴포넌트가 의도한대로 작동해야 한다.', () => {
+  it('제어 상태일때 컴포넌트가 의도한대로 작동해야 한다.', () => {
     const Component = () => {
       const [currentValues, setCurrentValues] = useState(['one']);
 
