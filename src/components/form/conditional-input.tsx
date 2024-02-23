@@ -12,7 +12,6 @@ export interface ConditionalInputProps {
   name: string;
   type: Form['type'];
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  value: Value;
   selections?: Selection[];
 }
 

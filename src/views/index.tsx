@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { useLoaderData } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,32 +7,49 @@ import { FormProvider } from '@/components/common/form/hook/form-context';
 import { SubmitHandler } from '@/components/common/form/hook/types/form';
 import { useForm } from '@/components/common/form/hook/useForm';
 
+import { formAPI } from '@/api/form';
+import { UserAnswers } from '@/api/form/types/server-request';
 import { FormList } from '@/components/form';
-import { makeUserAnswerState } from '@/components/form/utils';
 
-import type { UserAnswers } from '@/api/form/types/server-request';
 import type { ClientFormData } from '@/constants/client-types';
 
+type Test = {
+  example: string;
+  test: string;
+};
 const App = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data } = useLoaderData() as { data: ClientFormData };
-  const [userAnswers, setUserAnswers] = useState(makeUserAnswerState(data.forms));
+  const { data: formLoadedData } = useLoaderData() as { data: ClientFormData };
+  const [userId, setUserId] = useState(formLoadedData.userId); // TODO: session 으로 옮기기
 
-  const method = useForm<UserAnswers>();
+  const method = useForm<Test>();
 
   if (!id) throw navigate('/');
 
-  useEffect(() => {
-    setUserAnswers(makeUserAnswerState(data.forms));
-  }, [data]);
+  const onSubmit: SubmitHandler<UserAnswers> = async (userAnswers) => {
+    try {
+      const { data } = await formAPI.postCommonQuestion({
+        userId: !userId ? 'common' : userId,
+        userAnswers,
+        typeId: id,
+      });
 
-  const onSubmit: SubmitHandler<UserAnswers> = (data) => console.log(data);
+      if (data.userId) setUserId(data.userId);
+
+      const isLastQuestionPage = !data.nextTypeId;
+
+      if (isLastQuestionPage) navigate('/thanks');
+      else navigate(`/question/${data.nextTypeId}`);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <FormProvider {...method}>
       <form onSubmit={method.handleSubmit(onSubmit)}>
-        <FormList forms={data.forms} userAnswers={userAnswers} />
+        <FormList forms={formLoadedData.forms} />
         <button type='submit'>다음</button>
       </form>
     </FormProvider>

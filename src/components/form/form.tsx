@@ -8,7 +8,6 @@ import type { ClientForm } from '@/constants/client-types';
 interface FormProps {
   form: ClientForm;
   placeholder: string;
-  value: Value;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 

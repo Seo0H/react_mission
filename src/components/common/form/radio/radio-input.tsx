@@ -9,7 +9,7 @@ interface InputRadioProps {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   name: string;
   context: Selection[];
-  value: string;
+  value?: string;
 }
 
 type SelectExtraInputState = {
