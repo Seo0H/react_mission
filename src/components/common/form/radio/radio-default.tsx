@@ -1,11 +1,12 @@
-import { ChangeEvent, createRef, forwardRef, useId, useRef } from 'react';
+import { ChangeEvent, createRef, forwardRef, useRef } from 'react';
 
 import { Radio } from '@/components/common/form/radio/radio';
 import { RadioGroup } from '@/components/common/form/radio/radio-group';
+import type { QuestionContext } from '@/components/common/form/type';
 
 interface DefaultRadioProps {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  contexts: { value: string; label: string }[];
+  contexts: QuestionContext[];
   name: string;
   value?: string;
 }
