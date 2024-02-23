@@ -9,7 +9,6 @@ import { NumberInput } from '@/components/common/form/number-input';
 import { DefaultRadio, RadioNumber, RadioWithInput } from '@/components/common/form/radio';
 
 import { isSelection } from '@/components/form/utils';
-import { isArray } from '@/utils/is';
 
 import type { Form } from '@/api/form/types/server-response';
 import type { ConditionalInputProps, Omitted } from '@/components/form/conditional-input';
@@ -28,18 +27,17 @@ export const inputComponents: { [key in Form['type']]: InputComponentProps } = {
     return <NumberInput {...register(name)} />;
   },
   //--- multi input ---
-  checkbox: ({ value, selections, ...rest }) => {
+  checkbox: ({ name, selections }, register) => {
     if (!isSelection(selections)) throw new Error('Checkbox must have multi answer value');
-    if (!isArray(value)) throw new Error('Checkbox value must string[]');
-    return <DefaultCheckbox contexts={selections} value={value} {...rest} />;
+    return <DefaultCheckbox contexts={selections} {...register(name)} />;
   },
-  radio: ({ selections, name, value, ...rest }, register) => {
+  radio: ({ selections, name }, register) => {
     if (!isSelection(selections)) throw new Error('Radio must have multi answer value');
-    return <DefaultRadio contexts={selections} {...register(name)} value={String(value)} />;
+    return <DefaultRadio contexts={selections} {...register(name)} />;
   },
   radioNumber: ({ name }, register) => <RadioNumber maxScore={7} minScore={1} {...register(name)} />,
-  radioWithInput: ({ value, selections, name, ...rest }, register) => {
+  radioWithInput: ({ selections, name }, register) => {
     if (!isSelection(selections)) throw new Error('Radio Input must have multi answer value');
-    return <RadioWithInput context={selections} {...register(name)} value={String(value)} />;
+    return <RadioWithInput context={selections} {...register(name)} />;
   },
 };

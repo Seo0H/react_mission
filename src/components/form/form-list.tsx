@@ -7,14 +7,13 @@ import type { ClientForm } from '@/constants/client-types';
 
 interface FormListProps {
   forms: ClientForm[];
-  userAnswers: UserAnswers;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const FormList = ({ forms, userAnswers, onChange }: FormListProps) => {
+export const FormList = ({ forms, onChange }: FormListProps) => {
   return forms.map((form, idx) => (
     <div key={`${form.name} ${idx}`}>
-      <Form value={userAnswers[form.name]} placeholder={form.placeholder} onChange={onChange} {...{ form }} />
+      <Form placeholder={form.placeholder} onChange={onChange} {...{ form }} />
     </div>
   ));
 };
