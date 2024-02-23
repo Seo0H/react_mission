@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useLoaderData } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -26,6 +26,10 @@ const App = () => {
 
   if (!id) throw navigate('/');
 
+  useEffect(() => {
+    method.reset();
+  }, [formLoadedData]);
+
   const onSubmit: SubmitHandler<UserAnswers> = async (userAnswers) => {
     try {
       const { data } = await formAPI.postCommonQuestion({
@@ -39,7 +43,9 @@ const App = () => {
       const isLastQuestionPage = !data.nextTypeId;
 
       if (isLastQuestionPage) navigate('/thanks');
-      else navigate(`/question/${data.nextTypeId}`);
+      else {
+        navigate(`/question/${data.nextTypeId}`);
+      }
     } catch (e) {
       console.log(e);
     }

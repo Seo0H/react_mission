@@ -13,8 +13,8 @@ import type { FormState, UseFormGetFieldState, UseFormHandleSubmit, UseFormRegis
 export function createFormControl<TFieldValues extends FieldValues>(
   updateFormState: (formState: FormState<TFieldValues>) => void,
 ) {
-  const _fields: FieldRefs = {};
-  const _defaultValues = {};
+  let _fields: FieldRefs = {};
+  let _defaultValues = {};
   // const _formValues = cloneObject(_defaultValues);
   let _formState: FormState<TFieldValues> = {
     errors: {},
@@ -129,6 +129,16 @@ export function createFormControl<TFieldValues extends FieldValues>(
     error: get((formState || _formState).errors, name),
   });
 
+  const reset = () => {
+    _fields = {};
+    _defaultValues = {};
+    _formState = {
+      errors: {},
+      isValid: false,
+    };
+    updateFormState(_formState);
+  };
+
   return {
     control: {
       get _formState() {
@@ -141,5 +151,6 @@ export function createFormControl<TFieldValues extends FieldValues>(
     register,
     handleSubmit,
     getFieldState,
+    reset,
   };
 }
