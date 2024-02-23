@@ -1,9 +1,9 @@
-import { ChangeEvent, createRef, forwardRef, useEffect, useReducer, useRef, useState } from 'react';
+import { ChangeEvent, createRef, forwardRef, useRef } from 'react';
 
 import { Radio } from '@/components/common/form/radio/radio';
 import { RadioGroup } from '@/components/common/form/radio/radio-group';
 
-interface RadioNumberOptions {
+interface RadioNumberProps {
   /**
    * 라디오 넘버의 시작 점수
    */
@@ -30,12 +30,12 @@ interface RadioNumberOptions {
   name?: string;
 
   /**
-   * 'Checkbox'의 선택된 상태가 변경될 때 호출되는 콜백
+   * 선택된 상태가 변경될 때 호출되는 콜백
    */
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const RadioNumber = forwardRef<HTMLInputElement, RadioNumberOptions>((props, ref = createRef()) => {
+export const RadioNumber = forwardRef<HTMLInputElement, RadioNumberProps>((props, ref = createRef()) => {
   const { maxScore, minScore, step = 1, defaultValue, name, onChange } = props;
 
   const radioRef = useRef<HTMLInputElement[]>([]);
