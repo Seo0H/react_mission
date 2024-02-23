@@ -14,16 +14,17 @@ const getQuestionWithId = async (id: string) => {
 };
 
 interface PostCommonQuestionProps {
+  userId: string;
   userAnswers: UserAnswers;
   typeId: string;
 }
 
-const postCommonQuestion = async ({ userAnswers, typeId }: PostCommonQuestionProps) => {
+const postCommonQuestion = async ({ userAnswers, typeId, userId }: PostCommonQuestionProps) => {
   const client = new APIFactory<APIResponse<PostResponseData>>(`/api/answer/${typeId}`);
   const data = await client.fetch({
     method: 'POST',
     credentials: 'include',
-    body: JSON.stringify({ answers: userAnswers }),
+    body: JSON.stringify({ userId, answers: userAnswers }),
     headers: {
       'Content-Type': 'application/json',
     },
