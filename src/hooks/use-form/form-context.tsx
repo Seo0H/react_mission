@@ -1,11 +1,9 @@
 import { createContext, useContext } from 'react';
 
 import type { FieldValues } from './types/fields';
-import type { UseFormRegister } from './types/form';
+import type { UseFormReturn } from './types/form';
 
-type FormReturn<TFieldValues extends FieldValues = FieldValues> = {
-  register: UseFormRegister<TFieldValues>;
-};
+interface FormReturn<TFieldValues extends FieldValues = FieldValues> extends UseFormReturn<TFieldValues> {}
 
 const FormContext = createContext<FormReturn | null>(null);
 
