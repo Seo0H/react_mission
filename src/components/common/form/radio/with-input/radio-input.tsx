@@ -1,8 +1,10 @@
-import { ChangeEvent, forwardRef, useRef, useState } from 'react';
+import { ChangeEvent, forwardRef } from 'react';
 
 import { Input } from '@/components/common/form/input';
-import { Radio, RadioGroup } from '@/components/common/form/radio';
 
+import { Radio, RadioGroup } from '../index';
+
+import { useRadioWithInput } from './use-radio-with-input';
 import type { Selection } from '@/api/form/types/server-response';
 
 interface InputRadioProps {
@@ -12,67 +14,30 @@ interface InputRadioProps {
   value?: string;
 }
 
-type SelectExtraInputState = {
-  isDisabled: boolean;
-  value?: string;
-};
-
-// TODO: 로직 단순화
 export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
   ({ context, value: currentValue, name, onChange }: InputRadioProps, ref) => {
-    const [isSelectExtra, setSelectExtra] = useState<SelectExtraInputState>({
-      isDisabled: true,
-      value: 'extra',
-    });
-    const extraInputRef = useRef<HTMLInputElement>(null);
-    const radioRefs = useRef<HTMLInputElement[]>([]);
+    const { isControlled, extraRadioState, radioRefs, extraTextInputRef, handleChange, handleExtraRadio } =
+      useRadioWithInput(ref, onChange, currentValue);
 
-    const isControlled = !!currentValue;
-
-    const handleRadioExtraInput = (e: ChangeEvent<HTMLInputElement>) => {
-      const targetValue = e.target.value;
-      const isExtraInput = targetValue === isSelectExtra.value;
-
-      if (!isExtraInput) {
-        if (extraInputRef.current?.value) extraInputRef.current.value = '';
-        setSelectExtra({ isDisabled: true, value: '' });
-      } else {
-        if (ref && typeof ref === 'function') ref(extraInputRef.current);
-        setSelectExtra({ isDisabled: false, value: targetValue });
-      }
-    };
-
-    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-      if (ref && typeof ref === 'function') {
-        ref(e.target);
-      }
-
-      if (onChange) onChange(e);
-    };
+    const radioGroupValue = isControlled
+      ? extraRadioState.isDisabled === false && typeof extraRadioState.value === 'string'
+        ? extraRadioState.value
+        : currentValue
+      : undefined;
 
     return (
-      <RadioGroup
-        onChange={handleOnChange}
-        value={
-          isControlled
-            ? isSelectExtra.isDisabled === false && typeof isSelectExtra.value === 'string'
-              ? isSelectExtra.value
-              : currentValue
-            : undefined
-        }
-        name={name}
-      >
+      <RadioGroup onChange={handleChange} value={radioGroupValue} name={name}>
         {context.map(({ label, value }, idx) => {
           if (value === 'extra') {
             return (
               <Radio
                 key={`radio-${value}-${idx}`}
-                value={isSelectExtra.value}
-                onChange={handleRadioExtraInput}
+                value={extraRadioState.value}
+                onChange={handleExtraRadio}
                 ref={(el: HTMLInputElement) => (radioRefs.current[idx] = el)}
               >
                 기타 :
-                <Input name={name} onChange={onChange} disabled={isSelectExtra.isDisabled} ref={extraInputRef} />
+                <Input name={name} onChange={onChange} disabled={extraRadioState.isDisabled} ref={extraTextInputRef} />
               </Radio>
             );
           }
@@ -81,7 +46,7 @@ export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
             <Radio
               value={value}
               key={crypto.randomUUID()}
-              onChange={handleRadioExtraInput}
+              onChange={handleExtraRadio}
               ref={(el: HTMLInputElement) => (radioRefs.current[idx] = el)}
             >
               {label}
