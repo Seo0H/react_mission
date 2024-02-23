@@ -5,7 +5,7 @@ import { isInputEvent } from '@/components/common/form/utils';
 
 export interface UseCheckboxGroupProps {
   values?: string[];
-  defaultValue?: string;
+  defaultValue?: string[];
   onChange?(prop: OnChangeProp): void;
   isDisabled?: boolean;
   name?: string;
@@ -14,7 +14,9 @@ export interface UseCheckboxGroupProps {
 export const useCheckboxGroup = (props: UseCheckboxGroupProps = {}) => {
   const { onChange: onChangeProp, values: valuesProp, defaultValue, name: nameProp, isDisabled, ...htmlProps } = props;
 
-  const [valuesState, setValues] = useState<string[]>(defaultValue === undefined ? [] : [defaultValue]);
+  const [valuesState, setValues] = useState<string[] | undefined>(
+    defaultValue === undefined ? undefined : [...defaultValue],
+  );
   const isControlled = valuesProp !== undefined;
   const values = isControlled ? valuesProp : valuesState;
 
@@ -30,11 +32,11 @@ export const useCheckboxGroup = (props: UseCheckboxGroupProps = {}) => {
       const nextValue = isInputEvent(eventOrValue) ? eventOrValue.target.value : eventOrValue;
 
       if (!isControlled) {
-        const isHasValue = valuesState.find((value) => value === nextValue);
+        const isHasValue = valuesState?.find((value) => value === nextValue);
 
-        if (typeof isHasValue === 'string') {
-          setValues((prevValues) => prevValues.filter((value) => value !== nextValue));
-        } else setValues((prevValues) => [...prevValues, nextValue]);
+        if (typeof isHasValue === 'string' && Array.isArray(valuesState)) {
+          setValues(valuesState.filter((value) => value !== nextValue));
+        } else if (Array.isArray(valuesState)) setValues([...valuesState, nextValue]);
       }
 
       if (isInputEvent(eventOrValue)) {
