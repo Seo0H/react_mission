@@ -19,3 +19,6 @@ export const isPlainObject = (tempObject: object) => {
 export const isUndefined = (val: unknown): val is undefined => val === undefined;
 
 export const isString = (value: unknown): value is string => typeof value === 'string';
+
+export const isEmptyObject = (value: unknown): value is { [K in string | number]: never } =>
+  isObject(value) && !Object.keys(value).length;

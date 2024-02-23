@@ -1,27 +1,24 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { createFormControl } from '@/hooks/use-form/logic/create-form-control';
+import { FieldError, InternalFieldErrors } from '@/hooks/use-form/types/errors';
+
 import type { FieldValues } from './fields';
 import { RegisterOptions } from './validator';
 
+export type UseFormReturn<TFieldValues extends FieldValues> = ReturnType<typeof createFormControl> & {
+  formState: FormState<TFieldValues>;
+};
 
-export interface UseFormReturn<TFieldValues extends FieldValues> {
-  handleSubmit: UseFormHandleSubmit<TFieldValues>;
-  register: UseFormRegister<TFieldValues>;
-  formState: FormState;
-}
 export type ChangeHandler = (event: { target: any; type?: any }) => Promise<void | boolean>;
 
-export interface FormState {
-  isLoading: boolean;
-  isSubmitted: boolean;
+export interface FormState<TFelidValue extends FieldValues = FieldValues> {
   isValid: boolean;
-  defaultValues?: string;
-  errors: { message?: string };
+  errors: Partial<InternalFieldErrors>;
 }
 
 type UseFormRegisterReturn<TFiledName> = {
   onChange: ChangeHandler;
-  //   onBlur: ChangeHandler;
   ref: (instance: any) => void;
   name: TFiledName;
   min?: string | number;
@@ -55,3 +52,10 @@ export type SubmitHandler<TFieldValues extends FieldValues> = (
   data: TFieldValues,
   event?: React.BaseSyntheticEvent,
 ) => unknown | Promise<unknown>;
+
+export type UseFormGetFieldState<TFieldValues extends FieldValues> = <
+  TFieldName extends Extract<keyof TFieldValues, string>,
+>(
+  name: TFieldName,
+  formState?: FormState<TFieldValues>,
+) => { invalid: boolean; error?: FieldError };
