@@ -1,11 +1,11 @@
 import { cloneObject } from '@/utils/clone';
 import { isUndefined } from '@/utils/is';
 
-import { getFieldValue, getFieldsValue } from './get-field-value';
 import { get } from '../utils/get';
 import { isRadioOrCheckbox } from '../utils/is';
 import { set } from '../utils/set';
 
+import { getFieldValue, getFieldsValue } from './get-field-value';
 import type { Field, FieldRefs, FieldValues, InternalFieldName, Ref } from '../types/fields';
 import type { UseFormHandleSubmit, UseFormRegister } from '../types/form';
 

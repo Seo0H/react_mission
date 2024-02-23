@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { FieldValues } from './fields';
 import { RegisterOptions } from './validator';
 
-import type { FieldValues } from './fields';
 
 export interface UseFormReturn<TFieldValues extends FieldValues> {
   handleSubmit: UseFormHandleSubmit<TFieldValues>;

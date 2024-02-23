@@ -2,7 +2,6 @@ import { ChangeEvent } from 'react';
 
 import { ConditionalInput } from '@/components/form';
 
-import type { Value } from '@/api/form/types/server-response';
 import type { ClientForm } from '@/constants/client-types';
 
 interface FormProps {

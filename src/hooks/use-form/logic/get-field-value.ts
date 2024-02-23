@@ -1,9 +1,9 @@
 import { isUndefined } from '@/utils/is';
 
-import { getCheckboxValue } from './get-checkbox-value';
-import { getRadioValue } from './get-radio-value';
 import { isCheckBoxInput, isRadioInput } from '../utils/is';
 
+import { getCheckboxValue } from './get-checkbox-value';
+import { getRadioValue } from './get-radio-value';
 import type { Field } from '../types/fields';
 
 export function getFieldValue(_f: Field['_f']) {
