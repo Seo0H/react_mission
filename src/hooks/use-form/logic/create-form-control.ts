@@ -1,7 +1,7 @@
 import { cloneObject } from '@/utils/clone';
 import { isUndefined } from '@/utils/is';
 
-import { getFieldValue, getFieldsValue } from '../logic/get-field-value';
+import { getFieldValue, getFieldsValue } from './get-field-value';
 import { get } from '../utils/get';
 import { isRadioOrCheckbox } from '../utils/is';
 import { set } from '../utils/set';

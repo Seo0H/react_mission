@@ -3,13 +3,12 @@ import { useState } from 'react';
 import { useLoaderData } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { FormProvider } from '@/components/common/form/hook/form-context';
-import { SubmitHandler } from '@/components/common/form/hook/types/form';
-import { useForm } from '@/components/common/form/hook/useForm';
-
 import { formAPI } from '@/api/form';
 import { UserAnswers } from '@/api/form/types/server-request';
 import { FormList } from '@/components/form';
+import { FormProvider } from '@/hooks/use-form/form-context';
+import { SubmitHandler } from '@/hooks/use-form/types/form';
+import { useForm } from '@/hooks/use-form/use-form';
 
 import type { ClientFormData } from '@/constants/client-types';
 

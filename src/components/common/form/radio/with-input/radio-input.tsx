@@ -17,7 +17,7 @@ type SelectExtraInputState = {
   value?: string;
 };
 
-// TODO: 로직 단훈화
+// TODO: 로직 단순화
 export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
   ({ context, value: currentValue, name, onChange }: InputRadioProps, ref) => {
     const [isSelectExtra, setSelectExtra] = useState<SelectExtraInputState>({

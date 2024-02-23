@@ -1,4 +1,4 @@
-import { FieldValues } from '../types/fields';
+import { FieldValues } from './fields';
 
 export type RegisterOptions<
   TFieldValues extends FieldValues = FieldValues,

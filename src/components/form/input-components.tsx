@@ -2,8 +2,8 @@
 import type { ComponentPropsWithRef, ReactElement } from 'react';
 
 import { DefaultCheckbox } from '@/components/common/form/checkbox';
-import type { FieldValues } from '@/components/common/form/hook/types/fields';
-import type { UseFormRegister } from '@/components/common/form/hook/types/form';
+import type { FieldValues } from '@/hooks/use-form/types/fields';
+import type { UseFormRegister } from '@/hooks/use-form/types/form';
 import { Input } from '@/components/common/form/input';
 import { NumberInput } from '@/components/common/form/number-input';
 import { DefaultRadio, RadioNumber, RadioWithInput } from '@/components/common/form/radio';
