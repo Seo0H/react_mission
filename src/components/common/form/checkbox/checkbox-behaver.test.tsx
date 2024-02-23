@@ -23,7 +23,7 @@ describe('Checkbox Group', () => {
   test('multiple select', async () => {
     const onChange = jest.fn();
     render(
-      <CheckBoxGroup name='checkbox' defaultValue='1' onChange={onChange}>
+      <CheckBoxGroup name='checkbox' defaultValue={['1']} onChange={onChange}>
         <Checkbox value='1'>One</Checkbox>
         <Checkbox value='2'>Two</Checkbox>
         <Checkbox value='3'>Three</Checkbox>
