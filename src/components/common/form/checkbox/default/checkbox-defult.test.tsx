@@ -4,7 +4,7 @@ import { fireEvent, render } from '@testing-library/react';
 
 import '@testing-library/jest-dom';
 
-import { DefaultCheckbox } from '@/components/common/form/checkbox/checkbox-defult';
+import { DefaultCheckbox } from '@/components/common/form/checkbox/default/checkbox-defult';
 import { QuestionContext } from '@/components/common/form/type';
 
 const mockQuestions: QuestionContext[] = [

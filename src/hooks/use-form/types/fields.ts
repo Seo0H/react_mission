@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RegisterOptions } from '../types/validator';
+import { RegisterOptions } from './validator';
 
 export type InternalFieldName = string;
 export type FieldValues = Record<string, any>;

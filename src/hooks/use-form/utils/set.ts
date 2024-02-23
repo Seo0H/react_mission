@@ -1,8 +1,8 @@
 import { isObject } from '@/utils/is';
 
 import { FieldValues } from '../types/fields';
-import { isKey } from '../utils/is';
 
+import { isKey } from './is';
 import { stringToPath } from './string-to-path';
 
 export function set(object: FieldValues, path: string, value?: unknown) {

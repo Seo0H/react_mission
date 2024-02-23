@@ -1,7 +1,7 @@
 import { isUndefined } from '@/utils/is';
 
-import { getCheckboxValue } from '../logic/get-checkbox-value';
-import { getRadioValue } from '../logic/get-radio-value';
+import { getCheckboxValue } from './get-checkbox-value';
+import { getRadioValue } from './get-radio-value';
 import { isCheckBoxInput, isRadioInput } from '../utils/is';
 
 import type { Field } from '../types/fields';
