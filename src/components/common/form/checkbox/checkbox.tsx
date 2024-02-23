@@ -14,7 +14,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
   const group = useCheckboxGroupContext();
 
   let isChecked = props.isChecked;
-  if (!!group?.values && value != null) {
+  if (group?.values?.length && value != null) {
     isChecked = group.values?.includes(String(value));
   }
 
