@@ -1,7 +1,8 @@
 import { isUndefined } from '@/utils/is';
 
+import { getCheckboxValue } from '../logic/get-checkbox-value';
 import { getRadioValue } from '../logic/get-radio-value';
-import { isRadioInput } from '../utils/is';
+import { isCheckBoxInput, isRadioInput } from '../utils/is';
 
 import type { Field } from '../types/fields';
 
@@ -14,6 +15,10 @@ export function getFieldValue(_f: Field['_f']) {
 
   if (isRadioInput(ref)) {
     return getRadioValue(_f.refs).value;
+  }
+
+  if (isCheckBoxInput(ref)) {
+    return getCheckboxValue(_f.refs).value;
   }
 
   return ref.value;
