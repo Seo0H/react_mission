@@ -1,22 +1,48 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, forwardRef, useRef } from 'react';
 
 import { Checkbox, CheckBoxGroup } from '@/components/common/form/checkbox';
+import { QuestionContext } from '@/components/common/form/type';
 
 interface DefaultCheckboxProps {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  contexts: { value: string; label: string }[];
+  contexts: QuestionContext[];
   name: string;
-  value: string[];
+  value?: string[];
+  defaultCheckedValues?: string[];
 }
 
-export const DefaultCheckbox = ({ contexts, onChange, value, name }: DefaultCheckboxProps) => {
-  return (
-    <CheckBoxGroup onChange={onChange} values={[...value]} name={name}>
-      {contexts.map(({ label, value: thisValue }) => (
-        <Checkbox value={thisValue} key={`${name}-checkbox-${label}`}>
-          {label}
-        </Checkbox>
-      ))}
-    </CheckBoxGroup>
-  );
-};
+export const DefaultCheckbox = forwardRef<HTMLInputElement, DefaultCheckboxProps>(
+  ({ contexts, onChange, value: currentValues, name, defaultCheckedValues }, ref) => {
+    const isControlled = !!currentValues && !!onChange;
+    const checkboxRef = useRef<HTMLInputElement[]>([]);
+
+    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+      if (ref && typeof ref === 'function') {
+        ref(e.target);
+      }
+
+      if (isControlled) onChange(e);
+    };
+
+    return (
+      <CheckBoxGroup
+        onChange={handleOnChange}
+        values={isControlled ? [...currentValues] : undefined}
+        name={name}
+        defaultValue={defaultCheckedValues}
+      >
+        {contexts.map(({ label, value: thisValue }, idx) => (
+          <Checkbox
+            value={thisValue}
+            key={`${name}-checkbox-${label}`}
+            ref={(el: HTMLInputElement) => (checkboxRef.current[idx] = el)}
+          >
+            {label}
+          </Checkbox>
+        ))}
+      </CheckBoxGroup>
+    );
+  },
+);
+
+DefaultCheckbox.displayName = 'DefaultCheckbox';
