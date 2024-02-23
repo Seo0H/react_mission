@@ -1,12 +1,9 @@
 import { ChangeEvent, forwardRef, useRef } from 'react';
 
 import { Checkbox, CheckBoxGroup } from '@/components/common/form/checkbox';
-import { QuestionContext } from '@/components/common/form/type';
+import type { MultiQuestionComponentProps } from '@/components/common/form/type';
 
-interface DefaultCheckboxProps {
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  contexts: QuestionContext[];
-  name: string;
+interface DefaultCheckboxProps extends MultiQuestionComponentProps {
   value?: string[];
   defaultCheckedValues?: string[];
 }
