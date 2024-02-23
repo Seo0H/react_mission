@@ -2,8 +2,6 @@
 import type { ComponentPropsWithRef, ReactElement } from 'react';
 
 import { DefaultCheckbox } from '@/components/common/form/checkbox';
-import type { FieldValues } from '@/hooks/use-form/types/fields';
-import type { UseFormRegister } from '@/hooks/use-form/types/form';
 import { Input } from '@/components/common/form/input';
 import { NumberInput } from '@/components/common/form/number-input';
 import { DefaultRadio, RadioNumber, RadioWithInput } from '@/components/common/form/radio';
@@ -12,6 +10,8 @@ import { isSelection } from '@/components/form/utils';
 
 import type { Form } from '@/api/form/types/server-response';
 import type { ConditionalInputProps, Omitted } from '@/components/form/conditional-input';
+import type { FieldValues } from '@/hooks/use-form/types/fields';
+import type { UseFormRegister } from '@/hooks/use-form/types/form';
 
 type InputComponentProps<T = Omit<ComponentPropsWithRef<'input'>, Omitted> & Omit<ConditionalInputProps, 'type'>> = (
   props: T,

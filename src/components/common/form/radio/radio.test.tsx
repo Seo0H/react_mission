@@ -48,7 +48,6 @@ describe('Radio 동작 테스트', () => {
   });
 
   it('비제어 테스트', async () => {
-    const useRefSpy = jest.spyOn(React, 'useRef').mockReturnValueOnce({ current: document.createElement('button') });
     const mock = jest.fn();
 
     const Component = () => (

@@ -2,13 +2,12 @@ import { ChangeEvent, createRef, forwardRef, useRef } from 'react';
 
 import { Radio } from '@/components/common/form/radio/radio';
 import { RadioGroup } from '@/components/common/form/radio/radio-group';
-import type { MultiQuestionComponentProps, QuestionContext } from '@/components/common/form/type';
+import type { MultiQuestionComponentProps } from '@/components/common/form/type';
 
 interface DefaultRadioProps extends MultiQuestionComponentProps {
   value?: string;
   defaultCheckedValue?: string;
 }
-let count = 0;
 
 export const DefaultRadio = forwardRef<HTMLInputElement, DefaultRadioProps>((props, ref = createRef()) => {
   const { onChange, name, contexts, value, defaultCheckedValue } = props;
@@ -16,7 +15,6 @@ export const DefaultRadio = forwardRef<HTMLInputElement, DefaultRadioProps>((pro
   const radioRefs = useRef<HTMLInputElement[]>([]);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(++count);
     if (ref && typeof ref === 'function') {
       ref(e.target);
     } else if (onChange) onChange(e);

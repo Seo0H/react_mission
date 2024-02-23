@@ -3,7 +3,6 @@ import { useCallback, useId, useState } from 'react';
 import { useRadioGroupContext } from '@/components/common/form/radio/radio-group';
 import type { RadioState, UseRadioProps } from '@/components/common/form/radio/types';
 
-import { callAllHandlers } from '@/utils/call-all-handlers';
 import { InputDOMAttributes, PropGetter } from '@/utils/prop-type';
 
 export const useRadio = (props: UseRadioProps = {}) => {
