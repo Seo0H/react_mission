@@ -20,11 +20,13 @@ const corsOptions = {
 server.use(cors(corsOptions));
 server.use(jsonServer.bodyParser);
 
-server.post('/api/answer/common', (req, res, next) => {
+server.post('/api/answer/:id', (req, res, next) => {
   const body = req.body;
+  const { id } = req.params;
+
   console.log('🚀 ~ server.post ~ body:', body);
-  res.header();
-  if (req.method === 'POST') {
+
+  if (id === 'common') {
     return res
       .json({
         status: 200,
@@ -35,25 +37,16 @@ server.post('/api/answer/common', (req, res, next) => {
         },
       })
       .status(200);
-  } else {
-    next();
   }
-});
 
-server.post('/api/answer/:typeId', (req, res, next) => {
-  const body = req.body;
-  if (req.method === 'POST') {
-    return res
-      .json({
-        status: 200,
-        data: {
-          isSuccess: true,
-        },
-      })
-      .status(200);
-  } else {
-    next();
-  }
+  return res
+    .json({
+      status: 200,
+      data: {
+        isSuccess: true,
+      },
+    })
+    .status(200);
 });
 
 server.use(middlewares);
