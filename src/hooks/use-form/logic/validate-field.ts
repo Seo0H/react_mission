@@ -68,7 +68,7 @@ export const validateField = async <TFiledValues extends FieldValues = FieldValu
 
     if (isMinMaxLength) {
       let [min, max] = validate.target;
-      const valueLength = value.length;
+      const valueLength = value ? value.length : 0;
       max = max === '-' ? Number.MAX_SAFE_INTEGER : Number(max);
       min = min === '-' ? -Number.MAX_SAFE_INTEGER : Number(min);
 
