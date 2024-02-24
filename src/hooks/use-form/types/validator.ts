@@ -9,29 +9,26 @@ export type RegisterOptions<
   validates: Validate[];
 }>;
 
-export type Validate =
+export type Validate = ValidateOption & { validateText: string };
+
+type ValidateOption =
   | {
       type: 'not';
       target: string | number | Array<any> | object;
-      validateText: string;
     }
   | {
       type: 'minMax';
       target: [min: '-' | number, max: '-' | number];
-      validateText: string;
     }
   | {
       type: 'sameAs';
-      target: string | number;
-      validateText: string;
+      target: string;
     }
   | {
       type: 'pattern';
       target: string;
-      validateText: string;
     }
   | {
       type: 'minMaxLength';
       target: [min: '-' | number, max: '-' | number];
-      validateText: string;
     };

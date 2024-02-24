@@ -112,7 +112,7 @@ export function createFormControl<TFieldValues extends FieldValues>(
         const { _f, validates } = field;
 
         if (_f && validates?.length) {
-          const filedError = await validateField(validates, formValues[name], name, formValues);
+          const filedError = await validateField(validates, name, formValues);
           errors = { ...errors, ...filedError };
 
           if (filedError[_f.name]) {
