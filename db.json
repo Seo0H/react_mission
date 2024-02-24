@@ -351,7 +351,7 @@
               {
                 "type": "minMaxLength",
                 "target": [2, "-"],
-                "validateText": "없다면 '없음'을 입력해주세요"
+                "validateText": "2글자 이상 입력해야 합니다."
               }
             ]
           },
@@ -382,6 +382,30 @@
                 "type": "minMaxLength",
                 "target": [2, "-"],
                 "validateText": "없다면 '없음'을 입력해주세요"
+              }
+            ]
+          },
+          {
+            "name": "test",
+            "question": "테스트입니다",
+            "required": true,
+            "type": "text",
+            "placeholder": "TEST..",
+            "validate": [
+              {
+                "type": "minMaxLength",
+                "target": [5, "-"],
+                "validateText": "5글자 이상이여야 합니다."
+              },
+              {
+                "type": "not",
+                "target": "test",
+                "validateText": "test를 입력하면 안됩니다."
+              },
+              {
+                "type": "not",
+                "target": "",
+                "validateText": "빈칸이면 안됩니다."
               }
             ]
           }
