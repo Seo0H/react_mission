@@ -69,23 +69,23 @@ export function createFormControl<TFieldValues extends FieldValues>(
   };
 
   const handleSubmit: UseFormHandleSubmit<TFieldValues> = (onValid) => async (e) => {
-    let onValidError = undefined;
-    const fieldValues = getFieldsValue(_fields);
-
-    await _executeValidation(_fields, fieldValues);
-    updateFormState(_formState);
-
     if (e) {
       e.preventDefault && e.preventDefault();
       e.persist && e.persist();
     }
 
-    if (isEmptyObject(_formState.errors)) {
-      try {
+    let onValidError = undefined;
+    const fieldValues = getFieldsValue(_fields);
+
+    try {
+      await _executeInputValidation(_fields, fieldValues);
+      updateFormState(_formState);
+
+      if (isEmptyObject(_formState.errors)) {
         await onValid(fieldValues as TFieldValues, e);
-      } catch (error) {
-        onValidError = error;
       }
+    } catch (error) {
+      onValidError = error;
     }
 
     if (onValidError) {
@@ -93,7 +93,10 @@ export function createFormControl<TFieldValues extends FieldValues>(
     }
   };
 
-  const _executeValidation = async <TFelidValues extends FieldValues = FieldValues>(
+  /**
+   * 개별 Input의 유효성 검증 메서드
+   */
+  const _executeInputValidation = async <TFelidValues extends FieldValues = FieldValues>(
     fields: FieldRefs,
     formValues: TFelidValues,
     context: {
@@ -109,7 +112,7 @@ export function createFormControl<TFieldValues extends FieldValues>(
         const { _f, validates } = field;
 
         if (_f && validates?.length) {
-          const filedError = await validateField(validates, formValues[name], field);
+          const filedError = await validateField(validates, formValues[name], name, formValues);
           errors = { ...errors, ...filedError };
 
           if (filedError[_f.name]) {

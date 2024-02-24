@@ -1,18 +1,17 @@
-import { isFelidKey } from '@/hooks/use-form/utils/is';
 import { areValuesEqual } from '@/utils/are-values-equal';
 import { isString } from '@/utils/is';
 
 import type { InternalFieldErrors } from '@/hooks/use-form/types/errors';
-import type { Field, FieldValues } from '@/hooks/use-form/types/fields';
+import type { FieldValues } from '@/hooks/use-form/types/fields';
 import type { Validate } from '@/hooks/use-form/types/validator';
 
-export const validateField = async <T extends FieldValues[keyof FieldValues]>(
+export const validateField = async <TFiledValues extends FieldValues = FieldValues>(
   validates: Validate[],
-  formValue: T,
-  field: Field,
+  value: TFiledValues[keyof TFiledValues],
+  name: keyof FieldValues,
+  formValues: TFiledValues,
 ) => {
   const error: InternalFieldErrors = {};
-  const { name } = field._f;
 
   for (const validate of validates) {
     const isNot = validate.type === 'not';
@@ -24,7 +23,7 @@ export const validateField = async <T extends FieldValues[keyof FieldValues]>(
     if (isNot) {
       const target = validate.target;
 
-      if (areValuesEqual(target, formValue)) {
+      if (areValuesEqual(target, value)) {
         error[name] = {
           message: validate.validateText,
         };
@@ -33,7 +32,7 @@ export const validateField = async <T extends FieldValues[keyof FieldValues]>(
 
     if (isMinmax) {
       let [min, max] = validate.target;
-      const numValue = Number(formValue);
+      const numValue = Number(value);
 
       max = max === '-' ? Number.MAX_SAFE_INTEGER : Number(max);
       min = min === '-' ? -1 : Number(min);
@@ -47,7 +46,7 @@ export const validateField = async <T extends FieldValues[keyof FieldValues]>(
 
     if (isSameAs) {
       const target = validate.target;
-      if (isFelidKey(target, field) && formValue !== field[target]) {
+      if (value !== formValues[target]) {
         error[name] = {
           message: validate.validateText,
         };
@@ -55,20 +54,19 @@ export const validateField = async <T extends FieldValues[keyof FieldValues]>(
     }
 
     if (isMinMaxLength) {
-      if (!isString(formValue)) {
+      if (isString(value) === false) {
         error[name] = {
-          message: `${name}는/은 string 이여야 합니다.`,
+          message: validate.validateText,
         };
       } else {
         let [min, max] = validate.target;
-        const valueLength = formValue.length;
-        // TODO: message를 외부에서 주입받을 수 있으면 좋을듯..
+        const valueLength = value.length;
         max = max === '-' ? Number.MAX_SAFE_INTEGER : Number(max);
         min = min === '-' ? -1 : Number(min);
 
         if (valueLength > max || valueLength < min) {
           error[name] = {
-            message: `${max} 이하, ${min} 이상 입력해야 합니다.`,
+            message: validate.validateText,
           };
         }
       }
@@ -76,7 +74,7 @@ export const validateField = async <T extends FieldValues[keyof FieldValues]>(
 
     if (isPattern) {
       const regex = new RegExp(validate.target);
-      if (isString(formValue) && !regex.test(formValue)) {
+      if (isString(value) && !regex.test(value)) {
         error[name] = {
           message: validate.validateText,
         };
