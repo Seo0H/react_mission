@@ -1,5 +1,6 @@
 import { areValuesEqual } from '@/utils/are-values-equal';
 import { isString } from '@/utils/is';
+import { mergeArray } from '@/utils/merge-array';
 
 import type { InternalFieldErrors } from '@/hooks/use-form/types/errors';
 import type { FieldValues } from '@/hooks/use-form/types/fields';
@@ -7,11 +8,11 @@ import type { Validate } from '@/hooks/use-form/types/validator';
 
 export const validateField = async <TFiledValues extends FieldValues = FieldValues>(
   validates: Validate[],
-  value: TFiledValues[keyof TFiledValues],
   name: keyof FieldValues,
   formValues: TFiledValues,
 ) => {
   const error: InternalFieldErrors = {};
+  const value = formValues[name];
 
   for (const validate of validates) {
     const isNot = validate.type === 'not';
@@ -20,12 +21,12 @@ export const validateField = async <TFiledValues extends FieldValues = FieldValu
     const isMinMaxLength = validate.type === 'minMaxLength';
     const isPattern = validate.type === 'pattern';
 
-    if (isNot) {
-      const target = validate.target;
+    const errorMessages = error[name]?.message;
 
-      if (areValuesEqual(target, value)) {
+    if (isNot) {
+      if (areValuesEqual(validate.target, value)) {
         error[name] = {
-          message: validate.validateText,
+          message: mergeArray([validate.validateText], errorMessages),
         };
       }
     }
@@ -35,48 +36,54 @@ export const validateField = async <TFiledValues extends FieldValues = FieldValu
       const numValue = Number(value);
 
       max = max === '-' ? Number.MAX_SAFE_INTEGER : Number(max);
-      min = min === '-' ? -1 : Number(min);
+      min = min === '-' ? -Number.MAX_SAFE_INTEGER : Number(min);
 
       if (numValue < min || numValue > max) {
         error[name] = {
-          message: validate.validateText,
+          message: mergeArray([validate.validateText], errorMessages),
         };
       }
     }
 
     if (isSameAs) {
-      const target = validate.target;
-      if (value !== formValues[target]) {
+      if (value === '-') {
+        /* 제한없음인 경우 */
+      }
+      // filed의 특정 name이 가지고 있는 값과 같아야 하는 경우 (target이 $으로 시작)
+      else if (isString(value) && validate.target.at(0) === '$') {
+        const targetFieldName = validate.target.slice(1);
+
+        if (value !== formValues[targetFieldName]) {
+          error[name] = {
+            message: mergeArray([validate.validateText], errorMessages),
+          };
+        }
+        // 주어진 target과 value가 같아야 하는 경우
+      } else if (String(value) !== validate.target) {
         error[name] = {
-          message: validate.validateText,
+          message: mergeArray([validate.validateText], errorMessages),
         };
       }
     }
 
     if (isMinMaxLength) {
-      if (isString(value) === false) {
-        error[name] = {
-          message: validate.validateText,
-        };
-      } else {
-        let [min, max] = validate.target;
-        const valueLength = value.length;
-        max = max === '-' ? Number.MAX_SAFE_INTEGER : Number(max);
-        min = min === '-' ? -1 : Number(min);
+      let [min, max] = validate.target;
+      const valueLength = value.length;
+      max = max === '-' ? Number.MAX_SAFE_INTEGER : Number(max);
+      min = min === '-' ? -Number.MAX_SAFE_INTEGER : Number(min);
 
-        if (valueLength > max || valueLength < min) {
-          error[name] = {
-            message: validate.validateText,
-          };
-        }
+      if (valueLength > max || valueLength < min) {
+        error[name] = {
+          message: mergeArray([validate.validateText], errorMessages),
+        };
       }
     }
 
     if (isPattern) {
-      const regex = new RegExp(validate.target);
+      const regex = new RegExp(validate.target, 'g');
       if (isString(value) && !regex.test(value)) {
         error[name] = {
-          message: validate.validateText,
+          message: mergeArray([validate.validateText], errorMessages),
         };
       }
     }
