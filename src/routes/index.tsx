@@ -3,13 +3,15 @@ import { RouteObject, redirect } from 'react-router-dom';
 import { loaders } from '@/routes/loaders';
 import App from '@/views';
 import ErrorPage from '@/views/error';
+import MainPage from '@/views/main';
 import NoTargetPage from '@/views/no-target';
 import ThanksPage from '@/views/thanks';
 
 export const routes: RouteObject[] = [
   {
     path: '/',
-    loader: () => redirect('/question/common'),
+    // loader: () => redirect('/question/common'),
+    element: <MainPage />,
     errorElement: <ErrorPage />,
   },
   {
