@@ -11,11 +11,7 @@ export type APIResponse<DataType extends FormData | PostResponseData> = {
 export type FormData = {
   userId?: string; // userId는 typeID가 common인 특수한 경우에만 리턴된다.
   forms: Form[];
-  escapeValidate: {
-    name: string;
-    type: ValidateType;
-    target: TargetType;
-  }[];
+  escapeValidate: (Validate & { name: string })[];
 };
 
 type ValidateType = Validate['type'];
