@@ -44,7 +44,7 @@ const App = () => {
         for (const { name, ...validate } of formLoadedData.escapeValidate) {
           const targetValue = userAnswers[name];
           if (typeof targetValue !== 'string') break;
-          const error = await validateField([{ ...validate }], targetValue, name, userAnswers);
+          const error = await validateField([{ ...validate }], name, userAnswers);
           if (!isEmptyObject(error)) isUserQuestionTarget = false;
         }
       }
