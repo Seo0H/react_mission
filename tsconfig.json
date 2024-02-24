@@ -19,7 +19,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
   "include": ["./src", "./**/*.ts", "./**/*.tsx", "./jest.setup.js"],
   "exclude": ["node_modules"]

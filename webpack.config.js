@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const dotenv = require('dotenv');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 /** @type {import('webpack').Configuration} */
 module.exports = () => {
@@ -49,6 +50,23 @@ module.exports = () => {
             configFile: path.resolve(__dirname, 'tsconfig.json'),
           },
         },
+        {
+          test: /\.css$/i,
+          exclude: /\.module\.css$/i,
+          use: ['style-loader', 'css-loader'],
+        },
+        {
+          test: /\.module\.css$/i,
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+              },
+            },
+          ],
+        },
       ],
     },
     plugins: [
@@ -57,6 +75,10 @@ module.exports = () => {
       }),
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(process.env),
+      }),
+      new MiniCssExtractPlugin({
+        filename: 'assets/css/[name].[contenthash:8].css',
+        chunkFilename: 'assets/css/[name].[contenthash:8].chunk.css',
       }),
     ],
   };
