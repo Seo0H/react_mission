@@ -38,7 +38,7 @@ export const FormController = () => {
         </div>
 
         <Button key={buttonType} type={buttonType} onClick={handleClick}>
-          {isLastQuestion ? `제출` : `다음`}
+          {isLastQuestion ? `SUBMIT` : `OK >`}
         </Button>
       </form>
     </>

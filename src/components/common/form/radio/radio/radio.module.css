@@ -3,21 +3,26 @@
   cursor: pointer;
 
   vertical-align: middle;
-  margin: 0 0.3rem 0.2rem 0.3rem;
+  margin: 0 0.5rem 0.2rem 0.3rem;
 
   border: max(2px, 0.1em) solid var(--gray-300);
   border-radius: 50%;
-  width: 1em;
-  height: 1em;
+  width: 0.9em;
+  height: 0.9em;
 }
 
 .radio:hover {
   border: max(2px, 0.1em) solid var(--gray-500);
 }
+
 .radio:checked {
-  border: 0.2em solid white;
   outline: max(2px, 0.1em) solid var(--main-color);
+  border: max(2px, 0.1em) solid white;
   background-color: var(--main-color);
+}
+
+.radio:checked:hover {
+  border: max(2px, 0.1em) solid white;
 }
 
 .radio:disabled {

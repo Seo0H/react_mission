@@ -3,6 +3,8 @@ import { ChangeEvent, createRef, forwardRef, useRef } from 'react';
 import { Radio } from '@/components/common/form/radio';
 import { RadioGroup } from '@/components/common/form/radio';
 
+import styles from './radio-number.module.css';
+
 interface RadioNumberProps {
   /**
    * 라디오 넘버의 시작 점수
@@ -57,7 +59,12 @@ export const RadioNumber = forwardRef<HTMLInputElement, RadioNumberProps>((props
   };
 
   return (
-    <RadioGroup onChange={handleRadioChange} name={name} defaultValue={String(defaultValue)}>
+    <RadioGroup
+      onChange={handleRadioChange}
+      name={name}
+      defaultValue={String(defaultValue)}
+      groupLayout={styles['radio-input-layout']}
+    >
       {radioNumberContext.map((value, idx) => (
         <Radio
           value={String(value)}
