@@ -6,6 +6,15 @@ import { FieldError, InternalFieldErrors } from '@/hooks/use-form/types/errors';
 import type { FieldValues } from './fields';
 import { RegisterOptions } from './validator';
 
+export type UseFormOptions = {
+  autoFocus?: boolean;
+};
+
+export interface CreateFormControlProps<TFieldValues extends FieldValues> {
+  options?: UseFormOptions;
+  updateFormState: (formState: FormState<TFieldValues>) => void;
+}
+
 export type UseFormReturn<TFieldValues extends FieldValues> = ReturnType<typeof createFormControl> & {
   formState: FormState<TFieldValues>;
 };

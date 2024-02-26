@@ -9,7 +9,7 @@ import { useForm } from '@/hooks/use-form/use-form';
 import type { ClientFormData } from '@/constants/client-types';
 
 const FormPage = () => {
-  const method = useForm();
+  const method = useForm({ autoFocus: true });
   const { data: formLoadedData } = useLoaderData() as { data: ClientFormData };
 
   useEffect(() => {

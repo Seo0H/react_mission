@@ -8,11 +8,16 @@ import { set } from '../utils/set';
 
 import { getFieldValue, getFieldsValue } from './get-field-value';
 import type { FieldRefs, FieldValues, Ref } from '../types/fields';
-import type { FormState, UseFormGetFieldState, UseFormHandleSubmit, UseFormRegister } from '../types/form';
+import type {
+  CreateFormControlProps,
+  FormState,
+  UseFormGetFieldState,
+  UseFormHandleSubmit,
+  UseFormRegister,
+} from '../types/form';
 
-export function createFormControl<TFieldValues extends FieldValues>(
-  updateFormState: (formState: FormState<TFieldValues>) => void,
-) {
+export function createFormControl<TFieldValues extends FieldValues>(props: CreateFormControlProps<TFieldValues>) {
+  const { options: useFormOptions, updateFormState } = props;
   let _fields: FieldRefs = {};
   let _defaultValues = {};
   // const _formValues = cloneObject(_defaultValues);
@@ -46,6 +51,8 @@ export function createFormControl<TFieldValues extends FieldValues>(
               ? (ref.querySelectorAll('input,select,textarea')[0] as Ref) || ref
               : ref
             : ref;
+
+          useFormOptions?.autoFocus && fieldRef.focus();
 
           const radioOrCheckbox = isRadioOrCheckbox(fieldRef);
           const refs = field._f.refs || [];
