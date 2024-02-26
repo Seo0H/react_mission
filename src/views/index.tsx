@@ -14,11 +14,11 @@ import { isEmptyObject } from '@/utils/is';
 
 import type { ClientFormData } from '@/constants/client-types';
 
-const App = () => {
+const FormPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data: formLoadedData } = useLoaderData() as { data: ClientFormData };
-  const [userId, setUserId] = useState(formLoadedData.userId); // TODO: session 으로 옮기기
+  const [userId, setUserId] = useState(formLoadedData.userId ?? 'common'); // TODO: session 으로 옮기기
   const method = useForm();
 
   if (!id) throw navigate('/');
@@ -29,8 +29,8 @@ const App = () => {
 
   const onSubmit: SubmitHandler<UserAnswers> = async (userAnswers) => {
     try {
-      const { data } = await formAPI.postCommonQuestion({
-        userId: !userId ? 'common' : userId,
+      const [{ data }, status] = await formAPI.postUserAnswerData({
+        userId,
         userAnswers,
         typeId: id,
       });
@@ -62,11 +62,10 @@ const App = () => {
   return (
     <FormProvider {...method}>
       <form onSubmit={method.handleSubmit(onSubmit)}>
-        <FormList forms={formLoadedData.forms} />
-        <button type='submit'>다음</button>
+        <FormList forms={formLoadedData.forms} key={userId} />
       </form>
     </FormProvider>
   );
 };
 
-export default App;
+export default FormPage;
