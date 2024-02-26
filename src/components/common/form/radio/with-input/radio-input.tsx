@@ -1,4 +1,4 @@
-import { ChangeEvent, forwardRef } from 'react';
+import { ChangeEvent, forwardRef, useId } from 'react';
 
 import { Input } from '@/components/common/form/input';
 
@@ -16,6 +16,7 @@ interface InputRadioProps {
 
 export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
   ({ context, value: currentValue, name, onChange }: InputRadioProps, ref) => {
+    const uniqId = useId();
     const { isControlled, extraRadioState, radioRefs, extraTextInputRef, handleChange, handleExtraRadio } =
       useRadioWithInput(ref, onChange, currentValue);
 
@@ -31,7 +32,7 @@ export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
           if (value === 'extra') {
             return (
               <Radio
-                key={`radio-${value}-${idx}`}
+                key={`radio-${value}-${idx}-${uniqId}`}
                 value={extraRadioState.value}
                 onChange={handleExtraRadio}
                 ref={(el: HTMLInputElement) => (radioRefs.current[idx] = el)}
@@ -45,7 +46,7 @@ export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
           return (
             <Radio
               value={value}
-              key={crypto.randomUUID()}
+              key={`radio-${value}-${idx}-${uniqId}`}
               onChange={handleExtraRadio}
               ref={(el: HTMLInputElement) => (radioRefs.current[idx] = el)}
             >
