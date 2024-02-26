@@ -16,10 +16,10 @@ export const FormQuestion = (props: FormQuestionProps) => {
   const { invalid, error } = getFieldState(props.form.name);
 
   const { form, ...rest } = props;
-  const { name, question } = form;
+  const { name, question, required } = form;
   return (
     <div className={styles['question-wrapper']}>
-      <label htmlFor={name} className={styles['question-label']}>
+      <label htmlFor={name} className={`${styles['question-label']} ${required && styles['required']}`}>
         {question}
       </label>
       <div className={styles['question-input-wrapper']}>

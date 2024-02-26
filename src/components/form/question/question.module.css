@@ -12,3 +12,11 @@
   width: 100%;
   padding-inline: 0px;
 }
+
+.required::after {
+  content: '*';
+  padding-left: 0.5rem;
+  font-size: 2rem;
+  vertical-align: -webkit-baseline-middle;
+  color: var(--gray-500);
+}
