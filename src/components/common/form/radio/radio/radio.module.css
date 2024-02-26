@@ -1,14 +1,14 @@
 .radio {
+  display: inline-block;
   cursor: pointer;
 
   vertical-align: middle;
-  appearance: none;
   margin: 0 0.3rem 0.2rem 0.3rem;
 
   border: max(2px, 0.1em) solid var(--gray-300);
   border-radius: 50%;
-  width: 1.25em;
-  height: 1.25em;
+  width: 1em;
+  height: 1em;
 }
 
 .radio:hover {

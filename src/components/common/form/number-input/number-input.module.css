@@ -1,13 +1,6 @@
-input[type='number']::-webkit-outer-spin-button,
-input[type='number']::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
 .input {
+  width: 100%;
   border-width: 0;
-  outline: none;
   padding-block-end: 0.5rem;
   box-shadow: var(--gray-200) 0px 1px;
   color: var(--mainColor);
