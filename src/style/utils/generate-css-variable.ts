@@ -1,4 +1,4 @@
-import type { GlobalColor } from '@/style/css-variable';
+import type { GlobalColor, GlobalFontSize } from '@/style/css-variable';
 
 /**
  * @param globalColor 전역 스타일 CSS Variable이 선언되어있는 객체
@@ -18,6 +18,13 @@ export default function generateCssVar(globalColor: GlobalColor) {
     function getBrightnessCssVar(prev: string, [brightness, color]: [string, string]) {
       return `${prev}--${key}-${brightness}:${color};`;
     }
+  }, '');
+}
+
+export function generateFontSizeCssVar(globalFontSize: GlobalFontSize) {
+  return Object.entries(globalFontSize).reduce((mergeCssVar, [key, val]) => {
+    key = camelToKebab(key);
+    return `${mergeCssVar}--font-size-${key}:${val};`;
   }, '');
 }
 

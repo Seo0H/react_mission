@@ -29,7 +29,16 @@ export const globalColor = {
   },
 } as const;
 
+export const globalFontSize = {
+  l: '30px',
+  ml: '26px',
+  m: '24px',
+  sm: '20px',
+  s: '16px',
+} as const;
+
 export type GlobalColor = typeof globalColor;
+export type GlobalFontSize = typeof globalFontSize;
 
 export const display = {
   tablet: '768px',
