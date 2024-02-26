@@ -1,3 +1,28 @@
 .form-container {
+  padding-inline: 40px;
   width: 100%;
+}
+
+.label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.input-wrapper {
+  width: 100%;
+  padding-inline: 0px;
+  margin-bottom: 1rem;
+}
+
+.invalid-message-wrapper {
+  min-height: 1rem;
+  margin-top: 0.5rem;
+}
+
+.required::after {
+  content: '*';
+  padding-left: 0.5rem;
+  font-size: 2rem;
+  vertical-align: -webkit-baseline-middle;
+  color: var(--gray-500);
 }
