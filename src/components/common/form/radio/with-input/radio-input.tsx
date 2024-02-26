@@ -4,6 +4,7 @@ import { Input } from '@/components/common/form/input';
 
 import { Radio, RadioGroup } from '../index';
 
+import styles from './radio-input.module.css';
 import { useRadioWithInput } from './use-radio-with-input';
 import type { Selection } from '@/api/form/types/server-response';
 
@@ -27,7 +28,12 @@ export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
       : undefined;
 
     return (
-      <RadioGroup onChange={handleChange} value={radioGroupValue} name={name}>
+      <RadioGroup
+        onChange={handleChange}
+        value={radioGroupValue}
+        name={name}
+        groupLayout={styles['radio-input-layout']}
+      >
         {context.map(({ label, value }, idx) => {
           if (value === 'extra') {
             return (
@@ -35,10 +41,19 @@ export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
                 key={`radio-${value}-${idx}-${uniqId}`}
                 value={extraRadioState.value}
                 onChange={handleExtraRadio}
+                labelStyle={styles['extra-radio-label-layout']}
+                textStyle={styles['extra-radio-span']}
                 ref={(el: HTMLInputElement) => (radioRefs.current[idx] = el)}
               >
-                기타 :
-                <Input name={name} onChange={onChange} disabled={extraRadioState.isDisabled} ref={extraTextInputRef} />
+                <div className={styles['extra-radio-text-layout']}>
+                  기타 :
+                  <Input
+                    name={name}
+                    onChange={onChange}
+                    disabled={extraRadioState.isDisabled}
+                    ref={extraTextInputRef}
+                  />
+                </div>
               </Radio>
             );
           }
