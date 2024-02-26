@@ -6,7 +6,7 @@ import { get } from '../utils/get';
 import { isRadioOrCheckbox } from '../utils/is';
 import { set } from '../utils/set';
 
-import { getFieldsValue } from './get-field-value';
+import { getFieldValue, getFieldsValue } from './get-field-value';
 import type { FieldRefs, FieldValues, Ref } from '../types/fields';
 import type { FormState, UseFormGetFieldState, UseFormHandleSubmit, UseFormRegister } from '../types/form';
 
@@ -93,6 +93,34 @@ export function createFormControl<TFieldValues extends FieldValues>(
     }
   };
 
+  const validateSingleValue = (
+    name: keyof TFieldValues,
+    context: {
+      valid: boolean;
+    } = { valid: true },
+  ) => {
+    const filed = _fields[String(name)];
+    let errors: InternalFieldErrors = {};
+
+    if (filed) {
+      const formValue = getFieldValue(filed._f);
+      const { _f, validates } = filed;
+      if (_f && validates?.length) {
+        const filedError = validateField(validates, String(name), { [name]: formValue });
+        errors = { ...errors, ...filedError };
+
+        if (filedError[_f.name]) {
+          context.valid = false;
+        }
+      }
+    }
+
+    _formState.errors = errors;
+    updateFormState(_formState);
+
+    return context.valid;
+  };
+
   /**
    * 개별 Input의 유효성 검증 메서드
    */
@@ -112,7 +140,7 @@ export function createFormControl<TFieldValues extends FieldValues>(
         const { _f, validates } = field;
 
         if (_f && validates?.length) {
-          const filedError = await validateField(validates, name, formValues);
+          const filedError = validateField(validates, name, formValues);
           errors = { ...errors, ...filedError };
 
           if (filedError[_f.name]) {
@@ -155,5 +183,6 @@ export function createFormControl<TFieldValues extends FieldValues>(
     handleSubmit,
     getFieldState,
     reset,
+    validateSingleValue,
   };
 }
