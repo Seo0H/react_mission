@@ -17,6 +17,16 @@ export const globalColor = {
     '800': '#1F2937',
     '900': '#111827',
   },
+  red: {
+    '50': '#fef2f2',
+    '100': '#fee2e2',
+    '200': '#fecaca',
+    '300': '#fca5a5',
+    '400': '#f87171',
+    '500': '#ef4444',
+    '600': '#dc2626',
+    '700': '#b91c1c',
+  },
 } as const;
 
 export type GlobalColor = typeof globalColor;

@@ -10,15 +10,15 @@ export default function generateCssVar(globalColor: GlobalColor) {
     key = camelToKebab(key);
     // 명도로 표현되는 색상 판별
     if (typeof val === 'object') {
-      return `${mergeCssVars}${Object.entries(val).reduce(getGrayCssVar, '')}`;
+      return `${mergeCssVars}${Object.entries(val).reduce(getBrightnessCssVar, '')}`;
     }
 
     return `${mergeCssVars}--${key}:${val};`;
-  }, '');
-}
 
-function getGrayCssVar(prev: string, [brightness, color]: [string, string]) {
-  return `${prev}--gray-${brightness}:${color};`;
+    function getBrightnessCssVar(prev: string, [brightness, color]: [string, string]) {
+      return `${prev}--${key}-${brightness}:${color};`;
+    }
+  }, '');
 }
 
 function camelToKebab(input: string) {
