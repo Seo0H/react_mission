@@ -12,7 +12,7 @@
     "prettier": "prettier --check ./src",
     "prettier:fix": "prettier --write --check ./src",
     "test": "jest",
-    "test:watch": "jest --watchAll --silent=false"
+    "test:watch": "jest --watchAll --silent=false --verbose"
   },
   "author": "seo0H",
   "license": "ISC",
