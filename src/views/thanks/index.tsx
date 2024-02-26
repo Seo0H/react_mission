@@ -1,9 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/common/link';
+
+import styles from './thanks.module.css';
 
 const ThanksPage = () => {
   return (
-    <div>
-      조사가 종료되었습니다. 감사합니다.
+    <div className={styles.layout}>
+      <span>조사가 종료되었습니다.</span>
+      <span>감사합니다.</span>
       <Link to='/'>처음으로</Link>
     </div>
   );

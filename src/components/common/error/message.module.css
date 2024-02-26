@@ -1,0 +1,10 @@
+.error-message {
+  display: block;
+  font-size: small;
+  line-height: normal;
+  color: var(--red-600);
+}
+
+.error-message::before {
+  content: '⚠️ ';
+}

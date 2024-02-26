@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/common/link';
 
 const MainPage = () => {
   return (
