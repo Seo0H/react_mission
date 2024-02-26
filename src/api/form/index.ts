@@ -13,14 +13,15 @@ const getQuestionWithId = async (id: string) => {
   return data;
 };
 
-interface PostCommonQuestionProps {
+interface PostUserAnswerDataProps {
   userId: string;
   userAnswers: UserAnswers;
   typeId: string;
 }
 
-const postCommonQuestion = async ({ userAnswers, typeId, userId }: PostCommonQuestionProps) => {
+const postUserAnswerData = async ({ userAnswers, typeId, userId }: PostUserAnswerDataProps) => {
   const client = new APIFactory<APIResponse<PostResponseData>>(`/api/answer/${typeId}`);
+
   const data = await client.fetch({
     method: 'POST',
     credentials: 'include',
@@ -32,10 +33,10 @@ const postCommonQuestion = async ({ userAnswers, typeId, userId }: PostCommonQue
 
   if (isError(data)) throw new Error('Post Api Error');
 
-  return data;
+  return [data, client.getStatus()] as const;
 };
 
 export const formAPI = {
   getQuestionWithId,
-  postCommonQuestion,
+  postUserAnswerData,
 };
