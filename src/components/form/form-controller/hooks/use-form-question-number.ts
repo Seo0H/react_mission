@@ -8,10 +8,11 @@ import type { ClientFormData } from '@/constants/client-types';
 
 export const useFormQuestionControl = () => {
   const { data: formLoadedData } = useLoaderData() as { data: ClientFormData };
+  const { forms } = formLoadedData;
   const [idx, setIdx] = useState(0);
   const { validateSingleValue } = useFormContext();
-  const form = formLoadedData.forms[idx];
-  const isLastQuestion = idx === formLoadedData.forms.length - 1;
+  const form = forms[idx];
+  const isLastQuestion = idx === forms.length - 1;
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.code === 'Enter') {
@@ -28,5 +29,12 @@ export const useFormQuestionControl = () => {
     }
   };
 
-  return { handleKeyDown, handleClick, isLastQuestion, form, resetIdx: () => setIdx(0) };
+  return {
+    handleKeyDown,
+    handleClick,
+    isLastQuestion,
+    form,
+    percentage: Math.floor(((idx + 1) / forms.length) * 100),
+    resetIdx: () => setIdx(0),
+  };
 };
