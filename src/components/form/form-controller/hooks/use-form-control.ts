@@ -31,7 +31,7 @@ export const useFormSubmit = ({ cleanUp }: { cleanUp?: () => void }) => {
       if (data.userId) setUserId(data.userId);
 
       const isLastQuestionPage = !data.nextTypeId;
-      const isUserQuestionTarget = _getEscapeValidate(userAnswers);
+      const isUserQuestionTarget = await _getEscapeValidate(userAnswers);
 
       if (!isUserQuestionTarget) navigate('/no_target');
       else if (isLastQuestionPage) navigate('/thanks');
