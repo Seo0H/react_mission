@@ -1,76 +1,24 @@
-import { KeyboardEventHandler, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useLoaderData } from 'react-router';
-import { useNavigate, useParams } from 'react-router-dom';
 
-import { formAPI } from '@/api/form';
-import { UserAnswers } from '@/api/form/types/server-request';
-import { FormList } from '@/components/form';
+import { FormController } from '@/components/form/form-controller/form-controller';
 import { FormProvider } from '@/hooks/use-form/form-context';
-import { validateField } from '@/hooks/use-form/logic/validate-field';
-import { SubmitHandler } from '@/hooks/use-form/types/form';
 import { useForm } from '@/hooks/use-form/use-form';
-import { isEmptyObject } from '@/utils/is';
 
-import styles from './main.module.css';
 import type { ClientFormData } from '@/constants/client-types';
 
 const FormPage = () => {
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const { data: formLoadedData } = useLoaderData() as { data: ClientFormData };
-  const [userId, setUserId] = useState(formLoadedData.userId ?? 'common'); // TODO: session 으로 옮기기
   const method = useForm();
-
-  if (!id) throw navigate('/');
+  const { data: formLoadedData } = useLoaderData() as { data: ClientFormData };
 
   useEffect(() => {
     method.reset();
   }, [formLoadedData]);
 
-  const onSubmit: SubmitHandler<UserAnswers> = async (userAnswers) => {
-    try {
-      const [{ data }, status] = await formAPI.postUserAnswerData({
-        userId,
-        userAnswers,
-        typeId: id,
-      });
-
-      if (data.userId) setUserId(data.userId);
-
-      const isLastQuestionPage = !data.nextTypeId;
-      let isUserQuestionTarget = true;
-
-      if (formLoadedData.escapeValidate.length) {
-        for (const { name, ...validate } of formLoadedData.escapeValidate) {
-          const targetValue = userAnswers[name];
-          if (typeof targetValue !== 'string') break;
-          const error = await validateField([{ ...validate }], name, userAnswers);
-          if (!isEmptyObject(error)) isUserQuestionTarget = false;
-        }
-      }
-
-      if (!isUserQuestionTarget) navigate('/no_target');
-      else if (isLastQuestionPage) navigate('/thanks');
-      else {
-        navigate(`/question/${data.nextTypeId}`);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
-    if (e.code === 'Enter') {
-      e.preventDefault();
-    }
-  };
-
   return (
     <FormProvider {...method}>
-      <form onSubmit={method.handleSubmit(onSubmit)} onKeyDown={handleKeyDown} className={styles['form-container']}>
-        <FormList forms={formLoadedData.forms} key={userId} />
-      </form>
+      <FormController />
     </FormProvider>
   );
 };
