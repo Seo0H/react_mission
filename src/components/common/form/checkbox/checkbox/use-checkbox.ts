@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
-import { useCheckboxGroupContext } from '@/components/common/form/checkbox/checkbox-group';
-import type { CheckboxState, UseCheckboxProps } from '@/components/common/form/checkbox/types';
-
 import { callAllHandlers } from '@/utils/call-all-handlers';
 import { PropGetter } from '@/utils/prop-type';
+
+import { useCheckboxGroupContext } from '../checkbox-group/checkbox-group';
+
+import type { CheckboxState, UseCheckboxProps } from '../types';
 
 export function useCheckbox(props: UseCheckboxProps = {}) {
   const {

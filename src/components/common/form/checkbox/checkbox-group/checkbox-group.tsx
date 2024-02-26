@@ -1,10 +1,6 @@
 import { ComponentPropsWithRef, createContext, createRef, forwardRef, useContext } from 'react';
 
-import {
-  type UseCheckboxGroupReturn,
-  type UseCheckboxGroupProps,
-  useCheckboxGroup,
-} from '@/components/common/form/checkbox/use-checkbox-group';
+import { type UseCheckboxGroupReturn, type UseCheckboxGroupProps, useCheckboxGroup } from './use-checkbox-group';
 
 interface CheckboxGroupContext extends Pick<UseCheckboxGroupReturn, 'isDisabled' | 'name' | 'onChange' | 'values'> {}
 

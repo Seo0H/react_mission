@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 
-import { Radio } from '@/components/common/form/radio/radio';
-import { RadioGroup } from '@/components/common/form/radio/radio-group';
+import { RadioGroup } from '@/components/common/form/radio';
+import { Radio } from '@/components/common/form/radio/radio/radio';
 
 afterEach(() => {
   jest.restoreAllMocks();

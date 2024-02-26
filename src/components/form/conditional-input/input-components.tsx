@@ -9,7 +9,7 @@ import { DefaultRadio, RadioNumber, RadioWithInput } from '@/components/common/f
 import { isSelection } from '@/components/form/utils';
 
 import type { Form } from '@/api/form/types/server-response';
-import type { ConditionalInputProps, Omitted } from '@/components/form/conditional-input';
+import type { ConditionalInputProps, Omitted } from '@/components/form/conditional-input/conditional-input';
 import type { FieldValues } from '@/hooks/use-form/types/fields';
 import type { UseFormReturn } from '@/hooks/use-form/types/form';
 
@@ -23,6 +23,7 @@ export const inputComponents: { [key in Form['type']]: InputComponentProps } = {
   text: ({ name, validate: validates, ...rest }, { register }) => {
     return <Input {...rest} {...register(name, { validates })} />;
   },
+  // FIXME: number input에 문자 값이 허용되는 현상 수정
   number: ({ name, validate: validates, ...rest }, { register }) => {
     return <NumberInput {...rest} {...register(name, { validates })} />;
   },

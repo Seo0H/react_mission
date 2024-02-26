@@ -1,12 +1,12 @@
 import { type ComponentPropsWithRef, forwardRef, createRef } from 'react';
 
-import { useRadio } from '@/components/common/form/radio';
-import { useRadioGroupContext } from '@/components/common/form/radio/radio-group';
-import type { UseRadioProps } from '@/components/common/form/radio/types';
-
 import { callAll } from '@/utils/call-all-handlers';
 
+import { useRadioGroupContext } from '../radio-group/radio-group';
+
 import styles from './radio.module.css';
+import { useRadio } from './use-radio';
+import type { UseRadioProps } from '../types';
 
 type Omitted = 'onChange' | 'defaultChecked' | 'checked' | 'type' | 'value';
 

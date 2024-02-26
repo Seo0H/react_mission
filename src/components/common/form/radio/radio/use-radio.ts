@@ -1,6 +1,6 @@
 import { useCallback, useId, useState } from 'react';
 
-import { useRadioGroupContext } from '@/components/common/form/radio/radio-group';
+import { useRadioGroupContext } from '@/components/common/form/radio';
 import type { RadioState, UseRadioProps } from '@/components/common/form/radio/types';
 
 import { InputDOMAttributes, PropGetter } from '@/utils/prop-type';

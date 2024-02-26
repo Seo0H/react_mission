@@ -1,7 +1,7 @@
 import { ChangeEvent, createRef, forwardRef, useRef } from 'react';
 
-import { Radio } from '@/components/common/form/radio/radio';
-import { RadioGroup } from '@/components/common/form/radio/radio-group';
+import { Radio } from '@/components/common/form/radio';
+import { RadioGroup } from '@/components/common/form/radio';
 import type { MultiQuestionComponentProps } from '@/components/common/form/type';
 
 interface DefaultRadioProps extends MultiQuestionComponentProps {

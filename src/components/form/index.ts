@@ -1,3 +1,3 @@
 export { FormQuestion } from './question/question';
-export { ConditionalInput } from './conditional-input';
-export { inputComponents } from './input-components';
+export { ConditionalInput } from './conditional-input/conditional-input';
+export { inputComponents } from './conditional-input/input-components';

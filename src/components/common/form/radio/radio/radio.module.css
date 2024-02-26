@@ -5,18 +5,18 @@
   appearance: none;
   margin: 0 0.3rem 0.2rem 0.3rem;
 
-  border: max(2px, 0.1em) solid gray;
+  border: max(2px, 0.1em) solid var(--gray-300);
   border-radius: 50%;
   width: 1.25em;
   height: 1.25em;
 }
 
 .radio:hover {
-  border: max(3px, 0.1em) solid var(--gray-500);
+  border: max(2px, 0.1em) solid var(--gray-500);
 }
 .radio:checked {
   border: 0.2em solid white;
-  outline: max(3px, 0.1em) solid var(--main-color);
+  outline: max(2px, 0.1em) solid var(--main-color);
   background-color: var(--main-color);
 }
 
