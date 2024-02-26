@@ -6,12 +6,19 @@ import type { UseRadioProps } from '@/components/common/form/radio/types';
 
 import { callAll } from '@/utils/call-all-handlers';
 
+import styles from './radio.module.css';
+
 type Omitted = 'onChange' | 'defaultChecked' | 'checked' | 'type' | 'value';
 
-interface RadioProps extends UseRadioProps, Omit<ComponentPropsWithRef<'input'>, Omitted> {}
+type RadioStyleProps = {
+  labelStyle?: string;
+  textStyle?: string;
+};
+
+interface RadioProps extends UseRadioProps, Omit<ComponentPropsWithRef<'input'>, Omitted>, RadioStyleProps {}
 
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(props, ref = createRef()) {
-  const { children, onChange: onChangeProp, value, ...rest } = props;
+  const { children, onChange: onChangeProp, className, value, labelStyle, textStyle, ...rest } = props;
 
   const group = useRadioGroupContext();
 
@@ -38,10 +45,9 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(pro
   const radioInputProps = getRadioProps({ onChange, name, ref });
 
   return (
-    <label className='custom-radio'>
-      <input type='radio' {...radioInputProps} />
-      <span className='custom-radio-control' />
-      <span>{children}</span>
+    <label className={`custom-radio ${labelStyle ?? styles.label}`}>
+      <input type='radio' className={className ?? styles.radio} {...radioInputProps} />
+      <span className={textStyle ?? styles.span}>{children}</span>
     </label>
   );
 });

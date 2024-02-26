@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { KeyboardEventHandler, useEffect, useState } from 'react';
 
 import { useLoaderData } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -12,6 +12,7 @@ import { SubmitHandler } from '@/hooks/use-form/types/form';
 import { useForm } from '@/hooks/use-form/use-form';
 import { isEmptyObject } from '@/utils/is';
 
+import styles from './main.module.css';
 import type { ClientFormData } from '@/constants/client-types';
 
 const FormPage = () => {
@@ -59,9 +60,15 @@ const FormPage = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.code === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   return (
     <FormProvider {...method}>
-      <form onSubmit={method.handleSubmit(onSubmit)}>
+      <form onSubmit={method.handleSubmit(onSubmit)} onKeyDown={handleKeyDown} className={styles['form-container']}>
         <FormList forms={formLoadedData.forms} key={userId} />
       </form>
     </FormProvider>
