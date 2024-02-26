@@ -8,7 +8,14 @@ const RadioGroupContext = createContext<RadioGroupContext | undefined>(undefined
 
 type Omitted = 'onChange' | 'value' | 'defaultValue' | 'defaultChecked';
 
-interface RadioGroupProps extends UseRadioGroupProps, Omit<ComponentPropsWithRef<'div'>, Omitted> {}
+type RadioGroupStyleProps = {
+  groupLayout?: string;
+};
+
+interface RadioGroupProps
+  extends UseRadioGroupProps,
+    Omit<ComponentPropsWithRef<'div'>, Omitted>,
+    RadioGroupStyleProps {}
 
 export const useRadioGroupContext = () => {
   const value = useContext(RadioGroupContext);
@@ -17,7 +24,7 @@ export const useRadioGroupContext = () => {
 };
 
 export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(function RadioGroup(props, ref) {
-  const { children, isDisabled, ...rest } = props;
+  const { children, isDisabled, groupLayout, ...rest } = props;
 
   const { value, onChange, name } = useRadioGroup(rest);
 
@@ -30,7 +37,9 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(function R
 
   return (
     <RadioGroupContext.Provider value={group}>
-      <div ref={ref}>{children}</div>
+      <div ref={ref} className={groupLayout}>
+        {children}
+      </div>
     </RadioGroupContext.Provider>
   );
 });
