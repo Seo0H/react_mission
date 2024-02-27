@@ -96,6 +96,6 @@ export const validateField = <TFiledValues extends FieldValues = FieldValues>(
 };
 
 function removeEmptySpace(value: string | undefined) {
-  if (value === undefined) return '';
+  if (!value) return '';
   return String(value).trim();
 }
