@@ -85,7 +85,7 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
     const fieldValues = getFieldsValue(_fields);
 
     try {
-      await _executeInputValidation(_fields, fieldValues);
+      _formState.errors = await _executeInputValidation(_fields, fieldValues);
       updateFormState(_formState);
 
       if (isEmptyObject(_formState.errors)) {
@@ -106,7 +106,7 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
       valid: boolean;
     } = { valid: true },
   ) => {
-    const filed = _fields[String(name)];
+    const filed = get(_fields, String(name));
     let errors: InternalFieldErrors = {};
 
     if (filed) {
@@ -157,9 +157,7 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
       }
     }
 
-    _formState.errors = errors;
-
-    return context.valid;
+    return errors;
   };
 
   const getFieldState: UseFormGetFieldState<TFieldValues> = (name, formState) => ({
