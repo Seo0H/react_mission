@@ -3,15 +3,16 @@ import ErrorMessage from '@/components/common/error/message';
 import { ProgressBar } from '@/components/common/progress-bar/progress-bar';
 
 import { ConditionalInput } from '@/components/form';
+import PressEnter from '@/components/press-enter/press-enter';
 import { useFormContext } from '@/hooks/use-form/form-context';
 import { globalColor } from '@/style/css-variable';
 
 import styles from './form-controller.module.css';
-import { useFormSubmit } from './hooks/use-form-control';
-import { useFormQuestionControl } from './hooks/use-form-question-number';
+import { useFormQuestionControl } from './hooks/use-form-question-controll';
+import { useFormSubmit } from './hooks/use-form-submit';
 
 export const FormController = () => {
-  const { isLastQuestion, handleClick, handleKeyDown, resetIdx, form, percentage } = useFormQuestionControl();
+  const { isLastQuestion, changeNextQuestion, resetIdx, form, percentage } = useFormQuestionControl();
   const { onSubmit } = useFormSubmit({ cleanUp: resetIdx });
   const { getFieldState } = useFormContext();
 
@@ -20,13 +21,20 @@ export const FormController = () => {
   const { invalid, error } = getFieldState(name);
   const buttonType = isLastQuestion ? 'submit' : 'button';
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.code === 'Enter') {
+      !isLastQuestion && e.preventDefault();
+      changeNextQuestion();
+    }
+  };
+
   return (
     <>
       <div className={styles['progress-bar-wrapper']}>
         <ProgressBar visuals={[{ color: globalColor.mainColor, percentage }]} />
       </div>
 
-      <form onSubmit={onSubmit} onKeyDown={handleKeyDown} className={styles['form-container']}>
+      <form onSubmit={onSubmit} className={styles['form-container']} onKeyDown={handleKeyDown}>
         <label htmlFor={name} className={`${styles['label']} ${required && styles['required']}`}>
           {question}
         </label>
@@ -37,9 +45,12 @@ export const FormController = () => {
           <div className={styles['invalid-message-wrapper']}>{invalid && <ErrorMessage error={error?.message} />}</div>
         </div>
 
-        <Button key={buttonType} type={buttonType} onClick={handleClick}>
-          {isLastQuestion ? `SUBMIT` : `OK >`}
-        </Button>
+        <div className={styles['btn-wrapper']}>
+          <Button key={buttonType} type={buttonType} onClick={changeNextQuestion}>
+            {isLastQuestion ? `SUBMIT` : `OK >`}
+          </Button>
+          <PressEnter />
+        </div>
       </form>
     </>
   );
