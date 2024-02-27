@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 
 import { formAPI } from '@/api/form';
 import { useFormContext } from '@/hooks/use-form/form-context';
 import { validateField } from '@/hooks/use-form/logic/validate-field';
-import { useLanguage } from '@/hooks/use-language/use-language';
+import { useLanguageContext } from '@/hooks/use-language/language-context';
 import { isEmptyObject } from '@/utils/is';
 
 import type { UserAnswers } from '@/api/form/types/server-request';
@@ -13,13 +13,15 @@ import type { ClientFormData } from '@/constants/client-form-type';
 import type { SubmitHandler } from '@/hooks/use-form/types/form';
 
 export const useFormSubmit = ({ cleanUp }: { cleanUp?: () => void }) => {
-  const navigate = useNavigate();
+  const routerNavigate = useNavigate();
   const { id } = useParams();
-  const { langParams } = useLanguage();
+  const { langParams } = useLanguageContext();
   const { data: formLoadedData } = useLoaderData() as { data: ClientFormData };
 
   const { handleSubmit, reset } = useFormContext();
   const [userId, setUserId] = useState(formLoadedData.userId ?? 'common'); // TODO: session 으로 옮기기
+
+  const navigateWithParams = useCallback((url: string) => routerNavigate(`${url}?${langParams}`), [langParams]);
 
   useEffect(() => {
     // NOTE: id는 질문을 새로 받아오게 되면 수정되기 때문에,
@@ -27,16 +29,17 @@ export const useFormSubmit = ({ cleanUp }: { cleanUp?: () => void }) => {
     reset();
   }, [id]);
 
-  if (!id) throw navigate('/');
+  if (!id) throw navigateWithParams('/');
 
   const onSubmit: SubmitHandler<UserAnswers> = async (userAnswers) => {
-    try {
-      const isUserQuestionTarget = await _getEscapeValidate(userAnswers);
-      if (!isUserQuestionTarget) {
-        navigate('/no_target');
-        return;
-      }
+    const isUserQuestionTarget = await _getEscapeValidate(userAnswers);
 
+    if (!isUserQuestionTarget) {
+      navigateWithParams(`/no_target?${langParams}`);
+      return;
+    }
+
+    try {
       const [{ data }] = await formAPI.postUserAnswerData({
         userId,
         userAnswers,
@@ -47,10 +50,10 @@ export const useFormSubmit = ({ cleanUp }: { cleanUp?: () => void }) => {
 
       const isLastQuestionPage = !data.nextTypeId;
 
-      if (isLastQuestionPage) navigate('/thanks');
+      if (isLastQuestionPage) navigateWithParams(`/thanks`);
       else {
         cleanUp?.();
-        navigate(`/question/${data.nextTypeId}?${langParams}`);
+        navigateWithParams(`/question/${data.nextTypeId}`);
       }
     } catch (e) {
       console.log(e);
@@ -60,8 +63,6 @@ export const useFormSubmit = ({ cleanUp }: { cleanUp?: () => void }) => {
   const _getEscapeValidate = async (userAnswers: UserAnswers) => {
     if (formLoadedData.escapeValidate.length) {
       for (const { name, ...validate } of formLoadedData.escapeValidate) {
-        const targetValue = userAnswers[name];
-
         const error = await validateField([{ ...validate }], name, userAnswers);
 
         if (!isEmptyObject(error)) return false;
