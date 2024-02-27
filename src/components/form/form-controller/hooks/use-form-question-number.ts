@@ -14,24 +14,14 @@ export const useFormQuestionControl = () => {
   const form = forms[idx];
   const isLastQuestion = idx === forms.length - 1;
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
-    if (e.code === 'Enter') {
-      if (isLastQuestion === false && validateSingleValue(form.name)) {
-        e.preventDefault();
-        setIdx(idx + 1);
-      }
-    }
-  };
-
-  const handleClick = () => {
+  const changeNextQuestion = () => {
     if (isLastQuestion === false && validateSingleValue(form.name)) {
       setIdx(idx + 1);
     }
   };
 
   return {
-    handleKeyDown,
-    handleClick,
+    changeNextQuestion,
     isLastQuestion,
     form,
     percentage: Math.floor(((idx + 1) / forms.length) * 100),
