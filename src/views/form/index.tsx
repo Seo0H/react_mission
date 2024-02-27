@@ -6,7 +6,7 @@ import { FormController } from '@/components/form/form-controller/form-controlle
 import { FormProvider } from '@/hooks/use-form/form-context';
 import { useForm } from '@/hooks/use-form/use-form';
 
-import type { ClientFormData } from '@/constants/client-types';
+import type { ClientFormData } from '@/constants/client-form-type';
 
 const FormPage = () => {
   const method = useForm({ autoFocus: true });
