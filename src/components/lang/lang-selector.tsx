@@ -1,4 +1,4 @@
-import { languageOptionContents } from '@/constants/languages';
+import { languageOptionContents } from '@/components/lang/constants';
 import { isLanguageOptions, useLanguage } from '@/hooks/use-language/use-language';
 
 /**
@@ -14,9 +14,9 @@ export const LanguageSelector = () => {
   return (
     <select name='languages' onChange={handelChange}>
       <option value=''>언어 선택</option>
-      {languageOptionContents.map(({ key, value, content }) => (
+      {languageOptionContents.map(({ key, value, visual }) => (
         <option key={key} value={value}>
-          {content}
+          {visual}
         </option>
       ))}
     </select>

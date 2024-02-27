@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
-import { userBrowserLanguage, type Languages } from '@/constants/languages';
-import { languageOptionContents } from '@/constants/languages';
+import { userBrowserLanguage, type Languages } from '@/components/lang/constants';
+import { languageOptionContents } from '@/components/lang/constants';
 
 /**
  * @param initialValue 초기 언어 값. 미제공될 경우 브라우저 설정 언어로 적용됨

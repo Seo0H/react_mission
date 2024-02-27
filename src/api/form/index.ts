@@ -1,6 +1,6 @@
 import APIFactory from '@/api/factory/factory';
 import { isError } from '@/api/factory/type';
-import { userBrowserLanguage } from '@/constants/languages';
+import { userBrowserLanguage } from '@/components/lang/constants';
 
 import type { GetQuestionWithIdProps, PostUserAnswerDataProps } from '@/api/form/types/server-request';
 import type { APIResponse, FormData, PostResponseData } from '@/api/form/types/server-response';

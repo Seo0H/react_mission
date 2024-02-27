@@ -1,6 +1,6 @@
 import { isError } from '@/api/factory/type';
 import { formAPI } from '@/api/form';
-import { userBrowserLanguage } from '@/constants/languages';
+import { userBrowserLanguage } from '@/components/lang/constants';
 import { makeClientForm } from '@/routes/utils';
 
 import type { GetQuestionWithIdProps } from '@/api/form/types/server-request';

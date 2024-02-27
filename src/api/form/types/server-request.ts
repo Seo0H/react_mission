@@ -1,5 +1,5 @@
 import { Placeholder, Selection, Value } from '@/api/form/types/server-response';
-import { Languages } from '@/constants/languages';
+import { Languages } from '@/components/lang/constants';
 
 // Form 제출 시 사용하는 타입
 export interface RequestFormAPI {
