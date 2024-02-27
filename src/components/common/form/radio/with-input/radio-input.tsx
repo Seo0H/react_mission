@@ -33,6 +33,7 @@ export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
         value={radioGroupValue}
         name={name}
         groupLayout={styles['radio-input-layout']}
+        ref={ref}
       >
         {context.map(({ label, value }, idx) => {
           if (value === 'extra') {

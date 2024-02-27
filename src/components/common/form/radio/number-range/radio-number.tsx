@@ -67,6 +67,7 @@ export const RadioNumber = forwardRef<HTMLInputElement, RadioNumberProps>((props
       name={name}
       defaultValue={String(defaultValue)}
       groupLayout={styles['radio-input-layout']}
+      ref={ref}
     >
       {radioNumberContext.map((value, idx) => (
         <Radio

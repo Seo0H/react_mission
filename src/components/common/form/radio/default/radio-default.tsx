@@ -26,6 +26,7 @@ export const DefaultRadio = forwardRef<HTMLInputElement, DefaultRadioProps>((pro
       name={name}
       value={isControlled ? value : undefined}
       defaultValue={defaultCheckedValue}
+      ref={ref}
     >
       {contexts.map(({ label, value }, idx) => {
         return (
