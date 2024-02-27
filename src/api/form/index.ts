@@ -1,26 +1,22 @@
 import APIFactory from '@/api/factory/factory';
 import { isError } from '@/api/factory/type';
-import { UserAnswers } from '@/api/form/types/server-request';
+import { userBrowserLanguage } from '@/constants/languages';
 
+import type { GetQuestionWithIdProps, PostUserAnswerDataProps } from '@/api/form/types/server-request';
 import type { APIResponse, FormData, PostResponseData } from '@/api/form/types/server-response';
 
-const getQuestionWithId = async (id: string) => {
-  const client = new APIFactory<APIResponse<FormData>>(`/api/question/${id}`);
+const getQuestionWithId = async (props: GetQuestionWithIdProps) => {
+  const lang = props.lang ?? userBrowserLanguage;
+  const client = new APIFactory<APIResponse<FormData>>(`/api/question?id=${props.id}&lang=${lang}`);
   const data = await client.fetch();
 
-  if (isError(data)) throw new Error('Get Api Error');
-
+  if (isError(data)) throw new Error(data.message);
+  if (Array.isArray(data)) return data[0];
   return data;
 };
 
-interface PostUserAnswerDataProps {
-  userId: string;
-  userAnswers: UserAnswers;
-  typeId: string;
-}
-
 const postUserAnswerData = async ({ userAnswers, typeId, userId }: PostUserAnswerDataProps) => {
-  const client = new APIFactory<APIResponse<PostResponseData>>(`/api/answer/${typeId}`);
+  const client = new APIFactory<APIResponse<PostResponseData>>(`/api/answer?id=${typeId}`);
 
   const data = await client.fetch({
     method: 'POST',
@@ -31,7 +27,7 @@ const postUserAnswerData = async ({ userAnswers, typeId, userId }: PostUserAnswe
     },
   });
 
-  if (isError(data)) throw new Error('Post Api Error');
+  if (isError(data)) throw new Error(data.message);
 
   return [data, client.getStatus()] as const;
 };

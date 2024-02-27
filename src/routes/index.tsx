@@ -1,8 +1,8 @@
-import { RouteObject, redirect } from 'react-router-dom';
+import { RouteObject } from 'react-router-dom';
 
 import { loaders } from '@/routes/loaders';
-import FormPage from '@/views';
 import ErrorPage from '@/views/error';
+import FormPage from '@/views/form';
 import MainPage from '@/views/main';
 import NoTargetPage from '@/views/no-target';
 import ThanksPage from '@/views/thanks';
@@ -10,17 +10,13 @@ import ThanksPage from '@/views/thanks';
 export const routes: RouteObject[] = [
   {
     path: '/',
-    // loader: () => redirect('/question/common'),
     element: <MainPage />,
     errorElement: <ErrorPage />,
   },
   {
     path: '/question/:id',
     element: <FormPage />,
-    loader: async ({ params }) => {
-      if (!params.id) return new Response('params id is missing.', { status: 404 });
-      return await loaders.mainPage(params?.id);
-    },
+    loader: loaders.formLoader,
     errorElement: <ErrorPage />,
   },
   {
