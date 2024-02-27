@@ -14,7 +14,8 @@ import type { Languages } from '@/hooks/use-language/type';
  * @returns `handleLanguageChange` - lang을 변환하는 핸들러
  *
  * @description 언어를 설정하는 커스텀 훅.마운팅 시, `initialValue` 또는 브라우저의 기본 언어 값을 사용해 자동으로
- * url 의 쿼리 파라미터 `lang` 설정 ( ex. example.com?lang=ko )
+ * url 의 쿼리 파라미터 `lang` 설정 ( ex. example.com?lang=ko ) `useNavigate`을 이용해 초기 마운팅 시 url 을
+ * 강제로 수정하기에 router loader 의 재 트리거가 발생하기에 사용 시 주의가 필요함.
  */
 export const useLanguage = (initialValue?: Languages) => {
   const navigate = useNavigate();
