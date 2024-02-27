@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { Button } from '@/components/common/buttons';
 import ErrorMessage from '@/components/common/error/message';
 import { ProgressBar } from '@/components/common/progress-bar/progress-bar';
@@ -15,26 +17,28 @@ export const FormController = () => {
   const { isLastQuestion, changeNextQuestion, resetIdx, form, percentage } = useFormQuestionControl();
   const { onSubmit } = useFormSubmit({ cleanUp: resetIdx });
   const { getFieldState } = useFormContext();
-
   const { name, question, required, ...rest } = form;
-
   const { invalid, error } = getFieldState(name);
-  const buttonType = isLastQuestion ? 'submit' : 'button';
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
-    if (e.code === 'Enter') {
-      !isLastQuestion && e.preventDefault();
+  // NOTE: form의 기본 enter 이벤트로 인해 커스텀 enter 이벤트와 겹치는 문제가 있었음.
+  // 따라서 form 대신 div 를 사용하고 enter 이벤트의 경우  onsubmit 처리를 해 줌
+  const handleKeyDown = useCallback(() => {
+    if (isLastQuestion) {
+      onSubmit();
+    } else {
       changeNextQuestion();
     }
-  };
+  }, [changeNextQuestion]);
 
+  const buttonKey = isLastQuestion ? 'submit' : 'next';
+  const buttonHandler = isLastQuestion ? onSubmit : changeNextQuestion;
   return (
     <>
       <div className={styles['progress-bar-wrapper']}>
         <ProgressBar visuals={[{ color: globalColor.mainColor, percentage }]} />
       </div>
 
-      <form onSubmit={onSubmit} className={styles['form-container']} onKeyDown={handleKeyDown}>
+      <div className={styles['form-container']}>
         <label htmlFor={name} className={`${styles['label']} ${required && styles['required']}`}>
           {question}
         </label>
@@ -46,12 +50,12 @@ export const FormController = () => {
         </div>
 
         <div className={styles['btn-wrapper']}>
-          <Button key={buttonType} type={buttonType} onClick={changeNextQuestion}>
-            {isLastQuestion ? `SUBMIT` : `OK >`}
+          <Button key={buttonKey} onClick={buttonHandler}>
+            {isLastQuestion ? 'SUBMIT' : `OK >`}
           </Button>
-          <PressEnter />
+          <PressEnter enterCallback={handleKeyDown} />
         </div>
-      </form>
+      </div>
     </>
   );
 };

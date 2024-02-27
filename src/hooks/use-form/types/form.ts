@@ -48,7 +48,7 @@ export type UseFormHandleSubmit<
     : TTransformedValues extends FieldValues
       ? SubmitHandler<TTransformedValues>
       : never,
-) => (e: React.BaseSyntheticEvent) => Promise<void>;
+) => (e?: React.BaseSyntheticEvent) => Promise<void>;
 
 export type UseFormRegister<TFieldValues extends FieldValues = FieldValues> = <
   TFieldName extends Extract<keyof TFieldValues, string>,

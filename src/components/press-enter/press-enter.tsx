@@ -2,15 +2,15 @@ import { useEffect } from 'react';
 
 import styles from './press-enter.module.css';
 
-const PressEnter = ({ enterCallback }: { enterCallback?: () => void }) => {
+const PressEnter = ({ enterCallback }: { enterCallback?: (e: KeyboardEvent) => void }) => {
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [enterCallback]);
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.code === 'Enter') {
-      enterCallback?.();
+      enterCallback?.(e);
     }
   }
   return (
