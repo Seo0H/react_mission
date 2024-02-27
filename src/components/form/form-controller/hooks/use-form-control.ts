@@ -9,7 +9,7 @@ import { useLanguage } from '@/hooks/use-language/use-language';
 import { isEmptyObject } from '@/utils/is';
 
 import type { UserAnswers } from '@/api/form/types/server-request';
-import type { ClientFormData } from '@/constants/client';
+import type { ClientFormData } from '@/constants/client-form-type';
 import type { SubmitHandler } from '@/hooks/use-form/types/form';
 
 export const useFormSubmit = ({ cleanUp }: { cleanUp?: () => void }) => {

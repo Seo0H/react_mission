@@ -4,7 +4,7 @@ import { useLoaderData } from 'react-router-dom';
 
 import { useFormContext } from '@/hooks/use-form/form-context';
 
-import type { ClientFormData } from '@/constants/client-types';
+import type { ClientFormData } from '@/constants/client-form-type';
 
 export const useFormQuestionControl = () => {
   const { data: formLoadedData } = useLoaderData() as { data: ClientFormData };
