@@ -1,15 +1,15 @@
-import { useSearchParams } from 'react-router-dom';
-
 import { Link } from '@/components/common/link';
 
 import { LanguageSelector } from '@/components/lang/lang-selector';
+import { useLanguage } from '@/hooks/use-language/use-language';
 
 const MainPage = () => {
-  const [searchParams] = useSearchParams();
+  const { langParams } = useLanguage();
+
   return (
     <>
       설문 시작하기
-      <Link to={`/question/common?${searchParams.toString()}`}>Start</Link>
+      <Link to={`/question/common?${langParams}`}>Start</Link>
       <LanguageSelector />
     </>
   );
