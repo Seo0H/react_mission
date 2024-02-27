@@ -4,7 +4,6 @@ import './style/global.css';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import { GlobalLayout } from '@/components/layout/layout';
 import { routes } from '@/routes';
 import { setCssVariable } from '@/style/set-css-variable';
 
@@ -15,8 +14,6 @@ setCssVariable();
 
 root.render(
   <React.StrictMode>
-    <GlobalLayout>
-      <RouterProvider router={router} />
-    </GlobalLayout>
+    <RouterProvider router={router} />
   </React.StrictMode>,
 );

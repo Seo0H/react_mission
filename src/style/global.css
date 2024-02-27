@@ -19,6 +19,9 @@ main {
 
 input {
   all: unset;
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
 }
 
 input::-webkit-outer-spin-button,
@@ -34,4 +37,11 @@ button {
 
 a {
   all: unset;
+}
+
+select {
+  all: unset;
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
 }

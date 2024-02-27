@@ -1,6 +1,7 @@
 import { languageOptionContents } from '@/components/lang/constants';
 import { isLanguageOptions, useLanguage } from '@/hooks/use-language/use-language';
 
+import styles from './lang-selector.module.css';
 /**
  * 전역적인 언어 선택을 지원하는 언어 선택기.
  */
@@ -12,7 +13,7 @@ export const LanguageSelector = () => {
   };
 
   return (
-    <select name='languages' onChange={handelChange}>
+    <select name='languages' onChange={handelChange} className={styles['select-box']}>
       <option value=''>언어 선택</option>
       {languageOptionContents.map(({ key, value, visual }) => (
         <option key={key} value={value}>

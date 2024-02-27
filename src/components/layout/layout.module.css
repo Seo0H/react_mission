@@ -4,6 +4,13 @@
   height: 100%;
 }
 
+.fix-max-with {
+  height: 100%;
+  max-width: 720px;
+  margin: 0px auto;
+  padding-inline: 40px;
+}
+
 .header-wrapper {
   max-width: 720px;
   margin: 0px auto;
@@ -16,10 +23,7 @@
 
   display: flex;
   flex-direction: column;
-  max-width: 720px;
   justify-content: center;
-
-  margin: 0px auto;
 }
 
 .global-layout-container::before {

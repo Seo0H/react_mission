@@ -1,5 +1,6 @@
-import { RouteObject } from 'react-router-dom';
+import { RouteObject, redirect } from 'react-router-dom';
 
+import { GlobalLayout } from '@/components/layout/layout';
 import { loaders } from '@/routes/loaders';
 import ErrorPage from '@/views/error';
 import FormPage from '@/views/form';
@@ -10,22 +11,26 @@ import ThanksPage from '@/views/thanks';
 export const routes: RouteObject[] = [
   {
     path: '/',
-    element: <MainPage />,
+    element: <GlobalLayout />,
     errorElement: <ErrorPage />,
-  },
-  {
-    path: '/question/:id',
-    element: <FormPage />,
-    loader: loaders.formLoader,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: '/no_target',
-    element: <NoTargetPage />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: '/thanks',
-    element: <ThanksPage />,
+    children: [
+      {
+        path: '/',
+        element: <MainPage />,
+      },
+      {
+        path: '/question/:id',
+        element: <FormPage />,
+        loader: loaders.formLoader,
+      },
+      {
+        path: '/no_target',
+        element: <NoTargetPage />,
+      },
+      {
+        path: '/thanks',
+        element: <ThanksPage />,
+      },
+    ],
   },
 ];
