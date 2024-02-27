@@ -1,5 +1,5 @@
-export interface Content<TContent extends string> {
+export interface Content<TContent extends string = string> {
   key: string;
-  value: TContent;
+  value?: TContent;
   visual: string;
 }

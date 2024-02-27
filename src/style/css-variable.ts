@@ -35,6 +35,7 @@ export const globalFontSize = {
   m: '24px',
   sm: '20px',
   s: '16px',
+  xs: '14px',
 } as const;
 
 export type GlobalColor = typeof globalColor;

@@ -1,15 +1,12 @@
-import { Link } from '@/components/common/link';
+import { TitleSubtitleButtonLayout } from '@/components/layout/hading-sub-button';
+import { HomeLink } from '@/components/link/home-link';
+import { useLanguageContext } from '@/hooks/use-language/language-context';
 
-import styles from './thanks.module.css';
+import * as Contents from './constants';
 
 const ThanksPage = () => {
-  return (
-    <div className={styles.layout}>
-      <span>조사가 종료되었습니다.</span>
-      <span>감사합니다.</span>
-      <Link to='/'>처음으로</Link>
-    </div>
-  );
+  const { lang } = useLanguageContext();
+  return <TitleSubtitleButtonLayout heading={Contents.heading[lang]} sub={Contents.sub[lang]} button={<HomeLink />} />;
 };
 
 export default ThanksPage;

@@ -1,7 +1,13 @@
-.h1-wrapper {
-  font-size: var(--font-size-m);
-  font-weight: 500;
-  padding-block: 32px;
+.heading-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 32px;
+}
+
+.heading-wrapper h2 {
+  font-size: 16px;
 }
 
 .start-btn-container {
