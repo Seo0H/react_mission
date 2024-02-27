@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 import Header from '@/components/header/header';
 
-import styles from './layout.module.css';
+import styles from './global-layout.module.css';
 
 export const GlobalLayout = () => {
   return (
