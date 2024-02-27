@@ -8,7 +8,7 @@ export const Link = forwardRef((props: ComponentProps<typeof RouterLink>, ref = 
   const { children, className, ...rest } = props;
 
   return (
-    <RouterLink className={className ?? styles['default-button']} {...rest}>
+    <RouterLink className={`${styles['default-button']} ${className}`} {...rest}>
       {children}
     </RouterLink>
   );

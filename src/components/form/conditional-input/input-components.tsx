@@ -36,7 +36,18 @@ export const inputComponents: { [key in Form['type']]: InputComponentProps } = {
     if (!isSelection(selections)) throw new Error('Radio must have multi answer value');
     return <DefaultRadio contexts={selections} {...rest} {...register(name, { validates })} />;
   },
-  radioNumber: ({ name }, { register }) => <RadioNumber maxScore={7} minScore={1} {...register(name)} />,
+  radioNumber: ({ name, validate: validates, step, defaultValue, ...rest }, { register }) => {
+    return (
+      <RadioNumber
+        maxScore={7}
+        minScore={1}
+        step={step ?? undefined}
+        defaultValue={defaultValue ?? undefined}
+        {...rest}
+        {...register(name, { validates })}
+      />
+    );
+  },
   radioWithInput: ({ selections, name, validate: validates, ...rest }, { register }) => {
     if (!isSelection(selections)) throw new Error('Radio Input must have multi answer value');
     return <RadioWithInput context={selections} {...rest} {...register(name, { validates })} />;
