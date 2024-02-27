@@ -1,8 +1,6 @@
+import { Languages } from '@/hooks/use-language/type';
+
 import type { Content } from '@/constants/type';
-
-export type Languages = 'ko' | 'en';
-
-export const userBrowserLanguage = navigator.language.split('-')[0] as Languages;
 
 export const languageOptionContents: Content<Languages>[] = [
   {

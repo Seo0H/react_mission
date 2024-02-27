@@ -2,8 +2,10 @@ import { useEffect } from 'react';
 
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
-import { userBrowserLanguage, type Languages } from '@/components/lang/constants';
 import { languageOptionContents } from '@/components/lang/constants';
+import { userBrowserLanguage } from '@/hooks/use-language/constants';
+
+import type { Languages } from '@/hooks/use-language/type';
 
 /**
  * @param initialValue 초기 언어 값. 미제공될 경우 브라우저 설정 언어로 적용됨
@@ -32,6 +34,8 @@ export const useLanguage = (initialValue?: Languages) => {
 
   return { lang, langParams, handleLanguageChange };
 };
+
+export type UseLanguageReturn = ReturnType<typeof useLanguage>;
 
 export function isLanguageOptions(value: unknown): value is Languages {
   if (languageOptionContents.find((contents) => contents.value === value)) return true;
