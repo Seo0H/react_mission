@@ -1,16 +1,15 @@
 import { Link } from '@/components/common/link';
 
-import { LanguageSelector } from '@/components/lang/lang-selector';
 import { useLanguage } from '@/hooks/use-language/use-language';
+import { mainPageContents } from '@/views/main/constants';
 
 const MainPage = () => {
-  const { langParams } = useLanguage();
+  const { lang, langParams } = useLanguage();
 
   return (
     <>
-      설문 시작하기
+      {mainPageContents[lang]}
       <Link to={`/question/common?${langParams}`}>Start</Link>
-      <LanguageSelector />
     </>
   );
 };

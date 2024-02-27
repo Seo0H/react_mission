@@ -19,7 +19,7 @@ export const useLanguage = (initialValue?: Languages) => {
   const location = useLocation();
 
   const [searchParams, setSearchParams] = useSearchParams({ lang: initialValue ?? userBrowserLanguage });
-  const lang = searchParams.get('lang');
+  const lang = (searchParams.get('lang') ? searchParams.get('lang') : userBrowserLanguage) as Languages; // TODO: Languages 에 설정된 언어 이외의 언어일 경우 예외 처리 필요
   const langParams = searchParams.toString();
 
   useEffect(() => {

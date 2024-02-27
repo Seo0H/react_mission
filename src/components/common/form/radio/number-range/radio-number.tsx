@@ -3,6 +3,8 @@ import { ChangeEvent, createRef, forwardRef, useRef } from 'react';
 import { Radio } from '@/components/common/form/radio';
 import { RadioGroup } from '@/components/common/form/radio';
 
+import { useLanguage } from '@/hooks/use-language/use-language';
+
 import styles from './radio-number.module.css';
 
 interface RadioNumberProps {
@@ -39,6 +41,7 @@ interface RadioNumberProps {
 
 export const RadioNumber = forwardRef<HTMLInputElement, RadioNumberProps>((props, ref = createRef()) => {
   const { maxScore, minScore, step = 1, defaultValue, name, onChange } = props;
+  const { lang } = useLanguage();
 
   const radioRef = useRef<HTMLInputElement[]>([]);
 
@@ -71,7 +74,7 @@ export const RadioNumber = forwardRef<HTMLInputElement, RadioNumberProps>((props
           key={crypto.randomUUID()}
           ref={(el: HTMLInputElement) => (radioRef.current[idx] = el)}
         >
-          {value} 점
+          {value} {lang === 'ko' ? '점' : 'point'}
         </Radio>
       ))}
     </RadioGroup>
