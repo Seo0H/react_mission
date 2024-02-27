@@ -7,7 +7,6 @@ import { Link } from '@/components/common/link';
 import PressEnter from '@/components/press-enter/press-enter';
 import { useLanguageContext } from '@/hooks/use-language/language-context';
 import { LanguagesContents } from '@/hooks/use-language/type';
-import { isLanguageOptions } from '@/hooks/use-language/use-language';
 
 export const EnterableLink = ({
   url,
@@ -15,12 +14,7 @@ export const EnterableLink = ({
   ...rest
 }: { url: string; contents: LanguagesContents<string> } & ComponentPropsWithoutRef<'a'>) => {
   const navigate = useNavigate();
-  let { lang = 'en', langParams } = useLanguageContext();
-
-  if (!isLanguageOptions(lang)) {
-    lang = 'en';
-    langParams = `lang=en`;
-  }
+  const { lang, langParams } = useLanguageContext();
 
   return (
     <>

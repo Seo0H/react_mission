@@ -21,8 +21,8 @@ export const useLanguage = (initialValue?: Languages) => {
   const location = useLocation();
 
   const [searchParams, setSearchParams] = useSearchParams({ lang: initialValue ?? userBrowserLanguage });
-  const lang = (searchParams.get('lang') ? searchParams.get('lang') : userBrowserLanguage) as Languages; // TODO: Languages 에 설정된 언어 이외의 언어일 경우 예외 처리 필요
-  const langParams = searchParams.toString();
+  let lang = (searchParams.get('lang') ? searchParams.get('lang') : userBrowserLanguage) as Languages; // TODO: Languages 에 설정된 언어 이외의 언어일 경우 예외 처리 필요
+  let langParams = searchParams.toString();
 
   useEffect(() => {
     navigate({ pathname: location.pathname, search: `?lang=${lang}` });
@@ -31,6 +31,11 @@ export const useLanguage = (initialValue?: Languages) => {
   const handleLanguageChange = (lang: Languages) => {
     setSearchParams({ lang });
   };
+
+  if (!isLanguageOptions(lang)) {
+    lang = 'en';
+    langParams = `lang=en`;
+  }
 
   return { lang, langParams, handleLanguageChange };
 };
