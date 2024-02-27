@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export type SelectExtraInputState = {
   isDisabled: boolean;
@@ -24,6 +24,12 @@ export const useRadioWithInput = (
   /** 전체 라디오 ref */
   const radioRefs = useRef<HTMLInputElement[]>([]);
   const isControlled = !!currentValue;
+
+  useEffect(() => {
+    if (!extraRadioState.isDisabled) {
+      extraTextInputRef.current?.focus();
+    }
+  }, [extraRadioState.isDisabled]);
 
   /**
    * `기타` 란의 라디오 input을 처리하는 이벤트 핸들러

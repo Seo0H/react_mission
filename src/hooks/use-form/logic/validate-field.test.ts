@@ -1,9 +1,28 @@
 import { validateField } from '@/hooks/use-form/logic/validate-field';
 import { Validate } from '@/hooks/use-form/types/validator';
 
-describe('validate-field util function', () => {
+describe('validate-field util function type 별 테스트', () => {
   describe('type: not', () => {
-    it('target이 string 일 경우', async () => {
+    it("target이 ''인 경우 (빈칸 미허용인 경우)", () => {
+      const mockValidate: Validate[] = [
+        {
+          type: 'not',
+          target: '',
+          validateText: '빈칸은 허용되지 않습니다.',
+        },
+      ];
+
+      let error = validateField(mockValidate, 'test', { test: '' });
+      expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
+
+      error = validateField(mockValidate, 'test', { test: '   ' });
+      expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
+
+      error = validateField(mockValidate, 'test', { test: undefined });
+      expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
+    });
+
+    it('target이 string 일 경우', () => {
       const mockValidate: Validate[] = [
         {
           type: 'not',
@@ -12,39 +31,13 @@ describe('validate-field util function', () => {
         },
       ];
 
-      const error = await validateField(mockValidate, 'test', { test: 'test' });
-      expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
-    });
-
-    it('target이 number 일 경우', async () => {
-      const mockValidate: Validate[] = [
-        {
-          type: 'not',
-          target: 10,
-          validateText: '10은 허용되지 않습니다.',
-        },
-      ];
-
-      const error = await validateField(mockValidate, 'test', { test: 10 });
-      expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
-    });
-
-    it('target이 object 일 경우', async () => {
-      const mockValidate: Validate[] = [
-        {
-          type: 'not',
-          target: { test: 'test' },
-          validateText: "{ test: 'test'} 형식은 허용되지 않습니다.",
-        },
-      ];
-
-      const error = await validateField(mockValidate, 'test', { test: { test: 'test' } });
+      const error = validateField(mockValidate, 'test', { test: 'test' });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
     });
   });
 
   describe('type: minmax', () => {
-    it('최소값이 없고 최대값만 주어진 경우', async () => {
+    it('최소값이 없고 최대값만 주어진 경우', () => {
       const mockValidate: Validate[] = [
         {
           type: 'minMax',
@@ -53,14 +46,14 @@ describe('validate-field util function', () => {
         },
       ];
 
-      let error = await validateField(mockValidate, 'test', { test: 6 });
+      let error = validateField(mockValidate, 'test', { test: 6 });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = await validateField(mockValidate, 'test', { test: 5 });
+      error = validateField(mockValidate, 'test', { test: 5 });
       expect(error).toStrictEqual({});
     });
 
-    it('최대값이 없고 최소값만 주어진 경우', async () => {
+    it('최대값이 없고 최소값만 주어진 경우', () => {
       const mockValidate: Validate[] = [
         {
           type: 'minMax',
@@ -69,14 +62,14 @@ describe('validate-field util function', () => {
         },
       ];
 
-      let error = await validateField(mockValidate, 'test', { test: 4 });
+      let error = validateField(mockValidate, 'test', { test: 4 });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = await validateField(mockValidate, 'test', { test: 5 });
+      error = validateField(mockValidate, 'test', { test: 5 });
       expect(error).toStrictEqual({});
     });
 
-    it('최대값, 최소값만 둘다 주어진 경우', async () => {
+    it('최대값, 최소값만 둘다 주어진 경우', () => {
       const mockValidate: Validate[] = [
         {
           type: 'minMax',
@@ -85,16 +78,16 @@ describe('validate-field util function', () => {
         },
       ];
 
-      let error = await validateField(mockValidate, 'test', { test: 2 });
+      let error = validateField(mockValidate, 'test', { test: 2 });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = await validateField(mockValidate, 'test', { test: 8 });
+      error = validateField(mockValidate, 'test', { test: 8 });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
     });
   });
 
   describe('type: sameAs', () => {
-    it('target이 특정 값인 경우', async () => {
+    it('target이 특정 값인 경우', () => {
       const mockValidate: Validate[] = [
         {
           type: 'sameAs',
@@ -103,14 +96,14 @@ describe('validate-field util function', () => {
         },
       ];
 
-      let error = await validateField(mockValidate, 'test', { test: 'wrong' });
+      let error = validateField(mockValidate, 'test', { test: 'wrong' });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = await validateField(mockValidate, 'test', { test: 'test' });
+      error = validateField(mockValidate, 'test', { test: 'test' });
       expect(error).toStrictEqual({});
     });
 
-    it('target이 특정 필드의 이름인 경우 (target이 $기호로 시작하는 경우)', async () => {
+    it('target이 특정 필드의 이름인 경우 (target이 $기호로 시작하는 경우)', () => {
       const mockValidate: Validate[] = [
         {
           type: 'sameAs',
@@ -119,14 +112,14 @@ describe('validate-field util function', () => {
         },
       ];
 
-      let error = await validateField(mockValidate, 'test', { something: '1', test: '2' });
+      let error = validateField(mockValidate, 'test', { something: '1', test: '2' });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = await validateField(mockValidate, 'test', { something: '1', test: '1' });
+      error = validateField(mockValidate, 'test', { something: '1', test: '1' });
       expect(error).toStrictEqual({});
     });
 
-    it('target에 -(제한없음)값이 주어진 경우 ', async () => {
+    it('target에 -(제한없음)값이 주어진 경우 ', () => {
       const mockValidate: Validate[] = [
         {
           type: 'sameAs',
@@ -135,13 +128,13 @@ describe('validate-field util function', () => {
         },
       ];
 
-      const error = await validateField(mockValidate, 'test', { test: '-' });
+      const error = validateField(mockValidate, 'test', { test: '-' });
       expect(error).toStrictEqual({});
     });
   });
 
   describe('type: minMaxLength', () => {
-    it('최소값이 없고 최대값만 주어진 경우', async () => {
+    it('최소값이 없고 최대값만 주어진 경우', () => {
       const mockValidate: Validate[] = [
         {
           type: 'minMaxLength',
@@ -150,14 +143,14 @@ describe('validate-field util function', () => {
         },
       ];
 
-      let error = await validateField(mockValidate, 'test', { test: 'test validateField' });
+      let error = validateField(mockValidate, 'test', { test: 'test validateField' });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = await validateField(mockValidate, 'test', { test: 'test' });
+      error = validateField(mockValidate, 'test', { test: 'test' });
       expect(error).toStrictEqual({});
     });
 
-    it('최대값이 없고 최소값만 주어진 경우', async () => {
+    it('최대값이 없고 최소값만 주어진 경우', () => {
       const mockValidate: Validate[] = [
         {
           type: 'minMaxLength',
@@ -166,14 +159,14 @@ describe('validate-field util function', () => {
         },
       ];
 
-      let error = await validateField(mockValidate, 'test', { test: 'test' });
+      let error = validateField(mockValidate, 'test', { test: 'test' });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = await validateField(mockValidate, 'test', { test: 'test validateField' });
+      error = validateField(mockValidate, 'test', { test: 'test validateField' });
       expect(error).toStrictEqual({});
     });
 
-    it('최대값, 최소값만 둘다 주어진 경우', async () => {
+    it('최대값, 최소값만 둘다 주어진 경우', () => {
       const mockValidate: Validate[] = [
         {
           type: 'minMaxLength',
@@ -182,19 +175,19 @@ describe('validate-field util function', () => {
         },
       ];
 
-      let error = await validateField(mockValidate, 'test', { test: '1' });
+      let error = validateField(mockValidate, 'test', { test: '1' });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = await validateField(mockValidate, 'test', { test: 'test validateField' });
+      error = validateField(mockValidate, 'test', { test: 'test validateField' });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = await validateField(mockValidate, 'test', { test: 'test' });
+      error = validateField(mockValidate, 'test', { test: 'test' });
       expect(error).toStrictEqual({});
     });
   });
 
   describe('type: pattern', () => {
-    it('이메일 판별 정규표현식이 주어진 경우', async () => {
+    it('이메일 판별 정규표현식이 주어진 경우', () => {
       const mockValidate: Validate[] = [
         {
           type: 'pattern',
@@ -204,14 +197,14 @@ describe('validate-field util function', () => {
         },
       ];
 
-      let error = await validateField(mockValidate, 'test', { test: 'test' });
+      let error = validateField(mockValidate, 'test', { test: 'test' });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = await validateField(mockValidate, 'test', { test: 'test@email.com' });
+      error = validateField(mockValidate, 'test', { test: 'test@email.com' });
       expect(error).toStrictEqual({});
     });
 
-    it('전화번호 판별 정규표현식이 주어진 경우', async () => {
+    it('전화번호 판별 정규표현식이 주어진 경우', () => {
       const mockValidate: Validate[] = [
         {
           type: 'pattern',
@@ -220,15 +213,27 @@ describe('validate-field util function', () => {
         },
       ];
 
-      let error = await validateField(mockValidate, 'test', { test: 'test' });
+      let error = validateField(mockValidate, 'test', { test: 'test' });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = await validateField(mockValidate, 'test', { test: '010-1234-5678' });
+      error = validateField(mockValidate, 'test', { test: '010-1234-5678' });
       expect(error).toStrictEqual({});
     });
   });
+});
 
-  it('다중 에러 메시지 처리가 되어야 한다.', async () => {
+describe('validate-field util function 예외 처리 테스트', () => {
+  describe('value가 undefined 이면서', () => {
+    it('검증 배열도 길이가 0인 경우', () => {
+      const mockValidate: Validate[] = [];
+      const error = validateField(mockValidate, 'test', undefined);
+      expect(error).toStrictEqual({});
+    });
+
+    it('검증 배열도 존재하는 경우', () => {});
+  });
+
+  it('다중 에러 메시지 처리가 되어야 한다.', () => {
     const mockValidate: Validate[] = [
       {
         type: 'minMaxLength',
@@ -242,7 +247,7 @@ describe('validate-field util function', () => {
       },
     ];
 
-    const error = await validateField(mockValidate, 'test', { test: 'test' });
+    const error = validateField(mockValidate, 'test', { test: 'test' });
 
     expect(error).toStrictEqual({ test: { message: ['test를 입력하면 안됩니다.', '5글자 이상이여야 합니다.'] } });
   });

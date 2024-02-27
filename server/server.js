@@ -8,7 +8,7 @@ const middlewares = jsonServer.defaults();
 
 server.use(
   jsonServer.rewriter({
-    '/api/question/:typeId': '/question/:typeId',
+    '/api/*': '/$1',
   }),
 );
 
@@ -20,9 +20,9 @@ const corsOptions = {
 server.use(cors(corsOptions));
 server.use(jsonServer.bodyParser);
 
-server.post('/api/answer/:id', (req, res, next) => {
+server.post('/answer', (req, res, next) => {
   const body = req.body;
-  const { id } = req.params;
+  const { id } = req.query;
 
   console.log('🚀 ~ server.post ~ body:', body);
 

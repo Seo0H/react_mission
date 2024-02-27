@@ -1,9 +1,13 @@
-import { ChangeEvent, createRef, forwardRef, useRef } from 'react';
+import { ChangeEvent, ComponentProps, createRef, forwardRef, useRef } from 'react';
 
-import { Radio } from '@/components/common/form/radio/radio';
-import { RadioGroup } from '@/components/common/form/radio/radio-group';
+import { Radio } from '@/components/common/form/radio';
+import { RadioGroup } from '@/components/common/form/radio';
 
-interface RadioNumberProps {
+import { useLanguageContext } from '@/hooks/use-language/language-context';
+
+import styles from './radio-number.module.css';
+
+interface RadioNumberProps extends ComponentProps<'input'> {
   /**
    * 라디오 넘버의 시작 점수
    */
@@ -13,16 +17,6 @@ interface RadioNumberProps {
    * 라디오 넘버의 끝 점수
    */
   maxScore: number;
-
-  /**
-   * 각 점수의 일정한 차이
-   */
-  step?: number;
-
-  /**
-   * 기본 값
-   */
-  defaultValue?: number;
 
   /**
    * 라디오 넘버의 이름
@@ -36,35 +30,40 @@ interface RadioNumberProps {
 }
 
 export const RadioNumber = forwardRef<HTMLInputElement, RadioNumberProps>((props, ref = createRef()) => {
-  const { maxScore, minScore, step = 1, defaultValue, name, onChange } = props;
+  const { maxScore, minScore, step = 1, value, defaultValue, name, onChange } = props;
+  const { lang } = useLanguageContext();
+  const isControlled = !!value;
 
   const radioRef = useRef<HTMLInputElement[]>([]);
 
   const radioNumberContext = Array.from({
-    length: (maxScore - minScore) * step + 1,
-  }).map((_, idx) => (idx + 1) * step);
+    length: (maxScore - minScore) * Number(step) + 1,
+  }).map((_, idx) => (idx + 1) * Number(step));
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (ref) {
-      if (typeof ref === 'function') {
-        ref(event.target);
-      }
-    }
-
-    if (onChange) {
+    if (ref && typeof ref === 'function') {
+      ref(event.target);
+    } else if (onChange) {
       onChange(event);
     }
   };
 
   return (
-    <RadioGroup onChange={handleRadioChange} name={name} defaultValue={String(defaultValue)}>
+    <RadioGroup
+      onChange={handleRadioChange}
+      name={name}
+      value={isControlled ? String(value) : undefined}
+      defaultValue={String(defaultValue)}
+      groupLayout={styles['radio-input-layout']}
+      ref={ref}
+    >
       {radioNumberContext.map((value, idx) => (
         <Radio
           value={String(value)}
-          key={crypto.randomUUID()}
+          key={`${name}-radio-number-${idx}`}
           ref={(el: HTMLInputElement) => (radioRef.current[idx] = el)}
         >
-          {value} 점
+          {value} {lang === 'ko' ? '점' : 'point'}
         </Radio>
       ))}
     </RadioGroup>

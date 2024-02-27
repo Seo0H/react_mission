@@ -6,6 +6,15 @@ import { FieldError, InternalFieldErrors } from '@/hooks/use-form/types/errors';
 import type { FieldValues } from './fields';
 import { RegisterOptions } from './validator';
 
+export type UseFormOptions = {
+  autoFocus?: boolean;
+};
+
+export interface CreateFormControlProps<TFieldValues extends FieldValues> {
+  options?: UseFormOptions;
+  updateFormState: (formState: FormState<TFieldValues>) => void;
+}
+
 export type UseFormReturn<TFieldValues extends FieldValues> = ReturnType<typeof createFormControl> & {
   formState: FormState<TFieldValues>;
 };
@@ -39,7 +48,7 @@ export type UseFormHandleSubmit<
     : TTransformedValues extends FieldValues
       ? SubmitHandler<TTransformedValues>
       : never,
-) => (e: React.BaseSyntheticEvent) => Promise<void>;
+) => (e?: React.BaseSyntheticEvent) => Promise<void>;
 
 export type UseFormRegister<TFieldValues extends FieldValues = FieldValues> = <
   TFieldName extends Extract<keyof TFieldValues, string>,

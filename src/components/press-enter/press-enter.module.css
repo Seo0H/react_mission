@@ -1,0 +1,11 @@
+.enter-text-wrapper {
+  font-size: var(--font-size-xs);
+  position: absolute;
+  margin-inline-start: 12px;
+  inset-inline-start: 100%;
+  white-space: nowrap;
+}
+
+.enter-text-wrapper > strong {
+  font-weight: 600;
+}

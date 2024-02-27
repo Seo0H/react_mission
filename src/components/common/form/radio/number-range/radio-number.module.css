@@ -1,0 +1,22 @@
+.radio-input-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.extra-radio-label-layout {
+  display: flex;
+  width: 100%;
+}
+
+.extra-radio-span {
+  width: 100%;
+}
+.extra-radio-text-layout {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  text-wrap: nowrap;
+}

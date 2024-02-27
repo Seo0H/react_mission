@@ -1,0 +1,13 @@
+.select-box {
+  cursor: pointer;
+  border: 1px solid var(--gray-300);
+  padding: 0.5rem 0.9rem;
+  border-radius: 5px;
+
+  font-size: var(--font-size-s);
+  transition: all 0.5s;
+}
+
+.select-box:hover {
+  background-color: var(--gray-100);
+}
