@@ -13,6 +13,8 @@ const getQuestionWithId = async (props: GetQuestionWithIdProps, abortSignal?: Ab
     const client = new APIFactory<APIResponse<FormData[]>>(`/api/question?id=${props.id}&lang=${lang}`, abortSignal);
     const data = await client.fetch();
 
+    if (isError(data)) throw new Error(data.message, { cause: data.error });
+
     if (Array.isArray(data)) return data[0];
 
     return data;
@@ -21,6 +23,10 @@ const getQuestionWithId = async (props: GetQuestionWithIdProps, abortSignal?: Ab
     // https://reactrouter.com/en/main/route/error-element#throwing-manually
     if (e instanceof Response) {
       throw json(await e.text(), { status: e.status });
+    }
+
+    if (e instanceof Error) {
+      throw json(await e.message, { status: 404 });
     }
 
     throw e;
@@ -38,8 +44,6 @@ const postUserAnswerData = async ({ userAnswers, typeId, userId }: PostUserAnswe
       'Content-Type': 'application/json',
     },
   });
-
-  if (isError(data)) throw json({ message: data.message }, { status: 404 });
 
   return [data, client.getStatus()] as const;
 };

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 
+import { APIStatusType, initialApiStatus, isError } from '@/api/factory/type';
 import { formAPI } from '@/api/form';
 import { useFormContext } from '@/hooks/use-form/form-context';
 import { validateField } from '@/hooks/use-form/logic/validate-field';
@@ -20,6 +21,7 @@ export const useFormSubmit = ({ cleanUp }: { cleanUp?: () => void }) => {
 
   const { handleSubmit, reset } = useFormContext();
   const [userId, setUserId] = useState(formLoadedData.userId ?? 'common'); // TODO: session 으로 옮기기
+  const [submitStatus, setSubmitStatus] = useState<APIStatusType>(initialApiStatus);
 
   const navigateWithParams = useCallback((url: string) => routerNavigate(`${url}?${langParams}`), [langParams]);
 
@@ -32,19 +34,25 @@ export const useFormSubmit = ({ cleanUp }: { cleanUp?: () => void }) => {
   if (!id) throw navigateWithParams('/');
 
   const onSubmit: SubmitHandler<UserAnswers> = async (userAnswers) => {
+    setSubmitStatus({ ...initialApiStatus, isLoading: true });
     const isUserQuestionTarget = await _getEscapeValidate(userAnswers);
 
     if (!isUserQuestionTarget) {
       navigateWithParams(`/no_target?${langParams}`);
+      setSubmitStatus({ ...initialApiStatus, isSuccess: true });
       return;
     }
 
     try {
-      const [{ data }] = await formAPI.postUserAnswerData({
+      const [response] = await formAPI.postUserAnswerData({
         userId,
         userAnswers,
         typeId: id,
       });
+
+      if (isError(response)) throw new Error(response.message, { cause: response.error });
+
+      const { data } = response;
 
       if (data.userId) setUserId(data.userId);
 
@@ -55,8 +63,23 @@ export const useFormSubmit = ({ cleanUp }: { cleanUp?: () => void }) => {
         cleanUp?.();
         navigateWithParams(`/question/${data.nextTypeId}`);
       }
+
+      setSubmitStatus({ ...initialApiStatus, isSuccess: true });
     } catch (e) {
-      console.log(e);
+      if (e instanceof Error || e instanceof TypeError) {
+        setSubmitStatus({ ...initialApiStatus, isError: true, message: e.message });
+        return;
+      }
+
+      if (e instanceof Response) {
+        setSubmitStatus({ ...initialApiStatus, isError: true, message: await e.text() });
+        return;
+      }
+
+      setSubmitStatus({ ...initialApiStatus, isError: true, message: `unknown error. check consol.` });
+      console.error(e);
+
+      throw e;
     }
   };
 
@@ -72,5 +95,5 @@ export const useFormSubmit = ({ cleanUp }: { cleanUp?: () => void }) => {
     return true;
   };
 
-  return { onSubmit: handleSubmit(onSubmit) };
+  return { onSubmit: handleSubmit(onSubmit), submitStatus };
 };

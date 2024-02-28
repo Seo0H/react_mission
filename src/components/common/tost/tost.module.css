@@ -1,0 +1,50 @@
+.tost-container {
+  position: fixed;
+  right: 0px;
+  width: 100%;
+  max-width: 300px;
+  max-height: fit-content;
+  padding: 1rem 2rem;
+
+  margin-top: var(--header-height);
+
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 1px 1px 5px var(--gray-300);
+}
+
+.tost-point-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 5px;
+  background-color: var(--main-color);
+}
+
+.show {
+  animation: slideIn 0.5s ease-in-out 0s 1 normal forwards;
+}
+
+.close {
+  animation: slideOut 0.5s ease-in-out 0s 1 normal forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}

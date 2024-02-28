@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { Button } from '@/components/common/buttons';
 import ErrorMessage from '@/components/common/error/message';
 import { ProgressBar } from '@/components/common/progress-bar/progress-bar';
+import { TostAlert } from '@/components/common/tost';
 
 import { ConditionalInput } from '@/components/form';
 import PressEnter from '@/components/press-enter/press-enter';
@@ -15,7 +16,7 @@ import { useFormSubmit } from './hooks/use-form-submit';
 
 export const FormController = () => {
   const { isLastQuestion, changeNextQuestion, resetIdx, form, percentage } = useFormQuestionControl();
-  const { onSubmit } = useFormSubmit({ cleanUp: resetIdx });
+  const { onSubmit, submitStatus } = useFormSubmit({ cleanUp: resetIdx });
   const { getFieldState } = useFormContext();
   const { name, question, required, ...rest } = form;
   const { invalid, error } = getFieldState(name);
@@ -34,6 +35,14 @@ export const FormController = () => {
   const buttonHandler = isLastQuestion ? onSubmit : changeNextQuestion;
   return (
     <>
+      {submitStatus.isError && (
+        <TostAlert
+          heading={{ ko: 'Error!', en: 'Error!' }}
+          sub={[{ ko: submitStatus.message, en: submitStatus.message }]}
+          pointColor='red'
+          shownTime={2000}
+        />
+      )}
       <div className={styles['progress-bar-wrapper']}>
         <ProgressBar visuals={[{ color: globalColor.mainColor, percentage }]} />
       </div>

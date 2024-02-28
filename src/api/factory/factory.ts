@@ -45,15 +45,6 @@ export default class APIFactory<APIResponse> implements API<APIResponse> {
         };
       }
 
-      if (e instanceof Error) {
-        this.status = { ...initialApiStatus, isError: true };
-
-        throw {
-          message: e.message,
-          error: e,
-        };
-      }
-
       this.status = { ...initialApiStatus, isError: true };
 
       throw e;
