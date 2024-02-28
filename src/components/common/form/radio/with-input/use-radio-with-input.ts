@@ -5,6 +5,8 @@ export type SelectExtraInputState = {
   value?: string;
 };
 
+const extra = 'extra';
+
 /**
  * @param ref 비제어 모드일 경우 받아오는 ref
  * @param onChange 제어 모드일 경우 받아오는 onChange 핸들러
@@ -17,7 +19,7 @@ export const useRadioWithInput = (
 ) => {
   const [extraRadioState, setExtraRadio] = useState<SelectExtraInputState>({
     isDisabled: true,
-    value: 'extra',
+    value: extra,
   });
   /** `기타` radio input의 내부 input text ref */
   const extraTextInputRef = useRef<HTMLInputElement>(null);
@@ -42,7 +44,8 @@ export const useRadioWithInput = (
       if (extraTextInputRef.current?.value) extraTextInputRef.current.value = '';
       setExtraRadio({ isDisabled: true, value: '' });
     } else {
-      if (ref && typeof ref === 'function') ref(extraTextInputRef.current);
+      if (ref && typeof ref === 'function' && extraTextInputRef.current?.value !== extra)
+        ref(extraTextInputRef.current);
       setExtraRadio({ isDisabled: false, value: targetValue });
     }
   };
