@@ -20,23 +20,30 @@ type InputComponentProps<T = Omit<ComponentPropsWithRef<'input'>, Omitted> & Omi
 
 export const inputComponents: { [key in Form['type']]: InputComponentProps } = {
   //--- single input ---
-  text: ({ name, validate: validates, ...rest }, { register }) => {
-    return <Input {...rest} {...register(name, { validates })} />;
+  text: ({ name, validate: validates, required, requiredMessage, ...rest }, { register }) => {
+    return <Input {...rest} {...register(name, { validates, required, requiredMessage })} />;
   },
   // FIXME: number input에 문자 값이 허용되는 현상 수정
-  number: ({ name, validate: validates, ...rest }, { register }) => {
-    return <NumberInput {...rest} {...register(name, { validates })} />;
+  number: ({ name, validate: validates, required, requiredMessage, ...rest }, { register }) => {
+    return <NumberInput {...rest} {...register(name, { validates, required, requiredMessage })} />;
   },
   //--- multi input ---
-  checkbox: ({ name, selections, validate: validates, ...rest }, { register }) => {
+  checkbox: ({ name, selections, validate: validates, required, requiredMessage, ...rest }, { register }) => {
     if (!isSelection(selections)) throw new Error('Checkbox must have multi answer value');
-    return <DefaultCheckbox contexts={selections} {...rest} {...register(name, { validates })} />;
+    return (
+      <DefaultCheckbox contexts={selections} {...rest} {...register(name, { validates, required, requiredMessage })} />
+    );
   },
-  radio: ({ selections, name, validate: validates, ...rest }, { register }) => {
+  radio: ({ selections, name, validate: validates, required, requiredMessage, ...rest }, { register }) => {
     if (!isSelection(selections)) throw new Error('Radio must have multi answer value');
-    return <DefaultRadio contexts={selections} {...rest} {...register(name, { validates })} />;
+    return (
+      <DefaultRadio contexts={selections} {...rest} {...register(name, { validates, required, requiredMessage })} />
+    );
   },
-  radioNumber: ({ name, validate: validates, step, defaultValue, ...rest }, { register }) => {
+  radioNumber: (
+    { name, validate: validates, required, step, defaultValue, requiredMessage, ...rest },
+    { register },
+  ) => {
     return (
       <RadioNumber
         maxScore={7}
@@ -44,12 +51,14 @@ export const inputComponents: { [key in Form['type']]: InputComponentProps } = {
         step={step ?? undefined}
         defaultValue={defaultValue ?? undefined}
         {...rest}
-        {...register(name, { validates })}
+        {...register(name, { validates, required, requiredMessage })}
       />
     );
   },
-  radioWithInput: ({ selections, name, validate: validates, ...rest }, { register }) => {
+  radioWithInput: ({ selections, name, validate: validates, required, requiredMessage, ...rest }, { register }) => {
     if (!isSelection(selections)) throw new Error('Radio Input must have multi answer value');
-    return <RadioWithInput context={selections} {...rest} {...register(name, { validates })} />;
+    return (
+      <RadioWithInput context={selections} {...rest} {...register(name, { validates, required, requiredMessage })} />
+    );
   },
 };
