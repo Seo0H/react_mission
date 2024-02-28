@@ -6,6 +6,7 @@ import type { ClientForm } from '@/constants/client-form-type';
 export function makeClientForm(serverFormList: ServerForm[]) {
   return serverFormList.map<ClientForm>((serverForm) => {
     if (isSelections(serverForm.placeholder)) {
+      // placeholder가 배열이면 다중 선택지 질문이
       return {
         ...serverForm,
         placeholder: '',

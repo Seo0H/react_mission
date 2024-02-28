@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FieldValues } from './fields';
 
-export type RegisterOptions<
-  TFieldValues extends FieldValues = FieldValues,
-  // TFiledName extends keyof TFieldValues = keyof TFieldValues,
-> = Partial<{
+export type RegisterOptions<TFieldValues extends FieldValues = FieldValues> = Partial<{
   value: TFieldValues;
   validates: Validate[];
+  required?: boolean;
+  requiredMessage?: string;
 }>;
 
 export type Validate = ValidateOption & { validateText: string };
@@ -14,7 +13,7 @@ export type Validate = ValidateOption & { validateText: string };
 type ValidateOption =
   | {
       type: 'not';
-      target: string;
+      target: string | number;
     }
   | {
       type: 'minMax';
@@ -22,7 +21,7 @@ type ValidateOption =
     }
   | {
       type: 'sameAs';
-      target: string;
+      target: string | number;
     }
   | {
       type: 'pattern';
