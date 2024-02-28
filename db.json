@@ -3,7 +3,6 @@
     {
       "id": "common",
       "status": 200,
-      "lang": "ko",
       "data": {
         "forms": [
           {
@@ -77,85 +76,8 @@
       }
     },
     {
-      "id": "common",
-      "status": 200,
-      "lang": "en",
-      "data": {
-        "forms": [
-          {
-            "name": "name",
-            "question": "Input your name.",
-            "required": true,
-            "type": "text",
-            "placeholder": "name",
-            "validate": [
-              {
-                "type": "not",
-                "target": "",
-                "validateText": "Input your name."
-              },
-              {
-                "type": "minMaxLength",
-                "target": [2, "-"],
-                "validateText": "Please enter at least 2 characters for your name."
-              }
-            ]
-          },
-          {
-            "name": "email",
-            "question": "Please enter your e-mail.",
-            "required": true,
-            "type": "text",
-            "placeholder": "000@gmail.com",
-            "validate": [
-              {
-                "type": "not",
-                "target": "",
-                "validateText": "Please enter your e-mail."
-              },
-              {
-                "type": "pattern",
-                "target": "^([\\w\\.\\_\\-])*[a-zA-Z0-9]+([\\w\\.\\_\\-])*([a-zA-Z0-9])+([\\w\\.\\_\\-])+@([a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,8}$",
-                "validateText": "The email address format is incorrect."
-              }
-            ]
-          },
-          {
-            "name": "age",
-            "question": "Please enter your age.",
-            "required": true,
-            "type": "number",
-            "placeholder": 0,
-            "validate": [
-              {
-                "type": "not",
-                "target": 0,
-                "validateText": "Please enter your age."
-              }
-            ]
-          },
-          {
-            "name": "like",
-            "question": "How much do you like alcohol?",
-            "required": true,
-            "type": "radioNumber",
-            "placeholder": 0,
-            "validate": []
-          }
-        ],
-        "escapeValidate": [
-          {
-            "name": "age",
-            "type": "minMax",
-            "target": [19, "-"]
-          }
-        ]
-      }
-    },
-    {
       "id": "1",
       "status": 200,
-      "lang": "ko",
       "data": {
         "forms": [
           {
@@ -262,118 +184,8 @@
       }
     },
     {
-      "id": "1",
-      "status": 200,
-      "lang": "en",
-      "data": {
-        "forms": [
-          {
-            "name": "type",
-            "question": "What kind of alcohol do you like?",
-            "required": true,
-            "type": "radioWithInput",
-            "placeholder": [
-              {
-                "label": "beer",
-                "value": "beer",
-                "checked": false
-              },
-              {
-                "label": "wine",
-                "value": "wine",
-                "checked": false
-              },
-              {
-                "label": "soju",
-                "value": "soju",
-                "checked": false
-              },
-              {
-                "label": "Makgeolli",
-                "value": "Makgeolli",
-                "checked": false
-              },
-              {
-                "label": "extra",
-                "value": "extra",
-                "checked": false
-              }
-            ],
-            "validate": [
-              {
-                "type": "minMaxLength",
-                "target": [1, "-"],
-                "validateText": "You must choose one."
-              }
-            ]
-          },
-          {
-            "name": "pairing",
-            "question": "What snacks do you prefer?",
-            "required": true,
-            "type": "radioWithInput",
-            "placeholder": [
-              {
-                "label": "dry snacks",
-                "value": "drySnack",
-                "checked": false
-              },
-              {
-                "label": "fruit snacks",
-                "value": "fruit",
-                "checked": false
-              },
-              {
-                "label": "snack",
-                "value": "snack",
-                "checked": false
-              },
-              {
-                "label": "spicy food",
-                "value": "spicy",
-                "checked": false
-              },
-              {
-                "label": "cheese",
-                "value": "cheeze",
-                "checked": false
-              },
-              {
-                "label": "etc",
-                "value": "extra",
-                "checked": false
-              }
-            ],
-            "validate": [
-              {
-                "type": "minMaxLength",
-                "target": [1, "-"],
-                "validateText": "You must choose one."
-              }
-            ]
-          },
-          {
-            "name": "best",
-            "question": "Please tell me your best combination.",
-            "required": true,
-            "type": "text",
-            "placeholder": "",
-            "validate": [
-              {
-                "type": "minMaxLength",
-                "target": [5, "-"],
-                "validateText": "Please enter the combination of alcohol and snacks."
-              }
-            ]
-          }
-        ],
-        "escapeValidate": []
-      }
-    },
-    {
       "id": "2",
       "status": 200,
-      "lang": "ko",
       "data": {
         "forms": [
           {
@@ -460,98 +272,8 @@
       }
     },
     {
-      "id": "2",
-      "status": 200,
-      "lang": "en",
-      "data": {
-        "forms": [
-          {
-            "name": "type",
-            "question": "Have you ever tried non-alcoholic beer?",
-            "required": true,
-            "type": "radio",
-            "placeholder": [
-              {
-                "label": "yes",
-                "value": "yes",
-                "checked": false
-              },
-              {
-                "label": "no",
-                "value": "no",
-                "checked": false
-              }
-            ],
-            "validate": [
-              {
-                "type": "minMaxLength",
-                "target": [1, "-"],
-                "validateText": "You must choose one."
-              }
-            ]
-          },
-          {
-            "name": "pairing",
-            "question": "If you choose non-alcoholic beer, what are your reasons?",
-            "required": true,
-            "type": "radioWithInput",
-            "placeholder": [
-              {
-                "label": "to enjoy a drink",
-                "value": "enjoy",
-                "checked": false
-              },
-              {
-                "label": "Because the hangover is burdensome",
-                "value": "health",
-                "checked": false
-              },
-              {
-                "label": "Because it’s delicious",
-                "value": "delicuious",
-                "checked": false
-              },
-              {
-                "label": "Because it’s cheap",
-                "value": "chip",
-                "checked": false
-              },
-              {
-                "label": "etc",
-                "value": "extra",
-                "checked": false
-              }
-            ],
-            "validate": [
-              {
-                "type": "minMaxLength",
-                "target": [1, "-"],
-                "validateText": "You must choose one."
-              }
-            ]
-          },
-          {
-            "name": "best",
-            "question": "Tell us the best non-alcoholic drink you've ever had.",
-            "required": true,
-            "type": "text",
-            "placeholder": "",
-            "validate": [
-              {
-                "type": "minMaxLength",
-                "target": [2, "-"],
-                "validateText": "If not, please enter ‘none’"
-              }
-            ]
-          }
-        ],
-        "escapeValidate": []
-      }
-    },
-    {
       "id": "test",
       "status": 200,
-      "lang": "ko",
       "data": {
         "forms": [
           {

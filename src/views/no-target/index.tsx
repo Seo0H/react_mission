@@ -1,11 +1,5 @@
-import { TitleSubtitleButtonLayout } from '@/components/layout/hading-sub-button';
-import { HomeLink } from '@/components/link/home-link';
-import { useLanguageContext } from '@/hooks/use-language/language-context';
-
-import * as Contents from './constants';
-
 const NoTargetPage = () => {
-  const { lang } = useLanguageContext();
-  return <TitleSubtitleButtonLayout heading={Contents.heading[lang]} sub={Contents.sub[lang]} button={<HomeLink />} />;
+  return <div>설문조사 타겟이 아닙니다.</div>;
 };
+
 export default NoTargetPage;

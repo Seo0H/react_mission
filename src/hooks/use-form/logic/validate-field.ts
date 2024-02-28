@@ -1,3 +1,4 @@
+import { areValuesEqual } from '@/utils/are-values-equal';
 import { isString } from '@/utils/is';
 import { mergeArray } from '@/utils/merge-array';
 
@@ -5,17 +6,13 @@ import type { InternalFieldErrors } from '@/hooks/use-form/types/errors';
 import type { FieldValues } from '@/hooks/use-form/types/fields';
 import type { Validate } from '@/hooks/use-form/types/validator';
 
-export const validateField = <TFiledValues extends FieldValues = FieldValues>(
+export const validateField = async <TFiledValues extends FieldValues = FieldValues>(
   validates: Validate[],
   name: keyof FieldValues,
-  formValues: TFiledValues | undefined,
+  formValues: TFiledValues,
 ) => {
   const error: InternalFieldErrors = {};
-
-  // 검증 할 것이 없는 경우
-  if (validates.length === 0) return error;
-
-  const value = formValues ? removeEmptySpace(formValues[name]) : ''; // value를 string으로 변환해서 비교
+  const value = formValues[name];
 
   for (const validate of validates) {
     const isNot = validate.type === 'not';
@@ -27,7 +24,7 @@ export const validateField = <TFiledValues extends FieldValues = FieldValues>(
     const errorMessages = error[name]?.message;
 
     if (isNot) {
-      if (value === validate.target) {
+      if (areValuesEqual(validate.target, value)) {
         error[name] = {
           message: mergeArray([validate.validateText], errorMessages),
         };
@@ -56,7 +53,7 @@ export const validateField = <TFiledValues extends FieldValues = FieldValues>(
       else if (isString(value) && validate.target.at(0) === '$') {
         const targetFieldName = validate.target.slice(1);
 
-        if (formValues && value !== formValues[targetFieldName]) {
+        if (value !== formValues[targetFieldName]) {
           error[name] = {
             message: mergeArray([validate.validateText], errorMessages),
           };
@@ -94,8 +91,3 @@ export const validateField = <TFiledValues extends FieldValues = FieldValues>(
 
   return error;
 };
-
-function removeEmptySpace(value: string | undefined) {
-  if (!value) return '';
-  return String(value).trim();
-}

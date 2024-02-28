@@ -1,16 +1,7 @@
-import React, { ComponentPropsWithRef, forwardRef } from 'react';
-
-import styles from './number-input.module.css';
+import { ComponentPropsWithRef, forwardRef } from 'react';
 
 interface NumberInputProps extends Omit<ComponentPropsWithRef<'input'>, 'type'> {}
 
-export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(function NumberInput(
-  props,
-  ref = React.createRef(),
-) {
-  return (
-    <input type='number' ref={ref} className={`${styles.input} ${props.className ? props.className : ''}`} {...props} />
-  );
+export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(function NumberInput(props, ref) {
+  return <input type='number' {...props} ref={ref} />;
 });
-
-NumberInput.displayName = 'NumberInput';

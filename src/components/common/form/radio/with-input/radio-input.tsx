@@ -1,10 +1,9 @@
-import { ChangeEvent, forwardRef, useId } from 'react';
+import { ChangeEvent, forwardRef } from 'react';
 
 import { Input } from '@/components/common/form/input';
 
 import { Radio, RadioGroup } from '../index';
 
-import styles from './radio-input.module.css';
 import { useRadioWithInput } from './use-radio-with-input';
 import type { Selection } from '@/api/form/types/server-response';
 
@@ -17,7 +16,6 @@ interface InputRadioProps {
 
 export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
   ({ context, value: currentValue, name, onChange }: InputRadioProps, ref) => {
-    const uniqId = useId();
     const { isControlled, extraRadioState, radioRefs, extraTextInputRef, handleChange, handleExtraRadio } =
       useRadioWithInput(ref, onChange, currentValue);
 
@@ -28,33 +26,18 @@ export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
       : undefined;
 
     return (
-      <RadioGroup
-        onChange={handleChange}
-        value={radioGroupValue}
-        name={name}
-        groupLayout={styles['radio-input-layout']}
-        ref={ref}
-      >
+      <RadioGroup onChange={handleChange} value={radioGroupValue} name={name}>
         {context.map(({ label, value }, idx) => {
           if (value === 'extra') {
             return (
               <Radio
-                key={`radio-${value}-${idx}-${uniqId}`}
+                key={`radio-${value}-${idx}`}
                 value={extraRadioState.value}
                 onChange={handleExtraRadio}
-                labelStyle={styles['extra-radio-label-layout']}
-                textStyle={styles['extra-radio-span']}
                 ref={(el: HTMLInputElement) => (radioRefs.current[idx] = el)}
               >
-                <div className={styles['extra-radio-text-layout']}>
-                  기타 :
-                  <Input
-                    name={name}
-                    onChange={onChange}
-                    disabled={extraRadioState.isDisabled}
-                    ref={extraTextInputRef}
-                  />
-                </div>
+                기타 :
+                <Input name={name} onChange={onChange} disabled={extraRadioState.isDisabled} ref={extraTextInputRef} />
               </Radio>
             );
           }
@@ -62,7 +45,7 @@ export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
           return (
             <Radio
               value={value}
-              key={`radio-${value}-${idx}-${uniqId}`}
+              key={crypto.randomUUID()}
               onChange={handleExtraRadio}
               ref={(el: HTMLInputElement) => (radioRefs.current[idx] = el)}
             >

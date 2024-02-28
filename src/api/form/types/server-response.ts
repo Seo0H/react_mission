@@ -1,4 +1,4 @@
-import type { Validate } from '@/hooks/use-form/types/validator';
+import { Validate } from '@/hooks/use-form/types/validator';
 
 export type APIResponse<DataType extends FormData | PostResponseData> = {
   status: number;

@@ -1,7 +1,7 @@
 import { isArray } from '@/utils/is';
 
 import type { Placeholder as ServerPlaceHolder, Form as ServerForm, Selection } from '@/api/form/types/server-response';
-import type { ClientForm } from '@/constants/client-form-type';
+import type { ClientForm } from '@/constants/client-types';
 
 export function makeClientForm(serverFormList: ServerForm[]) {
   return serverFormList.map<ClientForm>((serverForm) => {

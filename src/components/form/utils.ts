@@ -1,4 +1,4 @@
-import { ClientForm } from '@/constants/client-form-type';
+import { ClientForm } from '@/constants/client-types';
 import { isArray } from '@/utils/is';
 
 import type { MultiInputAnswer, UserAnswers } from '@/api/form/types/server-request';

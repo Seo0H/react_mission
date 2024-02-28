@@ -1,12 +1,12 @@
-import { TitleSubtitleButtonLayout } from '@/components/layout/hading-sub-button';
-import { HomeLink } from '@/components/link/home-link';
-import { useLanguageContext } from '@/hooks/use-language/language-context';
-
-import * as Contents from './constants';
+import { Link } from 'react-router-dom';
 
 const ThanksPage = () => {
-  const { lang } = useLanguageContext();
-  return <TitleSubtitleButtonLayout heading={Contents.heading[lang]} sub={Contents.sub[lang]} button={<HomeLink />} />;
+  return (
+    <div>
+      조사가 종료되었습니다. 감사합니다.
+      <Link to='/'>처음으로</Link>
+    </div>
+  );
 };
 
 export default ThanksPage;

@@ -1,7 +1,7 @@
 import { ChangeEvent, createRef, forwardRef, useRef } from 'react';
 
-import { Radio } from '@/components/common/form/radio';
-import { RadioGroup } from '@/components/common/form/radio';
+import { Radio } from '@/components/common/form/radio/radio';
+import { RadioGroup } from '@/components/common/form/radio/radio-group';
 import type { MultiQuestionComponentProps } from '@/components/common/form/type';
 
 interface DefaultRadioProps extends MultiQuestionComponentProps {
@@ -26,7 +26,6 @@ export const DefaultRadio = forwardRef<HTMLInputElement, DefaultRadioProps>((pro
       name={name}
       value={isControlled ? value : undefined}
       defaultValue={defaultCheckedValue}
-      ref={ref}
     >
       {contexts.map(({ label, value }, idx) => {
         return (

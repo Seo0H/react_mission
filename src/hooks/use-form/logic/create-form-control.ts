@@ -6,18 +6,13 @@ import { get } from '../utils/get';
 import { isRadioOrCheckbox } from '../utils/is';
 import { set } from '../utils/set';
 
-import { getFieldValue, getFieldsValue } from './get-field-value';
+import { getFieldsValue } from './get-field-value';
 import type { FieldRefs, FieldValues, Ref } from '../types/fields';
-import type {
-  CreateFormControlProps,
-  FormState,
-  UseFormGetFieldState,
-  UseFormHandleSubmit,
-  UseFormRegister,
-} from '../types/form';
+import type { FormState, UseFormGetFieldState, UseFormHandleSubmit, UseFormRegister } from '../types/form';
 
-export function createFormControl<TFieldValues extends FieldValues>(props: CreateFormControlProps<TFieldValues>) {
-  const { options: useFormOptions, updateFormState } = props;
+export function createFormControl<TFieldValues extends FieldValues>(
+  updateFormState: (formState: FormState<TFieldValues>) => void,
+) {
   let _fields: FieldRefs = {};
   let _defaultValues = {};
   // const _formValues = cloneObject(_defaultValues);
@@ -52,8 +47,6 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
               : ref
             : ref;
 
-          useFormOptions?.autoFocus && fieldRef.focus();
-
           const radioOrCheckbox = isRadioOrCheckbox(fieldRef);
           const refs = field._f.refs || [];
 
@@ -85,7 +78,7 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
     const fieldValues = getFieldsValue(_fields);
 
     try {
-      _formState.errors = await _executeInputValidation(_fields, fieldValues);
+      await _executeInputValidation(_fields, fieldValues);
       updateFormState(_formState);
 
       if (isEmptyObject(_formState.errors)) {
@@ -98,34 +91,6 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
     if (onValidError) {
       throw onValidError;
     }
-  };
-
-  const validateSingleValue = (
-    name: keyof TFieldValues,
-    context: {
-      valid: boolean;
-    } = { valid: true },
-  ) => {
-    const filed = get(_fields, String(name));
-    let errors: InternalFieldErrors = {};
-
-    if (filed) {
-      const formValue = getFieldValue(filed._f);
-      const { _f, validates } = filed;
-      if (_f && validates?.length) {
-        const filedError = validateField(validates, String(name), { [name]: formValue });
-        errors = { ...errors, ...filedError };
-
-        if (filedError[_f.name]) {
-          context.valid = false;
-        }
-      }
-    }
-
-    _formState.errors = errors;
-    updateFormState(_formState);
-
-    return context.valid;
   };
 
   /**
@@ -147,7 +112,7 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
         const { _f, validates } = field;
 
         if (_f && validates?.length) {
-          const filedError = validateField(validates, name, formValues);
+          const filedError = await validateField(validates, name, formValues);
           errors = { ...errors, ...filedError };
 
           if (filedError[_f.name]) {
@@ -157,7 +122,9 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
       }
     }
 
-    return errors;
+    _formState.errors = errors;
+
+    return context.valid;
   };
 
   const getFieldState: UseFormGetFieldState<TFieldValues> = (name, formState) => ({
@@ -188,6 +155,5 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
     handleSubmit,
     getFieldState,
     reset,
-    validateSingleValue,
   };
 }

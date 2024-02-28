@@ -14,7 +14,7 @@ export type Validate = ValidateOption & { validateText: string };
 type ValidateOption =
   | {
       type: 'not';
-      target: string;
+      target: string | number | Array<any> | object;
     }
   | {
       type: 'minMax';
