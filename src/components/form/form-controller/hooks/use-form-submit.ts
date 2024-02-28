@@ -38,7 +38,7 @@ export const useFormSubmit = ({ cleanUp }: { cleanUp?: () => void }) => {
     const isUserQuestionTarget = await _getEscapeValidate(userAnswers);
 
     if (!isUserQuestionTarget) {
-      navigateWithParams(`/no_target?${langParams}`);
+      navigateWithParams(`/no_target`);
       setSubmitStatus({ ...initialApiStatus, isSuccess: true });
       return;
     }
@@ -86,7 +86,7 @@ export const useFormSubmit = ({ cleanUp }: { cleanUp?: () => void }) => {
   const _getEscapeValidate = async (userAnswers: UserAnswers) => {
     if (formLoadedData.escapeValidate.length) {
       for (const { name, ...validate } of formLoadedData.escapeValidate) {
-        const error = await validateField([{ ...validate }], name, userAnswers);
+        const error = await validateField({ validates: [{ ...validate }], formValues: userAnswers, name });
 
         if (!isEmptyObject(error)) return false;
       }
