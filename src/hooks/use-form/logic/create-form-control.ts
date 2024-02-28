@@ -7,7 +7,7 @@ import { isRadioOrCheckbox } from '../utils/is';
 import { set } from '../utils/set';
 
 import { getFieldValue, getFieldsValue } from './get-field-value';
-import type { FieldRefs, FieldValues, Ref } from '../types/fields';
+import type { Field, FieldRefs, FieldValues, Ref } from '../types/fields';
 import type {
   CreateFormControlProps,
   FormState,
@@ -106,17 +106,24 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
       valid: boolean;
     } = { valid: true },
   ) => {
-    const filed = get(_fields, String(name));
+    const filed = get(_fields, String(name)) as Field;
     let errors: InternalFieldErrors = {};
 
     if (filed) {
       const formValue = getFieldValue(filed._f);
-      const { _f, validates } = filed;
-      if (_f && validates?.length) {
-        const filedError = validateField(validates, String(name), { [name]: formValue });
+      const { _f, validates, required, requiredMessage } = filed;
+      if (_f && validates) {
+        const filedError = validateField({
+          validates,
+          name: String(name),
+          formValues: { [name]: formValue },
+          required,
+          requiredMessage,
+        });
+
         errors = { ...errors, ...filedError };
 
-        if (filedError[_f.name]) {
+        if (filedError && filedError[_f.name]) {
           context.valid = false;
         }
       }
@@ -144,13 +151,13 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
       const field = fields[name];
 
       if (field) {
-        const { _f, validates } = field;
+        const { _f, validates, required, requiredMessage } = field;
 
-        if (_f && validates?.length) {
-          const filedError = validateField(validates, name, formValues);
+        if (_f && validates) {
+          const filedError = validateField({ validates, name, formValues, required, requiredMessage });
           errors = { ...errors, ...filedError };
 
-          if (filedError[_f.name]) {
+          if (filedError && filedError[_f.name]) {
             context.valid = false;
           }
         }

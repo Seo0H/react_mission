@@ -12,13 +12,15 @@ describe('validate-field util function type 별 테스트', () => {
         },
       ];
 
-      let error = validateField(mockValidate, 'test', { test: '' });
+      // let error = validateField(mockValidate, 'test', { test: '' });
+      const name = 'test';
+      let error = validateField({ validates: mockValidate, name, formValues: { test: '' } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = validateField(mockValidate, 'test', { test: '   ' });
+      error = validateField({ validates: mockValidate, name, formValues: { test: '    ' } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = validateField(mockValidate, 'test', { test: undefined });
+      error = validateField({ validates: mockValidate, name, formValues: { test: undefined } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
     });
 
@@ -31,7 +33,8 @@ describe('validate-field util function type 별 테스트', () => {
         },
       ];
 
-      const error = validateField(mockValidate, 'test', { test: 'test' });
+      const name = 'test';
+      const error = validateField({ validates: mockValidate, name, formValues: { test: 'test' } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
     });
   });
@@ -46,10 +49,11 @@ describe('validate-field util function type 별 테스트', () => {
         },
       ];
 
-      let error = validateField(mockValidate, 'test', { test: 6 });
+      const name = 'test';
+      let error = validateField({ validates: mockValidate, name, formValues: { test: 6 } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = validateField(mockValidate, 'test', { test: 5 });
+      error = validateField({ validates: mockValidate, name, formValues: { test: 5 } });
       expect(error).toStrictEqual({});
     });
 
@@ -62,10 +66,11 @@ describe('validate-field util function type 별 테스트', () => {
         },
       ];
 
-      let error = validateField(mockValidate, 'test', { test: 4 });
+      const name = 'test';
+      let error = validateField({ validates: mockValidate, name, formValues: { test: 4 } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = validateField(mockValidate, 'test', { test: 5 });
+      error = validateField({ validates: mockValidate, name, formValues: { test: 5 } });
       expect(error).toStrictEqual({});
     });
 
@@ -78,10 +83,11 @@ describe('validate-field util function type 별 테스트', () => {
         },
       ];
 
-      let error = validateField(mockValidate, 'test', { test: 2 });
+      const name = 'test';
+      let error = validateField({ validates: mockValidate, name, formValues: { test: 2 } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = validateField(mockValidate, 'test', { test: 8 });
+      error = validateField({ validates: mockValidate, name, formValues: { test: 8 } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
     });
   });
@@ -96,10 +102,11 @@ describe('validate-field util function type 별 테스트', () => {
         },
       ];
 
-      let error = validateField(mockValidate, 'test', { test: 'wrong' });
+      const name = 'test';
+      let error = validateField({ validates: mockValidate, name, formValues: { test: 'wrong' } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = validateField(mockValidate, 'test', { test: 'test' });
+      error = validateField({ validates: mockValidate, name, formValues: { test: 'test' } });
       expect(error).toStrictEqual({});
     });
 
@@ -112,10 +119,11 @@ describe('validate-field util function type 별 테스트', () => {
         },
       ];
 
-      let error = validateField(mockValidate, 'test', { something: '1', test: '2' });
+      const name = 'test';
+      let error = validateField({ validates: mockValidate, name, formValues: { something: '1', test: '2' } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = validateField(mockValidate, 'test', { something: '1', test: '1' });
+      error = validateField({ validates: mockValidate, name, formValues: { something: '1', test: '1' } });
       expect(error).toStrictEqual({});
     });
 
@@ -128,7 +136,8 @@ describe('validate-field util function type 별 테스트', () => {
         },
       ];
 
-      const error = validateField(mockValidate, 'test', { test: '-' });
+      const name = 'test';
+      const error = validateField({ validates: mockValidate, name, formValues: { test: '-' } });
       expect(error).toStrictEqual({});
     });
   });
@@ -143,10 +152,11 @@ describe('validate-field util function type 별 테스트', () => {
         },
       ];
 
-      let error = validateField(mockValidate, 'test', { test: 'test validateField' });
+      const name = 'test';
+      let error = validateField({ validates: mockValidate, name, formValues: { test: 'test-validate' } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = validateField(mockValidate, 'test', { test: 'test' });
+      error = validateField({ validates: mockValidate, name, formValues: { test: 'test' } });
       expect(error).toStrictEqual({});
     });
 
@@ -159,10 +169,11 @@ describe('validate-field util function type 별 테스트', () => {
         },
       ];
 
-      let error = validateField(mockValidate, 'test', { test: 'test' });
+      const name = 'test';
+      let error = validateField({ validates: mockValidate, name, formValues: { test: 'test' } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = validateField(mockValidate, 'test', { test: 'test validateField' });
+      error = validateField({ validates: mockValidate, name, formValues: { test: 'test validateField' } });
       expect(error).toStrictEqual({});
     });
 
@@ -175,13 +186,15 @@ describe('validate-field util function type 별 테스트', () => {
         },
       ];
 
-      let error = validateField(mockValidate, 'test', { test: '1' });
+      const name = 'test';
+      let error = validateField({ validates: mockValidate, name, formValues: { test: '1' } });
+
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = validateField(mockValidate, 'test', { test: 'test validateField' });
+      error = validateField({ validates: mockValidate, name, formValues: { test: 'test validateField' } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = validateField(mockValidate, 'test', { test: 'test' });
+      error = validateField({ validates: mockValidate, name, formValues: { test: 'test' } });
       expect(error).toStrictEqual({});
     });
   });
@@ -197,10 +210,11 @@ describe('validate-field util function type 별 테스트', () => {
         },
       ];
 
-      let error = validateField(mockValidate, 'test', { test: 'test' });
+      const name = 'test';
+      let error = validateField({ validates: mockValidate, name, formValues: { test: 'test' } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = validateField(mockValidate, 'test', { test: 'test@email.com' });
+      error = validateField({ validates: mockValidate, name, formValues: { test: 'test@email.com' } });
       expect(error).toStrictEqual({});
     });
 
@@ -213,10 +227,11 @@ describe('validate-field util function type 별 테스트', () => {
         },
       ];
 
-      let error = validateField(mockValidate, 'test', { test: 'test' });
+      const name = 'test';
+      let error = validateField({ validates: mockValidate, name, formValues: { test: 'test' } });
       expect(error).toStrictEqual({ test: { message: [mockValidate[0].validateText] } });
 
-      error = validateField(mockValidate, 'test', { test: '010-1234-5678' });
+      error = validateField({ validates: mockValidate, name, formValues: { test: '010-1234-5678' } });
       expect(error).toStrictEqual({});
     });
   });
@@ -226,7 +241,8 @@ describe('validate-field util function 예외 처리 테스트', () => {
   describe('value가 undefined 이면서', () => {
     it('검증 배열도 길이가 0인 경우', () => {
       const mockValidate: Validate[] = [];
-      const error = validateField(mockValidate, 'test', undefined);
+      const name = 'test';
+      const error = validateField({ validates: mockValidate, name, formValues: undefined });
       expect(error).toStrictEqual({});
     });
 
@@ -247,8 +263,8 @@ describe('validate-field util function 예외 처리 테스트', () => {
       },
     ];
 
-    const error = validateField(mockValidate, 'test', { test: 'test' });
-
+    const name = 'test';
+    const error = validateField({ validates: mockValidate, name, formValues: { test: 'test' } });
     expect(error).toStrictEqual({ test: { message: ['test를 입력하면 안됩니다.', '5글자 이상이여야 합니다.'] } });
   });
 });
