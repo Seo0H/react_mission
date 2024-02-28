@@ -1,4 +1,4 @@
-import { RouteObject } from 'react-router-dom';
+import { RouteObject, redirect } from 'react-router-dom';
 
 import { GlobalLayout } from '@/components/layout/global/global-layout';
 import { LanguageProvider } from '@/hooks/use-language/language-context';
@@ -17,6 +17,10 @@ export const routes: RouteObject[] = [
       </LanguageProvider>
     ),
     children: [
+      {
+        path: '/*',
+        loader: () => redirect('/'),
+      },
       {
         path: '/',
         element: <MainPage />,

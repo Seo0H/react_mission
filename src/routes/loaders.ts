@@ -1,10 +1,12 @@
-import { isError } from '@/api/factory/type';
+import { type LoaderFunctionArgs } from 'react-router-dom';
+
 import { formAPI } from '@/api/form';
-import { userBrowserLanguage } from '@/components/lang/constants';
+import { userBrowserLanguage } from '@/hooks/use-language/constants';
 import { makeClientForm } from '@/routes/utils';
 
 import type { GetQuestionWithIdProps } from '@/api/form/types/server-request';
-import type { LoaderFunctionArgs } from 'react-router-dom';
+
+let abortController = new AbortController();
 
 export const loaders = {
   async formLoader(props: LoaderFunctionArgs) {
@@ -13,11 +15,12 @@ export const loaders = {
     const lang =
       (new URL(request.url).searchParams.get('lang') as GetQuestionWithIdProps['lang']) ?? userBrowserLanguage;
 
-    if (!id) return new Response('params id is missing.', { status: 404 });
+    if (abortController) {
+      abortController.abort();
+      abortController = new AbortController();
+    }
 
-    const response = await formAPI.getQuestionWithId({ id, lang });
-
-    if (isError(response)) throw new Error('error');
+    const response = await formAPI.getQuestionWithId({ id, lang }, abortController.signal);
 
     return {
       ...response,
