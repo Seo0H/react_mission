@@ -38,7 +38,7 @@ export const FormController = () => {
         <ProgressBar visuals={[{ color: globalColor.mainColor, percentage }]} />
       </div>
 
-      <div className={styles['form-container']}>
+      <section className={styles['form-container']}>
         <label htmlFor={name} className={`${styles['label']} ${required && styles['required']}`}>
           {question}
         </label>
@@ -55,7 +55,7 @@ export const FormController = () => {
           </Button>
           <PressEnter enterCallback={handleKeyDown} />
         </div>
-      </div>
+      </section>
     </>
   );
 };
