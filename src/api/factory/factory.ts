@@ -1,4 +1,5 @@
 import { initialApiStatus, type API, type APIStatusType, type ErrorType } from '@/api/factory/type';
+import { userBrowserLanguage } from '@/hooks/use-language/constants';
 
 export default class APIFactory<APIResponse> implements API<APIResponse> {
   endPoint: string;
@@ -21,10 +22,15 @@ export default class APIFactory<APIResponse> implements API<APIResponse> {
       });
 
       if (!response.ok) {
-        throw new Response('Something Wrong', { status: response.status });
+        throw new Response(response.statusText, { status: response.status });
       }
 
       const data = await response.json();
+
+      if (Array.isArray(data) && !data.length) {
+        const errorMessage = userBrowserLanguage === 'ko' ? '데이터가 비어 있습니다.' : 'Data is empty.';
+        throw new Response(errorMessage, { status: 404 });
+      }
 
       this.status = { ...initialApiStatus, isSuccess: true };
 
