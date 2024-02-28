@@ -1,9 +1,7 @@
 export type APIStatusType = {
   isLoading: boolean;
   isSuccess: boolean;
-  isError: boolean;
-  isAbort: boolean;
-};
+} & { isError: boolean; isAbort: boolean; message: string };
 
 export interface API<APIResponseType> {
   readonly endPoint: string;
@@ -21,6 +19,7 @@ export const initialApiStatus: APIStatusType = {
   isSuccess: false,
   isError: false,
   isAbort: false,
+  message: '',
 };
 
 export function isError(res: unknown | ErrorType): res is ErrorType {

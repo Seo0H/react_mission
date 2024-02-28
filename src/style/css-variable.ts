@@ -38,6 +38,10 @@ export const globalFontSize = {
   xs: '14px',
 } as const;
 
+export const globalSize = {
+  headerHeight: '80px',
+};
+
 export type GlobalColor = typeof globalColor;
 export type GlobalFontSize = typeof globalFontSize;
 
