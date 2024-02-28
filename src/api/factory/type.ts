@@ -1,7 +1,7 @@
 export type APIStatusType = {
   isLoading: boolean;
   isSuccess: boolean;
-} & { isError: boolean; isAbort: boolean; message: string };
+} & { isError: boolean; isAbort: boolean; message: string }; // TODO: message를 LanguagesContents type으로 변경
 
 export interface API<APIResponseType> {
   readonly endPoint: string;
