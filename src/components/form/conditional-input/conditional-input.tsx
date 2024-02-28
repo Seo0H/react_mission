@@ -3,15 +3,17 @@ import { type ComponentPropsWithRef, type ChangeEvent } from 'react';
 import { inputComponents } from '@/components/form';
 import { useFormContext } from '@/hooks/use-form/form-context';
 
-import type { Form, Selection } from '@/api/form/types/server-response';
+import type { Selection } from '@/api/form/types/server-response';
+import type { ClientForm } from '@/constants/client-form-type';
 
 export type Omitted = 'value' | 'onChange';
 
 export interface ConditionalInputProps {
   name: string;
-  type: Form['type'];
+  type: ClientForm['type'];
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  validate?: Form['validate'];
+  validate?: ClientForm['validate'];
+  requiredMessage?: ClientForm['requiredMessage'];
   selections?: Selection[];
 }
 

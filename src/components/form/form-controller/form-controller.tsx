@@ -3,19 +3,23 @@ import { useCallback } from 'react';
 import { Button } from '@/components/common/buttons';
 import ErrorMessage from '@/components/common/error/message';
 import { ProgressBar } from '@/components/common/progress-bar/progress-bar';
-import { ToastAlert } from '@/components/common/toast';
 
 import { ConditionalInput } from '@/components/form';
 import PressEnter from '@/components/press-enter/press-enter';
 import { ErrorTost } from '@/components/toast/error';
 import { useFormContext } from '@/hooks/use-form/form-context';
+import { useLanguageContext } from '@/hooks/use-language/language-context';
+import { LanguagesContents } from '@/hooks/use-language/type';
 import { globalColor } from '@/style/css-variable';
 
 import styles from './form-controller.module.css';
 import { useFormQuestionControl } from './hooks/use-form-question-controll';
 import { useFormSubmit } from './hooks/use-form-submit';
 
+const requiredMessage: LanguagesContents = { ko: '필수 질문입니다.', en: 'This is an essential question.' };
+
 export const FormController = () => {
+  const { lang } = useLanguageContext();
   const { isLastQuestion, changeNextQuestion, resetIdx, form, percentage } = useFormQuestionControl();
   const { onSubmit, submitStatus } = useFormSubmit({ cleanUp: resetIdx });
   const { getFieldState } = useFormContext();
@@ -47,7 +51,13 @@ export const FormController = () => {
         </label>
 
         <div className={styles['input-wrapper']}>
-          <ConditionalInput key={form.name} selections={form.radioContext} {...rest} {...form} />
+          <ConditionalInput
+            key={form.name}
+            selections={form.radioContext}
+            requiredMessage={requiredMessage[lang]}
+            {...rest}
+            {...form}
+          />
 
           <div className={styles['invalid-message-wrapper']}>{invalid && <ErrorMessage error={error?.message} />}</div>
         </div>
