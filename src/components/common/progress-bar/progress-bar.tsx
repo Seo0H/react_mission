@@ -8,7 +8,7 @@ type Visual = {
 };
 
 export const ProgressBar = ({
-  backgroundColor = '#e5e5e5',
+  backgroundColor = 'var(--gray-200)',
   visuals = [
     {
       percentage: 0,
@@ -23,9 +23,11 @@ export const ProgressBar = ({
 
   useEffect(() => {
     // NOTE: https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
-    requestAnimationFrame(() => {
+    // 부드러운 애니메이션을 위한 최적화 . js가 프레임 시작 시 실행되도록 보장하기 위함.
+    const animationId = requestAnimationFrame(() => {
       setWidths(visuals.map((item) => item.percentage));
     });
+    return () => cancelAnimationFrame(animationId);
   }, [visuals]);
 
   return (

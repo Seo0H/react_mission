@@ -1,33 +1,49 @@
+import { camelToKebab } from '@/utils/camel-to-kebab';
+import { isObject } from '@/utils/is';
+
 import type { GlobalColor, GlobalFontSize } from '@/style/css-variable';
 
 /**
- * @param globalColor 전역 스타일 CSS Variable이 선언되어있는 객체
  * @description 전역 스타일 객체를 CSS Variable 형식의 String으로 변환하는 함수.
- * 전역 스타일에 주입하기 위해 사용.
  */
-export default function generateCssVar(globalColor: GlobalColor) {
-  return Object.entries(globalColor).reduce((mergeCssVars, [key, val]) => {
+export const generateCssVar = (variable: GlobalColor | GlobalFontSize) => {
+  const type = isColorType(variable) ? 'color' : 'font';
+  return Object.entries(variable).reduce((mergeCssVars, [key, val]) => {
     key = camelToKebab(key);
+
     // 명도로 표현되는 색상 판별
-    if (typeof val === 'object') {
-      return `${mergeCssVars}${Object.entries(val).reduce(getBrightnessCssVar, '')}`;
+    if (isBrightnessType(type, val)) {
+      return `${mergeCssVars}${Object.entries(val).reduce(generateBrightnessCssVarString(key), '')}`;
+    } else if (type === 'font') {
+      return `${mergeCssVars}--font-size-${key}:${val};`;
     }
 
     return `${mergeCssVars}--${key}:${val};`;
-
-    function getBrightnessCssVar(prev: string, [brightness, color]: [string, string]) {
-      return `${prev}--${key}-${brightness}:${color};`;
-    }
   }, '');
-}
+};
 
-export function generateFontSizeCssVar(globalFontSize: GlobalFontSize) {
-  return Object.entries(globalFontSize).reduce((mergeCssVar, [key, val]) => {
-    key = camelToKebab(key);
-    return `${mergeCssVar}--font-size-${key}:${val};`;
-  }, '');
-}
+/**
+ * 특정 키, 밝기, 색상에 대한 CSS 변수 스타일 문자열을 생성합
+ * @param  key - CSS 변수와 연결된 키
+ * @returns 이전 스타일 문자열과 [밝기, 색상] 배열을 받아 CSS 변수 정의가 추가된 업데이트된 스타일 문자열을 반환하는 함수
+ */
+const generateBrightnessCssVarString =
+  (key: string) =>
+  (prev: string, [brightness, color]: [string, string]) => {
+    return `${prev}--${key}-${brightness}:${color};`;
+  };
 
-function camelToKebab(input: string) {
-  return input.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-}
+const isColorType = (variable: GlobalColor | GlobalFontSize): variable is GlobalColor => {
+  if ('mainColor' in variable) {
+    return true;
+  }
+
+  return false;
+};
+
+const isBrightnessType = (
+  type: 'color' | 'font',
+  value: GlobalColor[keyof GlobalColor],
+): value is GlobalColor[keyof GlobalColor] => {
+  return type === 'color' && isObject(value);
+};
