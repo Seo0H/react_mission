@@ -17,7 +17,9 @@ export const DefaultRadio = forwardRef<HTMLInputElement, DefaultRadioProps>((pro
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (ref && typeof ref === 'function') {
       ref(e.target);
-    } else if (onChange) onChange(e);
+    }
+
+    if (onChange) onChange(e);
   };
 
   return (
