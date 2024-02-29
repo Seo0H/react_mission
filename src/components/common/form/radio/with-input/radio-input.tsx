@@ -28,6 +28,8 @@ export const RadioWithInput = forwardRef<HTMLInputElement, InputRadioProps>(
         : currentValue
       : undefined;
 
+    // NOTE: radio groupe으로 ref가 넘어가면 radio 가장 최상단 div에 해당 ref가 적용됨.
+    // 기타를 선택했을 경우 해당 text input 이 ref에 전달하기 위한 래핑 함수
     const wrappedRef = () => {
       if (isFunction(ref)) {
         if (!extraTextInputRef?.current?.disabled) {
