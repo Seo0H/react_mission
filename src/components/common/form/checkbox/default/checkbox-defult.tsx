@@ -27,6 +27,7 @@ export const DefaultCheckbox = forwardRef<HTMLInputElement, DefaultCheckboxProps
         values={isControlled ? [...currentValues] : undefined}
         name={name}
         defaultValue={defaultCheckedValues}
+        ref={ref}
       >
         {contexts.map(({ label, value: thisValue }, idx) => (
           <Checkbox

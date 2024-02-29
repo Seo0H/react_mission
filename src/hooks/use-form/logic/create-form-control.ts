@@ -64,7 +64,9 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
               ...field._f,
               ...(radioOrCheckbox
                 ? {
-                    refs: [...refs, ...fieldRef, ...(Array.isArray(get(_defaultValues, name)) ? [{}] : [])],
+                    refs: Array.isArray(_fields[name]?._f.refs) // 이미 ref가 있을경우 중복해서 등록하지 않음
+                      ? _fields[name]?._f?.refs
+                      : [...refs, ...fieldRef, ...(Array.isArray(get(_defaultValues, name)) ? [{}] : [])],
                     ref: { type: fieldRef[0].type, name },
                   }
                 : { ref: fieldRef }),
@@ -83,6 +85,7 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
 
     let onValidError = undefined;
     const fieldValues = getFieldsValue(_fields);
+    console.log('🚀 ~ consthandleSubmit:UseFormHandleSubmit<TFieldValues>= ~ fieldValues:', fieldValues);
 
     try {
       _formState.errors = await _executeInputValidation(_fields, fieldValues);
