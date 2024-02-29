@@ -28,6 +28,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(pro
   }
 
   let onChange = onChangeProp;
+
   if (group?.onChange && value != null) {
     onChange = callAll(group.onChange, onChangeProp);
   }
@@ -45,7 +46,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(pro
   const radioInputProps = getRadioProps({ onChange, name, ref });
 
   return (
-    <label className={`custom-radio ${styles.label} ${labelStyle ? labelStyle : ''}`}>
+    <label htmlFor={radioInputProps.id} className={`custom-radio ${styles.label} ${labelStyle ? labelStyle : ''}`}>
       <input type='radio' className={className ?? styles.radio} {...radioInputProps} />
       <span className={`${styles.span} ${textStyle ? textStyle : ''}`}>{children}</span>
     </label>
