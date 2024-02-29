@@ -85,7 +85,6 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
 
     let onValidError = undefined;
     const fieldValues = getFieldsValue(_fields);
-    console.log('🚀 ~ consthandleSubmit:UseFormHandleSubmit<TFieldValues>= ~ fieldValues:', fieldValues);
 
     try {
       _formState.errors = await _executeInputValidation(_fields, fieldValues);
