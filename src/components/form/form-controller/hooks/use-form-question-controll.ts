@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 import { useLoaderData } from 'react-router-dom';
 
@@ -14,15 +14,15 @@ export const useFormQuestionControl = () => {
   const form = forms[idx];
   const isLastQuestion = idx === forms.length - 1;
 
-  const nextQuestion = useCallback(() => {
+  const nextQuestion = () => {
     if (isLastQuestion === false && validateSingleValue(form.name)) {
       setIdx(idx + 1);
     }
-  }, [form]);
+  };
 
-  const beforeQuestion = useCallback(() => {
+  const beforeQuestion = () => {
     if (idx > 0) setIdx(idx - 1);
-  }, [form]);
+  };
 
   return {
     forms,

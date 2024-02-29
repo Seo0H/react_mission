@@ -1,5 +1,6 @@
 import { validateField } from '@/hooks/use-form/logic/validate-field';
 import { InternalFieldErrors } from '@/hooks/use-form/types/errors';
+import { Validate } from '@/hooks/use-form/types/validator';
 import { isEmptyObject, isUndefined } from '@/utils/is';
 
 import { get } from '../utils/get';
@@ -19,12 +20,19 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
   const { options: useFormOptions, updateFormState } = props;
   let _fields: FieldRefs = {};
   let _defaultValues = {};
-  // const _formValues = cloneObject(_defaultValues);
   let _formState: FormState<TFieldValues> = {
     errors: {},
     isValid: false,
   };
 
+  /**
+   * 폼 필드의 input의 name을 key로 이용해 내부 필드 객체인 `_field`에
+   * 폼 input의 참조를 등록하는 함수
+   * @template TFieldValues - 폼 필드 값의 유형을 나타내는 템플릿 매개변수
+   * @param  name - 등록할 폼 필드의 이름
+   * @param  [options={}] - 선택적인 옵션 객체
+   * @returns UseFormRegisterReturn<TFieldValues> - 폼 필드의 이름과 참조를 반환하는 객체
+   */
   const register: UseFormRegister<TFieldValues> = (name, options = {}) => {
     let field = get(_fields, name);
 
@@ -64,7 +72,7 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
               ...field._f,
               ...(radioOrCheckbox
                 ? {
-                    refs: Array.isArray(_fields[name]?._f.refs) // 이미 ref가 있을경우 중복해서 등록하지 않음
+                    refs: Array.isArray(_fields[name]?._f.refs) // 이미 refs가 있을경우 중복해서 등록하지 않음
                       ? _fields[name]?._f?.refs
                       : [...refs, ...fieldRef, ...(Array.isArray(get(_defaultValues, name)) ? [{}] : [])],
                     ref: { type: fieldRef[0].type, name },
@@ -87,7 +95,7 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
     const fieldValues = getFieldsValue(_fields);
 
     try {
-      _formState.errors = await _executeInputValidation(_fields, fieldValues);
+      _formState.errors = await _executeInputValidation(_fields);
       updateFormState(_formState);
 
       if (isEmptyObject(_formState.errors)) {
@@ -102,12 +110,7 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
     }
   };
 
-  const validateSingleValue = (
-    name: keyof TFieldValues,
-    context: {
-      valid: boolean;
-    } = { valid: true },
-  ) => {
+  const _validateSingleValue = (name: keyof TFieldValues) => {
     const filed = get(_fields, String(name)) as Field;
     let errors: InternalFieldErrors = {};
 
@@ -124,46 +127,39 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
         });
 
         errors = { ...errors, ...filedError };
-
-        if (filedError && filedError[_f.name]) {
-          context.valid = false;
-        }
       }
     }
 
-    _formState.errors = errors;
-    updateFormState(_formState);
-
-    return context.valid;
+    return errors;
   };
 
-  /**
-   * 개별 Input의 유효성 검증 메서드
-   */
-  const _executeInputValidation = async <TFelidValues extends FieldValues = FieldValues>(
-    fields: FieldRefs,
-    formValues: TFelidValues,
+  const validateSingleValue = (
+    name: keyof TFieldValues,
     context: {
       valid: boolean;
     } = { valid: true },
   ) => {
+    const filedError = _validateSingleValue(name);
+
+    if (!isEmptyObject(filedError)) {
+      context.valid = false;
+      _setErrorState(filedError);
+    }
+
+    return context.valid;
+  };
+
+  const _setErrorState = (errors: InternalFieldErrors) => {
+    set(_formState, 'errors', errors);
+    updateFormState(_formState);
+  };
+
+  const _executeInputValidation = async (fields: FieldRefs) => {
     let errors: InternalFieldErrors = {};
 
     for (const name in fields) {
-      const field = fields[name];
-
-      if (field) {
-        const { _f, validates, required, requiredMessage } = field;
-
-        if (_f && validates) {
-          const filedError = validateField({ validates, name, formValues, required, requiredMessage });
-          errors = { ...errors, ...filedError };
-
-          if (filedError && filedError[_f.name]) {
-            context.valid = false;
-          }
-        }
-      }
+      const fieldError = _validateSingleValue(name);
+      errors = { ...errors, ...fieldError };
     }
 
     return errors;
