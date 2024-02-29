@@ -85,6 +85,14 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
     };
   };
 
+  /**
+   * 폼 전체 값에 대한 유효성 검사를 수행하고 유효성 검사가 성공하면 제공된 `onValid` 콜백을 호출하는 함수
+   *
+   * @template TFieldValues - 폼 필드 값들을 나타내는 유형.
+   * @param onValid - 폼 유효성 검사가 성공할 때 실행되는 콜백 함수. 폼 필드 값과 원본 이벤트를 매개변수 받음.
+   * @returns  - 폼의 onSubmit 이벤트에 연결할 수 있는 submit 핸들러 함수
+   * @throws {Error} - `onValid` 콜백 실행 중 예외가 발생하면 오류를 throw
+   */
   const handleSubmit: UseFormHandleSubmit<TFieldValues> = (onValid) => async (e) => {
     if (e) {
       e.preventDefault && e.preventDefault();
@@ -95,7 +103,7 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
     const fieldValues = getFieldsValue(_fields);
 
     try {
-      _formState.errors = await _executeInputValidation(_fields);
+      _formState.errors = _executeInputValidation(_fields);
       updateFormState(_formState);
 
       if (isEmptyObject(_formState.errors)) {
@@ -154,7 +162,7 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
     updateFormState(_formState);
   };
 
-  const _executeInputValidation = async (fields: FieldRefs) => {
+  const _executeInputValidation = (fields: FieldRefs) => {
     let errors: InternalFieldErrors = {};
 
     for (const name in fields) {
