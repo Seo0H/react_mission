@@ -29,13 +29,13 @@ export const FormController = () => {
 
   // NOTE: form의 기본 enter 이벤트로 인해 커스텀 enter 이벤트와 겹치는 문제가 있었음.
   // 따라서 form 대신 div 를 사용하고 enter 이벤트의 경우  onsubmit 처리를 해 줌
-  const handleKeyDown = useCallback(() => {
+  const handleKeyDown = () => {
     if (isLastQuestion) {
       onSubmit();
     } else {
       nextQuestion();
     }
-  }, [nextQuestion]);
+  };
 
   const buttonKey = isLastQuestion ? 'submit' : 'next';
   const buttonHandler = isLastQuestion ? onSubmit : nextQuestion;
