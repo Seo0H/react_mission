@@ -3,7 +3,6 @@ import { InternalFieldErrors } from '@/hooks/use-form/types/errors';
 import { isEmptyObject, isUndefined } from '@/utils/is';
 
 import { get } from '../utils/get';
-import { isRadioOrCheckbox } from '../utils/is';
 import { set } from '../utils/set';
 
 import { getFieldValue, getFieldsValue } from './get-field-value';
@@ -40,7 +39,6 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
 
     return {
       name,
-      onChange: async (e) => {},
       ref: (ref: HTMLInputElement | null): void => {
         if (ref) {
           register(name, options);
@@ -48,13 +46,15 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
 
           const fieldRef = isUndefined(ref.value)
             ? ref.querySelectorAll
-              ? (ref.querySelectorAll('input,select,textarea')[0] as Ref) || ref
+              ? ([...ref.querySelectorAll('input,select,textarea')] as Ref[]) || ref
               : ref
             : ref;
 
-          useFormOptions?.autoFocus && fieldRef.focus();
+          if (useFormOptions?.autoFocus) {
+            Array.isArray(fieldRef) ? fieldRef[0].focus() : fieldRef.focus();
+          }
 
-          const radioOrCheckbox = isRadioOrCheckbox(fieldRef);
+          const radioOrCheckbox = Array.isArray(fieldRef);
           const refs = field._f.refs || [];
 
           set(_fields, name, {
@@ -64,8 +64,8 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
               ...field._f,
               ...(radioOrCheckbox
                 ? {
-                    refs: [...refs, fieldRef, ...(Array.isArray(get(_defaultValues, name)) ? [{}] : [])],
-                    ref: { type: fieldRef.type, name },
+                    refs: [...refs, ...fieldRef, ...(Array.isArray(get(_defaultValues, name)) ? [{}] : [])],
+                    ref: { type: fieldRef[0].type, name },
                   }
                 : { ref: fieldRef }),
             },

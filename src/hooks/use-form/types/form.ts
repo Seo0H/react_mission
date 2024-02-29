@@ -27,7 +27,6 @@ export interface FormState<TFelidValue extends FieldValues = FieldValues> {
 }
 
 type UseFormRegisterReturn<TFiledName> = {
-  onChange: ChangeHandler;
   ref: (instance: any) => void;
   name: TFiledName;
   min?: string | number;
