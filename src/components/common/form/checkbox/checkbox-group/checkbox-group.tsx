@@ -1,5 +1,6 @@
 import { ComponentPropsWithRef, createContext, createRef, forwardRef, useContext } from 'react';
 
+import styles from './checkbox-group.module.css';
 import { type UseCheckboxGroupReturn, type UseCheckboxGroupProps, useCheckboxGroup } from './use-checkbox-group';
 
 interface CheckboxGroupContext extends Pick<UseCheckboxGroupReturn, 'isDisabled' | 'name' | 'onChange' | 'values'> {}
@@ -32,7 +33,9 @@ export const CheckBoxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(func
 
   return (
     <CheckboxGroupContext.Provider value={group}>
-      <div ref={ref}>{children}</div>
+      <div ref={ref} className={styles['checkbox-group-wrapper']}>
+        {children}
+      </div>
     </CheckboxGroupContext.Provider>
   );
 });

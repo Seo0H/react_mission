@@ -5,12 +5,13 @@ import { callAll } from '@/utils/call-all-handlers';
 import { useCheckboxGroupContext } from '../checkbox-group/checkbox-group';
 import { UseCheckboxProps } from '../types';
 
+import styles from './checkbox.module.css';
 import { useCheckbox } from './use-checkbox';
 
 interface CheckboxProps extends UseCheckboxProps, Omit<ComponentPropsWithRef<'input'>, 'value'> {}
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(props, ref) {
-  const { children, onChange: onChangeProp, value, isDisabled, ...rest } = props;
+  const { children, onChange: onChangeProp, className, value, isDisabled, ...rest } = props;
 
   const group = useCheckboxGroupContext();
 
@@ -37,7 +38,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
 
   return (
     <label>
-      <input type='checkbox' ref={ref} {...getInputProps()} {...rest} />
+      <input type='checkbox' ref={ref} className={`${className} ${styles.checkbox}`} {...getInputProps()} {...rest} />
       {children}
     </label>
   );
