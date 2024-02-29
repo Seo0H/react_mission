@@ -14,14 +14,21 @@ export const useFormQuestionControl = () => {
   const form = forms[idx];
   const isLastQuestion = idx === forms.length - 1;
 
-  const changeNextQuestion = useCallback(() => {
+  const nextQuestion = useCallback(() => {
     if (isLastQuestion === false && validateSingleValue(form.name)) {
       setIdx(idx + 1);
     }
   }, [form]);
 
+  const beforeQuestion = useCallback(() => {
+    if (idx > 0) setIdx(idx - 1);
+  }, [form]);
+
   return {
-    changeNextQuestion,
+    forms,
+    currentIdx: idx,
+    nextQuestion,
+    beforeQuestion,
     isLastQuestion,
     form,
     percentage: Math.floor(((idx + 1) / forms.length) * 100),
