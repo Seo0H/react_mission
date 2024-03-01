@@ -10,13 +10,11 @@ const MainPage = () => {
   const url = `/question/common`;
 
   return (
-    <>
-      <TitleSubtitleButtonLayout
-        heading={Contents.header[lang]}
-        sub={Contents.subText[lang]}
-        button={<EnterableLink url={url} className={styles['start-btn']} contents={Contents.link} />}
-      />
-    </>
+    <TitleSubtitleButtonLayout
+      heading={Contents.header[lang]}
+      sub={Contents.subText[lang]}
+      button={<EnterableLink url={url} className={styles['start-btn']} contents={Contents.link} />}
+    />
   );
 };
 
