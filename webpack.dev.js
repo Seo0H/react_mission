@@ -8,11 +8,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = () => {
   dotenv.config({ path: '.env.dev' });
 
-  const isDevelopment = process.env.NODE_ENV === 'development';
-
   return {
-    mode: process.env.NODE_ENV,
-    devtool: isDevelopment ? 'eval' : 'source-map',
+    mode: 'development',
+    devtool: 'eval',
     target: 'web',
     entry: './src/index.tsx',
 
@@ -40,6 +38,7 @@ module.exports = () => {
         {
           test: /\.(ts|tsx)$/,
           exclude: /node_modules/,
+          include: path.resolve(__dirname, 'src'),
           loader: 'babel-loader',
         },
         {

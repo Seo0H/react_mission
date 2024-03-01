@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { useCallback, useId } from 'react';
 
 import { Button } from '@/components/common/buttons';
@@ -12,6 +13,7 @@ import { useFormContext } from '@/hooks/use-form/form-context';
 import { useLanguageContext } from '@/hooks/use-language/language-context';
 import { LanguagesContents } from '@/hooks/use-language/type';
 import { globalColor } from '@/style/css-variable';
+import { debounce } from '@/utils/debounce';
 
 import styles from './form-controller.module.css';
 import { useFormQuestionControl } from './hooks/use-form-question-controll';
@@ -29,13 +31,13 @@ export const FormController = () => {
 
   // NOTE: form의 기본 enter 이벤트로 인해 커스텀 enter 이벤트와 겹치는 문제가 있었음.
   // 따라서 form 대신 div 를 사용하고 enter 이벤트의 경우  onsubmit 처리를 해 줌
-  const handleKeyDown = () => {
+  const handleKeyDown = debounce(() => {
     if (isLastQuestion) {
       onSubmit();
     } else {
       nextQuestion();
     }
-  };
+  });
 
   const buttonKey = isLastQuestion ? 'submit' : 'next';
   const buttonHandler = isLastQuestion ? onSubmit : nextQuestion;

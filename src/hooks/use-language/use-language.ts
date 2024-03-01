@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useMatch, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { languageOptionContents } from '@/components/lang/constants';
 import { userBrowserLanguage } from '@/hooks/use-language/constants';
@@ -19,20 +19,16 @@ import type { Languages } from '@/hooks/use-language/type';
  * **따라서 사용 시 주의가 필요**.
  */
 export const useLanguage = (initialValue?: Languages) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const [searchParams, setSearchParams] = useSearchParams({ lang: initialValue ?? userBrowserLanguage });
   let lang = (searchParams.get('lang') ? searchParams.get('lang') : userBrowserLanguage) as Languages;
   let langParams = searchParams.toString();
 
-  useEffect(() => {
-    navigate({ pathname: location.pathname, search: `?lang=${lang}` });
-  }, [lang]);
-
-  const handleLanguageChange = (lang: Languages) => {
-    setSearchParams({ lang });
-  };
+  const handleLanguageChange = useCallback(
+    (lang: Languages) => {
+      setSearchParams({ lang });
+    },
+    [lang],
+  );
 
   // Languages에 설정된 언어 이외의 언어일 경우 기본 언어는 영어 (en)
   if (!isLanguageOptions(lang)) {

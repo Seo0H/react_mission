@@ -55,5 +55,5 @@
       "node": true
     }
   },
-  "ignorePatterns": ["webpack.config.js"]
+  "ignorePatterns": ["webpack.*.js"]
 }
