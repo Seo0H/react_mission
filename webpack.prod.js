@@ -16,7 +16,7 @@ module.exports = () => {
 
     output: {
       path: path.join(__dirname, '/dist'),
-      filename: 'bundle.js',
+      filename: '[name].js',
       clean: true,
       publicPath: '/',
     },
@@ -74,5 +74,10 @@ module.exports = () => {
         chunkFilename: 'assets/css/[name].[contenthash:8].chunk.css',
       }),
     ],
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+      },
+    },
   };
 };
