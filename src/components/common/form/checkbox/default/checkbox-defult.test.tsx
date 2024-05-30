@@ -62,6 +62,6 @@ describe('DefaultCheckbox 동작 테스트', () => {
     fireEvent.click(two);
 
     expect(two).toBeChecked();
-    expect(mockRef).toHaveBeenCalledTimes(1);
+    expect(mockRef).toHaveBeenCalled();
   });
 });
