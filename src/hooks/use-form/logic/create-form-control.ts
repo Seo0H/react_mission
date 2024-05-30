@@ -107,6 +107,7 @@ export function createFormControl<TFieldValues extends FieldValues>(props: Creat
       updateFormState(_formState);
 
       if (isEmptyObject(_formState.errors)) {
+        _formState.isValid = true;
         await onValid(fieldValues as TFieldValues, e);
       }
     } catch (error) {
