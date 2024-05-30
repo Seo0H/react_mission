@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 /** @type {import('webpack').Configuration} */
 module.exports = () => {
-  dotenv.config({ path: '.env.dev' });
+  dotenv.config({ path: ['.env.dev', '.env'] });
 
   return {
     mode: 'development',
