@@ -4,8 +4,8 @@
   "description": "react 과제테스트 레포지토리입니다.",
   "main": "src/index.tsx",
   "scripts": {
-    "start": "node server/static-server.js",
-    "json-server": "node server/json-server.js",
+    "start": "webpack --config webpack.prod.js && node server/static-server.js",
+    "server": "node server/json-server.js",
     "dev": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "lint": "eslint src/**",
