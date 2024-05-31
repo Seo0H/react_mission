@@ -1,4 +1,4 @@
-.default-button {
+.blue-bg-round-button {
   cursor: pointer;
 
   padding: 0.5rem 0.8rem;
@@ -7,6 +7,11 @@
   color: var(--gray-50);
 }
 
-.default-button:hover {
+.blue-bg-round-button:hover {
   box-shadow: 0rem 0.3rem 8px var(--gray-400);
+}
+
+.small-no-bg-button {
+  cursor: pointer;
+  padding: 0.5rem;
 }
