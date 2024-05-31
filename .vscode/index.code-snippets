@@ -1,0 +1,8 @@
+{
+  "Easy style import": {
+    "scope": "javascriptreact, typescriptreact",
+    "prefix": "style",
+    "body": ["import styles from './$1.module.css';", "$2"],
+    "description": "import styles more easily",
+  },
+}
