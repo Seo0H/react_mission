@@ -1,9 +1,10 @@
 import { useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 import { Button } from '@/components/common/buttons';
 import { Input } from '@/components/common/form/input';
 
-import { supabase } from '@/api/supabase';
 import { useAuthContext } from '@/hooks/use-auth/auth-context';
 
 type SignUpInfo = {
@@ -14,17 +15,10 @@ type SignUpInfo = {
 };
 
 const LoginPage = () => {
-  const { session, singIn, logout, loginWithPassword } = useAuthContext();
+  const { session, signIn, loginWithPassword } = useAuthContext();
   const [isSignUpMod, setSignUpMode] = useState(false);
   const [signUpInfo, setSignUpInfo] = useState<SignUpInfo>({ email: '', password: '', passwordCheck: '', name: '' });
-
-  const fetchUserData = async () => {
-    const { data, error } = await supabase.from('user').select('*');
-    if (error) console.log('error', error);
-    else {
-      console.log(data);
-    }
-  };
+  const navigator = useNavigate();
 
   const handelSignUpInfoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -33,12 +27,12 @@ const LoginPage = () => {
 
   const handelSignIn = () => {
     const { email, password, name } = signUpInfo;
-    singIn(email, password, name);
+    signIn(email, password, name);
   };
 
   const handelLogin = () => {
     const { email, password } = signUpInfo;
-    loginWithPassword(email, password);
+    loginWithPassword(email, password).then(() => navigator('/'));
   };
 
   if (!session) {
@@ -90,14 +84,6 @@ const LoginPage = () => {
             <Button.SmallNoBg onClick={() => setSignUpMode(true)}>회원 가입</Button.SmallNoBg>
           </>
         )}
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <div>Logged in!</div>
-        <Button.SmallNoBg onClick={logout}>logout</Button.SmallNoBg>
-        <Button.SmallNoBg onClick={fetchUserData}>유저 메타데이타 가져오기</Button.SmallNoBg>
       </div>
     );
   }

@@ -1,48 +1,52 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
-import { AuthError, AuthResponse, AuthTokenResponsePassword, Session } from '@supabase/supabase-js';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { supabase } from '@/api/supabase';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 import { Tables } from '@/types/supabase';
 
-type TAuthContext = {
-  session: Session | null;
-  userInfo: Tables<'user'> | null;
-  loginWithPassword: (email: string, password: string) => Promise<AuthTokenResponsePassword>;
-  logout: () => Promise<{ error: AuthError | null }>;
-  singIn: (email: string, password: string, name: string) => Promise<AuthResponse>;
-};
+import { AUTH_NEEDED_PAGES, AUTH_NOT_ALLOWED_PAGES } from './constants';
+import { TAuthContext } from './type';
+import type { Session } from '@supabase/supabase-js';
 
 const AuthContext = createContext<TAuthContext | null>(null);
 
+// Custom Hook
 export const useAuthContext = () => {
   const value = useContext(AuthContext);
-  if (!value) throw new Error('useAuthContext LanguageProvider 내부에서 사용되어야 합니다.');
+  if (!value) throw new Error('useAuthContext must be used within AuthProvider');
   return value;
 };
 
-export const AuthProvider = ({ children }: { children: React.ReactNode | React.ReactNode[] }) => {
+// AuthProvider Component
+export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }) => {
   const [session, setSession] = useState<Session | null>(null);
-  const [userInfo, setUserInfo] = useState<Tables<'user'> | null>(null);
-  const navigator = useNavigate();
+  const [userInfo, setUserInfo, removeUserInfo] = useLocalStorage<Tables<'user'>>('userInfo', undefined);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const fetchSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       setSession(session);
-    });
+    };
+
+    fetchSession();
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
 
-      supabase
-        .from('user')
-        .select('*')
-        .then(({ data }) => {
-          if (data?.length) setUserInfo(data[0]);
-        });
+      if (
+        (!session && AUTH_NEEDED_PAGES.includes(location.pathname)) ||
+        (session && AUTH_NOT_ALLOWED_PAGES.includes(location.pathname))
+      ) {
+        navigate('/');
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -50,11 +54,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode | React.R
 
   const logout = async () => {
     const result = await supabase.auth.signOut();
-    navigator('/');
+    removeUserInfo();
+    navigate('/');
     return result;
   };
 
-  const singIn = async (email: string, password: string, name: string) => {
+  const signIn = async (email: string, password: string, name: string) => {
     return await supabase.auth.signUp({
       email,
       password,
@@ -65,14 +70,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode | React.R
   };
 
   const loginWithPassword = async (email: string, password: string) => {
-    return await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const signInResult = await supabase.auth.signInWithPassword({ email, password });
+
+    if (signInResult.data) {
+      const { data } = await supabase.from('user').select('*');
+      if (data?.length) setUserInfo(data[0]);
+    }
+
+    return signInResult;
   };
 
   return (
-    <AuthContext.Provider value={{ session, userInfo, loginWithPassword, logout, singIn }}>
+    <AuthContext.Provider value={{ session, userInfo, loginWithPassword, logout, signIn }}>
       {children}
     </AuthContext.Provider>
   );
