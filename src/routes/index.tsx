@@ -4,6 +4,7 @@ import { Outlet, RouteObject, redirect } from 'react-router-dom';
 
 import { GlobalLayout } from '@/components/layout/global';
 import { LoadingSpinner } from '@/components/loading';
+import { AuthProvider } from '@/hooks/use-auth/auth-context';
 import { LanguageProvider } from '@/hooks/use-language/language-context';
 import { loaders } from '@/routes/loaders';
 
@@ -12,16 +13,21 @@ const ErrorPage = lazy(() => import('../views/error/index'));
 const FormPage = lazy(() => import('../views/form/index'));
 const NoTargetPage = lazy(() => import('../views/no-target/index'));
 const ThanksPage = lazy(() => import('../views/thanks/index'));
+const LoginPage = lazy(() => import('../views/login/index'));
+const MyPage = lazy(() => import('../views/mypage/index'));
+const AdminPage = lazy(() => import('../views/admin/index'));
 
 export const routes: RouteObject[] = [
   {
     element: (
       <LanguageProvider>
-        <GlobalLayout>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Outlet />
-          </Suspense>
-        </GlobalLayout>
+        <AuthProvider>
+          <GlobalLayout>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Outlet />
+            </Suspense>
+          </GlobalLayout>
+        </AuthProvider>
       </LanguageProvider>
     ),
     children: [
@@ -48,6 +54,21 @@ export const routes: RouteObject[] = [
       {
         path: '/thanks',
         element: <ThanksPage />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: '/login',
+        element: <LoginPage />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: '/mypage',
+        element: <MyPage />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: '/admin',
+        element: <AdminPage />,
         errorElement: <ErrorPage />,
       },
     ],
