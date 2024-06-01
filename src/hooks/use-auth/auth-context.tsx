@@ -27,18 +27,16 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
   const location = useLocation();
 
   useEffect(() => {
-    const fetchSession = async () => {
+    (async () => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
       setSession(session);
-    };
-
-    fetchSession();
+    })();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange(function handleAuthStateChange(_event, session) {
       setSession(session);
 
       if (
@@ -60,24 +58,36 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
   };
 
   const signIn = async (email: string, password: string, name: string) => {
-    return await supabase.auth.signUp({
+    const signInResult = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: { email, full_name: name },
       },
     });
-  };
 
-  const loginWithPassword = async (email: string, password: string) => {
-    const signInResult = await supabase.auth.signInWithPassword({ email, password });
-
-    if (signInResult.data) {
-      const { data } = await supabase.from('user').select('*');
-      if (data?.length) setUserInfo(data[0]);
+    if (!signInResult.error) {
+      _getUserDataFromDB();
     }
 
     return signInResult;
+  };
+
+  const loginWithPassword = async (email: string, password: string) => {
+    const loginResult = await supabase.auth.signInWithPassword({ email, password });
+
+    if (!loginResult.error) {
+      _getUserDataFromDB();
+    }
+
+    return loginResult;
+  };
+
+  const _getUserDataFromDB = async () => {
+    const { data, error } = await supabase.from('user').select('*');
+    if (data?.length) setUserInfo(data[0]);
+    // FIXME: Error 처리 추가
+    console.error(error);
   };
 
   return (
