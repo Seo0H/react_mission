@@ -8,3 +8,11 @@
 .logo-wrapper {
   cursor: pointer;
 }
+
+.link-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
