@@ -20,15 +20,15 @@ const Header = () => {
 
         {session && (
           <>
-            <Link to='/mypage'>My Page</Link>
-            {userInfo?.role === 'admin' && <Link to='/admin'>Admin Page</Link>}
-            <Button.SmallNoBg onClick={logout}>Logout</Button.SmallNoBg>
+            <Link to='/mypage'>내 정보</Link>
+            {userInfo?.role === 'admin' && <Link to='/admin'>관리자 페이지</Link>}
+            <Button.SmallNoBg onClick={logout}>로그아웃</Button.SmallNoBg>
           </>
         )}
 
         {!session && (
           <Link to='/login' style={{ cursor: 'pointer' }}>
-            login
+            로그인
           </Link>
         )}
       </div>
