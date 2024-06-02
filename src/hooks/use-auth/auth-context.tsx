@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '@/api/supabase';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { Tables } from '@/types/supabase';
+import { regex } from '@/utils/regex';
 
 import { AUTH_NEEDED_PAGES, AUTH_NOT_ALLOWED_PAGES } from './constants';
 import { TAuthContext } from './type';
@@ -58,7 +59,25 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
   };
 
   const signIn = async (email: string, password: string, name: string) => {
-    const signInResult = await supabase.auth.signUp({
+    const isEmpty = !email || !password || !name;
+    const isPasswordLengthBetween6and12 = password.length >= 6 && password.length <= 12;
+    const isEmailValidate = regex.email.test(email);
+    const errorMessage = { error: '' };
+
+    // validate
+    if (isEmpty) {
+      errorMessage.error = '양식을 모두 채워주세요.';
+    } else if (!isEmailValidate) {
+      errorMessage.error = '이메일 형식에 알맞게 작성해주세요.';
+    } else if (!isPasswordLengthBetween6and12) {
+      errorMessage.error = '비밀번호는 6글자 이상, 12글자 이하로 입력해주세요.';
+    }
+
+    if (errorMessage.error) {
+      return errorMessage;
+    }
+
+    const { error: authError, data } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -66,28 +85,47 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
       },
     });
 
-    if (!signInResult.error) {
+    if (authError) {
+      // TODO: 에러 코드가 넘어오지 않아 임시로 조치. 더 깔끔하게 동일 유저를 확인할 수 있는 방법 고민해보기.
+      if (authError.message === 'User already registered') {
+        errorMessage.error = '이미 같은 아이디의 유저가 있습니다.';
+      } else errorMessage.error = '예측하지 못한 에러가 발생했습니다. 콘솔을 확인해주세요.';
+
+      return errorMessage;
+    } else {
       _getUserDataFromDB();
     }
 
-    return signInResult;
+    return null;
   };
 
   const loginWithPassword = async (email: string, password: string) => {
+    const isEmpty = !email || !password;
+    const errorMessage = { error: '' };
+
+    // validate
+    if (isEmpty) {
+      errorMessage.error = '양식을 모두 채워주세요.';
+      return errorMessage;
+    }
+
     const loginResult = await supabase.auth.signInWithPassword({ email, password });
 
-    if (!loginResult.error) {
+    if (loginResult.error) {
+      errorMessage.error = '해당 유저가 없습니다.';
+      return errorMessage;
+    } else {
       _getUserDataFromDB();
     }
 
-    return loginResult;
+    return null;
   };
 
   const _getUserDataFromDB = async () => {
     const { data, error } = await supabase.from('user').select('*');
     if (data?.length) setUserInfo(data[0]);
     // FIXME: Error 처리 추가
-    console.error(error);
+    if (error) console.error(error);
   };
 
   return (

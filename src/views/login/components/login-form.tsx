@@ -20,21 +20,10 @@ export const LoginForm = () => {
   };
 
   const handleLogin = async () => {
-    const { email, password } = loginData;
-    const isEmpty = !email || !password;
-
-    if (isEmpty) {
-      setLoginData((prev) => ({ ...prev, invalidatedMessage: '양식을 모두 채워주세요.' }));
-      return;
-    }
-
-    const data = await loginWithPassword(email, password);
-    if (data.error) {
-      setLoginData((prev) => ({ ...prev, invalidatedMessage: '해당 유저가 없습니다.' }));
-      return;
-    }
-
-    navigate('/');
+    const data = await loginWithPassword(loginData.email, loginData.password);
+    if (data?.error) {
+      setLoginData((prev) => ({ ...prev, invalidatedMessage: data.error }));
+    } else navigate('/');
   };
 
   return (

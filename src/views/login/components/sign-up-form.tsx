@@ -24,34 +24,10 @@ export const SignUpForm = () => {
 
   const handleSignUp = async () => {
     const { email, password, name } = signUpData;
-    const isEmpty = !email || !password || !name;
-    const isPasswordLengthBetween6and12 = password.length >= 6 && password.length <= 12;
-    const isEmailValidate = regex.email.test(email);
+    const result = await signIn(email, password, name);
 
-    if (isEmpty) {
-      setSignUpData((prev) => ({ ...prev, invalidatedMessage: '양식을 모두 채워주세요.' }));
-      return;
-    }
-
-    if (!isEmailValidate) {
-      setSignUpData((prev) => ({ ...prev, invalidatedMessage: '이메일 형식에 알맞게 작성해주세요.' }));
-      return;
-    }
-
-    if (!isPasswordLengthBetween6and12) {
-      setSignUpData((prev) => ({ ...prev, invalidatedMessage: '비밀번호는 6글자 이상, 12글자 이하로 입력해주세요.' }));
-      return;
-    }
-
-    const { error } = await signIn(email, password, name);
-
-    if (error) {
-      console.error(error);
-      setSignUpData((prev) => ({
-        ...prev,
-        invalidatedMessage: '예측하지 못한 에러가 발생했습니다. 콘솔을 확인해주세요.',
-      }));
-      return;
+    if (result?.error) {
+      setSignUpData((prev) => ({ ...prev, invalidatedMessage: result.error }));
     }
   };
 
