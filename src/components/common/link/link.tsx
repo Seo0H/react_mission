@@ -2,16 +2,18 @@ import { ComponentProps, forwardRef, createRef } from 'react';
 
 import { Link as RouterLink } from 'react-router-dom';
 
-import styles from '../buttons/default-button.module.css';
+import buttonStyles from '../buttons/default-button.module.css';
 
-export const Link = forwardRef((props: ComponentProps<typeof RouterLink>, ref = createRef()) => {
+export const BgBlue = forwardRef((props: ComponentProps<typeof RouterLink>, ref = createRef()) => {
   const { children, className, ...rest } = props;
 
   return (
-    <RouterLink className={`${styles['default-button']} ${className}`} {...rest}>
+    <RouterLink className={`${buttonStyles['blue-bg-round-button']} ${className}`} {...rest}>
       {children}
     </RouterLink>
   );
 });
 
-Link.displayName = 'Link';
+BgBlue.displayName = 'ButtonStyledLink';
+
+export const Link = { BgBlue };

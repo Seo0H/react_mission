@@ -78,10 +78,13 @@ export const FormController = () => {
             </div>
 
             <div className={styles['btn-wrapper']}>
-              <Button onClick={beforeQuestion} style={{ backgroundColor: `var(--gray-400)` }}>{`< Before`}</Button>
-              <Button key={buttonKey} onClick={buttonHandler}>
+              <Button.BlueBg
+                onClick={beforeQuestion}
+                style={{ backgroundColor: `var(--gray-400)` }}
+              >{`< Before`}</Button.BlueBg>
+              <Button.BlueBg key={buttonKey} onClick={buttonHandler}>
                 {isLastQuestion ? 'SUBMIT' : `OK >`}
-              </Button>
+              </Button.BlueBg>
               <PressEnter enterCallback={handleKeyDown} />
             </div>
           </section>

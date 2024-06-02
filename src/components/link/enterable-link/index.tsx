@@ -18,9 +18,9 @@ export const EnterableLink = ({
 
   return (
     <>
-      <Link to={`${url}?${langParams}`} {...rest}>
+      <Link.BgBlue to={`${url}?${langParams}`} {...rest}>
         {contents[lang] ?? contents.en} {/* params 잘못 입력할 경우 대비 처리 */}
-      </Link>
+      </Link.BgBlue>
       <PressEnter enterCallback={() => navigate(`${url}?${langParams}`)} />
     </>
   );
