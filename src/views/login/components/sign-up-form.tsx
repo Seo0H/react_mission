@@ -2,13 +2,14 @@ import { useState } from 'react';
 
 import { Button } from '@/components/common/buttons';
 import { Input } from '@/components/common/form/input';
+import { InputWithLabel } from '@/components/common/form/input/input-with-label';
 
 import { useAuthContext } from '@/hooks/use-auth/auth-context';
-import { regex } from '@/utils/regex';
+import { InvalidateMessage } from '@/views/login/components/invalidate';
 
 import type { SignInData } from '../types';
 
-export const SignUpForm = () => {
+export const SignUpForm = ({ modeChanger }: { modeChanger: React.ReactNode }) => {
   const { signIn } = useAuthContext();
   const [signUpData, setSignUpData] = useState<SignInData>({
     email: '',
@@ -33,32 +34,38 @@ export const SignUpForm = () => {
 
   return (
     <>
-      <label>이름</label>
-      <Input
+      <InputWithLabel
+        label='이름'
         name='name'
         type='text'
         placeholder='이름을 입력해 주세요.'
         onChange={handleSignUpInfoChange}
         value={signUpData.name}
       />
-
-      <label>아이디 (이메일)</label>
-      <Input
+      <InputWithLabel
+        label='아이디 (이메일)'
         name='email'
         type='email'
         placeholder='example@example.com'
         onChange={handleSignUpInfoChange}
         value={signUpData.email}
       />
-
-      <label>비밀번호</label>
-      <Input name='password' type='password' onChange={handleSignUpInfoChange} value={signUpData.password} />
+      <InputWithLabel
+        label='비밀번호'
+        name='password'
+        type='password'
+        onChange={handleSignUpInfoChange}
+        value={signUpData.password}
+      />
 
       {/* <label>비밀번호 확인</label>
       <Input name='passwordCheck' type='password' onChange={handleSignUpInfoChange} value={signUpData.passwordCheck} /> */}
-      {signUpData?.invalidatedMessage && <p>{signUpData.invalidatedMessage}</p>}
+      <InvalidateMessage>{signUpData?.invalidatedMessage && signUpData.invalidatedMessage}</InvalidateMessage>
 
-      <Button.BlueBg onClick={handleSignUp}>회원 가입</Button.BlueBg>
+      <div>
+        <Button.BlueBg onClick={handleSignUp}>회원 가입</Button.BlueBg>
+        {modeChanger}
+      </div>
     </>
   );
 };

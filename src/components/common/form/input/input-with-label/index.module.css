@@ -1,0 +1,8 @@
+.input-with-label-wrapper {
+  width: 100%;
+}
+
+.input-with-label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
