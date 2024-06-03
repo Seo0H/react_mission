@@ -15,7 +15,10 @@ const NoTargetPage = lazy(() => import('../views/no-target/index'));
 const ThanksPage = lazy(() => import('../views/thanks/index'));
 const LoginPage = lazy(() => import('../views/login/index'));
 const MyPage = lazy(() => import('../views/mypage/index'));
-const AdminPage = lazy(() => import('../views/admin/index'));
+const CreateFormPage = lazy(() => import('@/views/admin/create-form'));
+const FormListPage = lazy(() => import('@/views/admin/form-list'));
+
+const AdminHeader = lazy(() => import('../components/admin/header'));
 
 export const routes: RouteObject[] = [
   {
@@ -41,35 +44,44 @@ export const routes: RouteObject[] = [
         errorElement: <ErrorPage />,
       },
       {
-        path: '/question/:id',
+        path: 'question/:id',
         element: <FormPage />,
         loader: loaders.formLoader,
         errorElement: <ErrorPage />,
       },
       {
-        path: '/no_target',
+        path: 'no_target',
         element: <NoTargetPage />,
         errorElement: <ErrorPage />,
       },
       {
-        path: '/thanks',
+        path: 'thanks',
         element: <ThanksPage />,
         errorElement: <ErrorPage />,
       },
       {
-        path: '/login',
+        path: 'login',
         element: <LoginPage />,
         errorElement: <ErrorPage />,
       },
       {
-        path: '/mypage',
+        path: 'mypage',
         element: <MyPage />,
         errorElement: <ErrorPage />,
       },
       {
-        path: '/admin',
-        element: <AdminPage />,
+        path: 'admin',
+        element: (
+          <>
+            <AdminHeader />
+            <Outlet />
+          </>
+        ),
         errorElement: <ErrorPage />,
+        children: [
+          { path: 'create-form', element: <CreateFormPage /> },
+          { path: 'form-list', element: <FormListPage /> },
+        ],
       },
     ],
   },
