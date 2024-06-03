@@ -1,0 +1,46 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# 스킵할 브랜치 설정 (없으면 기본값 설정)
+BRANCHES_TO_SKIP=${BRANCHES_TO_SKIP:-"master develop test"}
+
+# 현재 브랜치 이름 가져오기
+BRANCH_NAME=$(git symbolic-ref -q HEAD)
+BRANCH_NAME="${BRANCH_NAME##*/}"
+
+# 브랜치 이름에서 RMIS-숫자 형식 추출
+ISSUE_KEY=$(echo "$BRANCH_NAME" | sed -n 's/^\([A-Z]*-[0-9]*\)-\(.*\)$/\1/p')
+
+# 추출된 issue key가 없으면 종료
+if [ -z "$ISSUE_KEY" ]; then
+  echo "브랜치 이름에서 issue key를 찾을 수 없습니다."
+  exit 0
+fi
+
+# 스킵할 브랜치인지 확인
+BRANCH_EXCLUDED=0
+for skip_branch in $BRANCHES_TO_SKIP; do
+  if [ "$BRANCH_NAME" = "$skip_branch" ]; then
+    BRANCH_EXCLUDED=1
+    break
+  fi
+done
+
+# 커밋 메시지 파일 가져오기
+COMMIT_MSG_FILE=$1
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# 커밋 메시지에 이미 ISSUE_KEY가 포함되어 있는지 확인
+if echo "$COMMIT_MSG" | grep -q "\[$ISSUE_KEY\]"; then
+  echo "커밋 메시지에 이미 $ISSUE_KEY가 포함되어 있습니다."
+  exit 0
+fi
+
+# 브랜치가 스킵할 브랜치 목록에 포함되는지 확인
+if [ "$BRANCH_EXCLUDED" -eq 1 ]; then
+  echo "현재 브랜치는 스킵 목록에 포함되어 있습니다: $BRANCH_NAME"
+  exit 0
+fi
+
+# 조건을 만족하면 커밋 메시지 파일에 [ISSUE_KEY] 형식 추가
+echo "[$ISSUE_KEY] $COMMIT_MSG" > "$COMMIT_MSG_FILE"
