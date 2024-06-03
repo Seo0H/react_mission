@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { useCallback, useId } from 'react';
+import { useId } from 'react';
 
 import { Button } from '@/components/common/buttons';
 import ErrorMessage from '@/components/common/error/message';
-import { Radio } from '@/components/common/form/radio';
 import { ProgressBar } from '@/components/common/progress-bar/progress-bar';
 
 import { ConditionalInput } from '@/components/form';
