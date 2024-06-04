@@ -1,3 +1,6 @@
+import { Form } from "@/api/form/types/server-response"
+import { Validate } from "@/hooks/use-form/types/validator"
+
 export type Json =
   | string
   | number
@@ -6,9 +9,85 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+  type EscapeValidate =  (Validate & { name: string })[]
+
 export type Database = {
   public: {
     Tables: {
+      form: {
+        Row: {
+          access_type: Database["public"]["Enums"]["form_types"]
+          create_user: string | null
+          escapevalidate:EscapeValidate
+          forms:Form[]
+          id: number
+          lang: Database["public"]["Enums"]["lang_type"]
+          title: string
+        }
+        Insert: {
+          access_type?: Database["public"]["Enums"]["form_types"]
+          create_user?: string | null
+          escapevalidate?:EscapeValidate
+          forms:Form[]
+          id?: number
+          lang?: Database["public"]["Enums"]["lang_type"]
+          title: string
+        }
+        Update: {
+          access_type?: Database["public"]["Enums"]["form_types"]
+          create_user?: string | null
+          escapevalidate?:EscapeValidate
+          forms?: Form[]
+          id?: number
+          lang?: Database["public"]["Enums"]["lang_type"]
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "form_create_user_fkey"
+            columns: ["create_user"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      form_answer: {
+        Row: {
+          answer_form_id: number | null
+          answer_user: string | null
+          answers: Json
+          id: number
+        }
+        Insert: {
+          answer_form_id?: number | null
+          answer_user?: string | null
+          answers: Json
+          id?: number
+        }
+        Update: {
+          answer_form_id?: number | null
+          answer_user?: string | null
+          answers?: Json
+          id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "form_answer_answer_form_id_fkey"
+            columns: ["answer_form_id"]
+            isOneToOne: false
+            referencedRelation: "form"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "form_answer_answer_user_fkey"
+            columns: ["answer_user"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user: {
         Row: {
           email: string | null
@@ -46,7 +125,9 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      user_role: "default" | "admin"
+      form_types: "common" | "limited"
+      lang_type: "ko" | "en"
+      user_role: "admin" | "default"
     }
     CompositeTypes: {
       [_ in never]: never
