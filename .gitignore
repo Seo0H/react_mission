@@ -12,3 +12,6 @@ SCORE.md
 
 # .vscode
 extensions.json
+
+# Mac
+.DS_Store
