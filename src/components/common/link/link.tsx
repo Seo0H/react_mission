@@ -14,6 +14,17 @@ export const BgBlue = forwardRef((props: ComponentProps<typeof RouterLink>, ref 
   );
 });
 
-BgBlue.displayName = 'ButtonStyledLink';
+export const NoBgSmallText = forwardRef((props: ComponentProps<typeof RouterLink>, ref = createRef()) => {
+  const { children, className, ...rest } = props;
 
-export const Link = { BgBlue };
+  return (
+    <RouterLink className={`${buttonStyles['small-no-bg-button']} ${className}`} {...rest}>
+      {children}
+    </RouterLink>
+  );
+});
+
+BgBlue.displayName = 'ButtonStyledLink';
+NoBgSmallText.displayName = 'NoBgSmallTextLink';
+
+export const Link = { BgBlue, NoBgSmallText };

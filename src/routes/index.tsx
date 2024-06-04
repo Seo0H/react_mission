@@ -6,19 +6,22 @@ import { GlobalLayout } from '@/components/layout/global';
 import { LoadingSpinner } from '@/components/loading';
 import { AuthProvider } from '@/hooks/use-auth/auth-context';
 import { LanguageProvider } from '@/hooks/use-language/language-context';
+import { AdminProvider } from '@/provider/admin/context';
 import { loaders } from '@/routes/loaders';
 
-const MainPage = lazy(() => import('../views/main/index'));
-const ErrorPage = lazy(() => import('../views/error/index'));
-const FormPage = lazy(() => import('../views/form/index'));
-const NoTargetPage = lazy(() => import('../views/no-target/index'));
-const ThanksPage = lazy(() => import('../views/thanks/index'));
-const LoginPage = lazy(() => import('../views/login/index'));
-const MyPage = lazy(() => import('../views/mypage/index'));
+const MainPage = lazy(() => import('@/views/main/index'));
+const ErrorPage = lazy(() => import('@/views/error/index'));
+const FormPage = lazy(() => import('@/views/form/index'));
+const NoTargetPage = lazy(() => import('@/views/no-target/index'));
+const ThanksPage = lazy(() => import('@/views/thanks/index'));
+const LoginPage = lazy(() => import('@/views/login/index'));
+const MyPage = lazy(() => import('@/views/mypage/index'));
+
 const CreateFormPage = lazy(() => import('@/views/admin/create-form'));
 const FormListPage = lazy(() => import('@/views/admin/form-list'));
+const ModifyPage = lazy(() => import('@/views/admin/modify-form'));
 
-const AdminHeader = lazy(() => import('../components/admin/header'));
+const AdminHeader = lazy(() => import('@/components/admin/header'));
 
 export const routes: RouteObject[] = [
   {
@@ -72,15 +75,17 @@ export const routes: RouteObject[] = [
       {
         path: 'admin',
         element: (
-          <>
+          <AdminProvider>
             <AdminHeader />
             <Outlet />
-          </>
+          </AdminProvider>
         ),
         errorElement: <ErrorPage />,
         children: [
-          { path: 'create-form', element: <CreateFormPage /> },
+          { path: '', loader: () => redirect('/admin/form-list') },
           { path: 'form-list', element: <FormListPage /> },
+          { path: 'create-form', element: <CreateFormPage /> },
+          { path: 'modify-form/:id', element: <ModifyPage /> },
         ],
       },
     ],
