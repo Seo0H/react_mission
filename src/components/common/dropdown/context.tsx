@@ -1,44 +1,51 @@
 import { createContext, forwardRef, useCallback, useContext, useEffect, useState } from 'react';
 
+import { once } from '@/utils/once';
+
 import styles from './index.module.css';
 import type { DropdownProps, TDropdownContext } from './type';
 
-const DropdownContexts = createContext<TDropdownContext | null>(null);
+const createDropdownContexts = once(<SelectType,>() => createContext<TDropdownContext<SelectType> | null>(null));
 
-export const useDropdownContext = () => {
-  const value = useContext(DropdownContexts);
+export const useDropdownContext = <SelectType,>() => {
+  const value = useContext(createDropdownContexts<SelectType>());
   if (!value) throw new Error('useDropdownContext는 Dropdown 내부에서만 사용할 수 있습니다.');
   return value;
 };
 
-export const DropdownProvider = forwardRef<HTMLInputElement, DropdownProps>(
-  ({ children, defaultValue, value, onChange, className, ...props }, ref) => {
-    const [isOpen, setOpen] = useState(false);
-    const [selectedValue, setSelectValue] = useState(defaultValue ?? '선택하기');
+const DropdownProviderInner = <SelectType,>(
+  { children, defaultValue, value, onChange, className, ...props }: DropdownProps<SelectType>,
+  ref: React.ForwardedRef<HTMLInputElement>,
+) => {
+  const [isOpen, setOpen] = useState(false);
+  const [selectedValue, setSelectValue] = useState<SelectType | null>(defaultValue ?? null);
+  const DropdownContexts = createDropdownContexts<SelectType>();
 
-    useEffect(() => {
-      if (value !== undefined) {
-        setSelectValue(value);
-      }
-    }, [value]);
+  useEffect(() => {
+    if (value !== undefined) {
+      setSelectValue(value);
+    }
+  }, [value]);
 
-    const handleSelectValueChange = useCallback((newValue: string) => {
-      if (onChange) {
-        onChange(newValue);
-      } else {
-        setSelectValue(newValue);
-      }
-    }, []);
+  const handleSelectValueChange = useCallback((newValue: SelectType) => {
+    if (onChange) {
+      onChange(newValue);
+    } else {
+      setSelectValue(newValue);
+    }
+  }, []);
 
-    return (
-      <DropdownContexts.Provider value={{ isOpen, setOpen, selectedValue, setSelectValue: handleSelectValueChange }}>
-        <input ref={ref} className={`${styles['input-hidden']}`} value={selectedValue} onChange={() => null} />
-        <div {...props} className={`${styles['dropdown-container']} ${className}`}>
-          {children}
-        </div>
-      </DropdownContexts.Provider>
-    );
-  },
-);
+  return (
+    <DropdownContexts.Provider value={{ isOpen, setOpen, selectedValue, setSelectValue: handleSelectValueChange }}>
+      <div {...props} className={`${styles['dropdown-container']} ${className}`}>
+        <input ref={ref} className={`${styles['input-hidden']}`} value={String(selectedValue)} onChange={() => null} />
+        <div className={styles['dropdown-children']}>{children}</div>
+      </div>
+    </DropdownContexts.Provider>
+  );
+};
 
-DropdownProvider.displayName = 'DropdownProvider';
+export const DropdownProvider = forwardRef(DropdownProviderInner) as <T>(
+  // eslint-disable-next-line no-unused-vars
+  props: DropdownProps<T> & { ref?: React.ForwardedRef<HTMLInputElement> },
+) => ReturnType<typeof DropdownProviderInner>;

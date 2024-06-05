@@ -1,15 +1,14 @@
 import { ComponentProps } from "react";
 
-export type TDropdownContext = {
+export type TDropdownContext<SelectType> = {
     isOpen: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    selectedValue: string;
-    setSelectValue: (newValue: string) => void;
+    selectedValue: SelectType | null;
+    setSelectValue: (newValue: SelectType) => void;
   };
   
-  export type DropdownProps = {
-    defaultValue?: string;
-    value?: string;
-    onChange?: (value: string) => void;
-  } & Omit<ComponentProps<'div'>, 'onChange'>;
-  
+export type DropdownProps<SelectType> = {
+  defaultValue?: SelectType;
+  value?: SelectType;
+  onChange?: (value: SelectType) => void;
+} & Omit<ComponentProps<'div'>, 'onChange'>;

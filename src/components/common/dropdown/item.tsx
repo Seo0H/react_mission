@@ -3,8 +3,8 @@ import { useCallback } from 'react';
 import { useDropdownContext } from './context';
 import styles from './index.module.css';
 
-export const Item = ({ value, children }: { value: string; children: React.ReactNode }) => {
-  const { isOpen, selectedValue, setSelectValue, setOpen } = useDropdownContext();
+export const Item = <T,>({ value, children }: { value: T; children: React.ReactNode }) => {
+  const { isOpen, selectedValue, setSelectValue, setOpen } = useDropdownContext<T>();
 
   const handelClick = useCallback(() => {
     setSelectValue(value);
@@ -15,7 +15,7 @@ export const Item = ({ value, children }: { value: string; children: React.React
     isOpen && (
       <div
         onClick={handelClick}
-        className={`${styles['item']} ${selectedValue === value && styles['item-select']}`}
+        className={`${styles['item']} ${styles['dropdown-btn-style']} ${selectedValue === value && styles['item-select']}`}
         data-testid='dropdown-item'
       >
         {children}
