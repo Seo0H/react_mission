@@ -21,12 +21,12 @@ export type Form = {
   name: string; // form 작성 후 서버에 보낼 때의 이름
   question: string; // user에게 보여줘야 하는 질문
   required: boolean; // 필수 질문 여부
-  type: FormType;
+  type: QuestionType;
   placeholder: Placeholder;
   validate: Validate[];
 };
 
-export type FormType = 'text' | 'number' | 'checkbox' | 'radio' | 'radioNumber' | 'radioWithInput';
+export type QuestionType = 'text' | 'number' | 'checkbox' | 'radio' | 'radioNumber' | 'radioWithInput';
 export type Placeholder = string | Selection[]; // user가 선택 전 default로 선택된 value;
 export interface Selection {
   label: string;
