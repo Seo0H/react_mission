@@ -1,81 +1,73 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { supabase } from '@/api/supabase';
-import { useLocalStorage } from '@/hooks/use-local-storage';
 import { Tables } from '@/types/supabase';
-import { regex } from '@/utils/regex';
 
 import { AUTH_NEEDED_PAGES, AUTH_NOT_ALLOWED_PAGES } from './constants';
 import { TAuthContext } from './type';
+import { isPathInclude, validateSignUpInput } from './utils';
 import type { Session } from '@supabase/supabase-js';
 
 const AuthContext = createContext<TAuthContext | null>(null);
 
-// Custom Hook
 export const useAuthContext = () => {
   const value = useContext(AuthContext);
   if (!value) throw new Error('useAuthContext must be used within AuthProvider');
   return value;
 };
 
-// AuthProvider Component
 export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }) => {
   const [session, setSession] = useState<Session | null>(null);
-  const [userInfo, setUserInfo, removeUserInfo] = useLocalStorage<Tables<'user'>>('userInfo', undefined);
+  const [userInfo, setUserInfo] = useState<Tables<'user'> | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    (async () => {
+    const fetchSession = async () => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
       setSession(session);
-    })();
+    };
+
+    fetchSession();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(function handleAuthStateChange(_event, session) {
+    } = supabase.auth.onAuthStateChange((_, session) => {
       setSession(session);
-
-      if (
-        (!session && AUTH_NEEDED_PAGES.includes(location.pathname)) ||
-        (session && AUTH_NOT_ALLOWED_PAGES.includes(location.pathname))
-      ) {
-        navigate('/');
-      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  const logout = async () => {
-    const result = await supabase.auth.signOut();
-    removeUserInfo();
-    navigate('/');
-    return result;
-  };
+  useEffect(() => {
+    if (!session || userInfo) return;
+
+    const abortController = new AbortController();
+    _getUserDataFromDB(abortController.signal);
+
+    return () => {
+      abortController.abort();
+    };
+  }, [session, userInfo]);
+
+  useEffect(() => {
+    (function handleNavigation() {
+      if (
+        (!session && isPathInclude(AUTH_NEEDED_PAGES, location.pathname)) ||
+        (session && isPathInclude(AUTH_NOT_ALLOWED_PAGES, location.pathname))
+      ) {
+        navigate('/', { replace: true });
+      }
+    })();
+  }, [session, location.pathname]);
 
   const signIn = async (email: string, password: string, name: string) => {
-    const isEmpty = !email || !password || !name;
-    const isPasswordLengthBetween6and12 = password.length >= 6 && password.length <= 12;
-    const isEmailValidate = regex.email.test(email);
-    const errorMessage = { error: '' };
-
-    // validate
-    if (isEmpty) {
-      errorMessage.error = '양식을 모두 채워주세요.';
-    } else if (!isEmailValidate) {
-      errorMessage.error = '이메일 형식에 알맞게 작성해주세요.';
-    } else if (!isPasswordLengthBetween6and12) {
-      errorMessage.error = '비밀번호는 6글자 이상, 12글자 이하로 입력해주세요.';
-    }
-
-    if (errorMessage.error) {
-      return errorMessage;
-    }
+    const errorMessage = validateSignUpInput(email, password, name);
+    if (errorMessage) return errorMessage;
 
     const { error: authError, data } = await supabase.auth.signUp({
       email,
@@ -86,47 +78,43 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
     });
 
     if (authError) {
-      // TODO: 에러 코드가 넘어오지 않아 임시로 조치. 더 깔끔하게 동일 유저를 확인할 수 있는 방법 고민해보기.
       if (authError.message === 'User already registered') {
-        errorMessage.error = '이미 같은 아이디의 유저가 있습니다.';
-      } else errorMessage.error = '예측하지 못한 에러가 발생했습니다. 콘솔을 확인해주세요.';
+        return { error: '이미 같은 아이디의 유저가 있습니다.' };
+      }
 
-      return errorMessage;
-    } else {
-      _getUserDataFromDB();
+      return { error: '예측하지 못한 에러가 발생했습니다. 콘솔을 확인해주세요.' };
     }
 
     return null;
   };
 
-  const loginWithPassword = async (email: string, password: string) => {
-    const isEmpty = !email || !password;
-    const errorMessage = { error: '' };
+  const logout = useCallback(async () => await supabase.auth.signOut(), [supabase]);
 
-    // validate
-    if (isEmpty) {
-      errorMessage.error = '양식을 모두 채워주세요.';
-      return errorMessage;
-    }
+  const loginWithPassword = useCallback(
+    async (email: string, password: string) => {
+      if (!email || !password) {
+        return { error: '양식을 모두 채워주세요.' };
+      }
 
-    const loginResult = await supabase.auth.signInWithPassword({ email, password });
+      const loginResult = await supabase.auth.signInWithPassword({ email, password });
 
-    if (loginResult.error) {
-      errorMessage.error = '해당 유저가 없습니다.';
-      return errorMessage;
-    } else {
-      _getUserDataFromDB();
-    }
+      if (loginResult.error) {
+        return { error: '해당 유저가 없습니다.' };
+      }
 
-    return null;
-  };
+      return null;
+    },
+    [supabase],
+  );
 
-  const _getUserDataFromDB = async () => {
-    const { data, error } = await supabase.from('user').select('*');
-    if (data?.length) setUserInfo(data[0]);
-    // FIXME: Error 처리 추가
-    if (error) console.error(error);
-  };
+  const _getUserDataFromDB = useCallback(
+    async (signal: AbortSignal) => {
+      const { data, error } = await supabase.from('user').select('*').abortSignal(signal);
+      if (data?.length) setUserInfo(data[0]);
+      if (error) console.error(error);
+    },
+    [supabase],
+  );
 
   return (
     <AuthContext.Provider value={{ session, userInfo, loginWithPassword, logout, signIn }}>
