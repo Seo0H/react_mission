@@ -1,1 +1,1 @@
-export { InvalidateMessage } from "./meaage";
+export { InvalidateMessage } from './meaage';

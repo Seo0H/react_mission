@@ -3,10 +3,10 @@ import React, { ComponentPropsWithRef, forwardRef } from 'react';
 import styles from './input.module.css';
 
 export const Input = forwardRef<HTMLInputElement, ComponentPropsWithRef<'input'>>(function (
-  props,
+  { className, ...props },
   ref = React.createRef(),
 ) {
-  return <input ref={ref} className={`${styles.input} ${props.className ? props.className : ''}`} {...props} />;
+  return <input ref={ref} className={`${styles.input} ${className}`} {...props} />;
 });
 
 Input.displayName = 'Input';
