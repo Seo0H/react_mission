@@ -25,18 +25,9 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
   const location = useLocation();
 
   useEffect(() => {
-    const fetchSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setSession(session);
-    };
-
-    fetchSession();
-
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
     });
 
@@ -50,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
     _getUserDataFromDB(abortController.signal);
 
     return () => {
-      abortController.abort();
+      abortController.abort('getUserDataFromDB 중복 호출');
     };
   }, [session, userInfo]);
 
@@ -69,7 +60,7 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
     const errorMessage = validateSignUpInput(email, password, name);
     if (errorMessage) return errorMessage;
 
-    const { error: authError, data } = await supabase.auth.signUp({
+    const { error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -109,9 +100,17 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
 
   const _getUserDataFromDB = useCallback(
     async (signal: AbortSignal) => {
-      const { data, error } = await supabase.from('user').select('*').abortSignal(signal);
+      console.log(`_getUserDataFromDB 실행`);
+      const { data, status } = await supabase.from('user').select('*').abortSignal(signal);
+
+      // TODO: alert 제거 후 error 처리 필요
+      if (status >= 400) {
+        alert(`유저 정보를 불러오는 중 문제가 발생했습니다. / STATUS : ${status}`);
+        logout();
+        return;
+      }
+
       if (data?.length) setUserInfo(data[0]);
-      if (error) console.error(error);
     },
     [supabase],
   );

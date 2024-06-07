@@ -32,7 +32,12 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       .from('form')
       .select()
       .abortSignal(abortController.signal)
-      .then(({ data, error }) => {
+      .then(({ data, error, status }) => {
+        if (status >= 400) {
+          alert(`폼 목록을 가져오던 중 문제가 발생했습니다. / STATUS : ${status}`);
+          return;
+        }
+
         if (!error) {
           setFormList(data);
         }
