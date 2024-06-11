@@ -1,6 +1,7 @@
 .admin-header-container {
   position: absolute;
   display: flex;
+  justify-content: space-between;
   width: 100%;
   top: 0;
 

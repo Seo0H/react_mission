@@ -1,9 +1,17 @@
+import { useEffect } from 'react';
+
 import { Link } from '@/components/common/link';
 
 import { useAdminContext } from '@/provider/admin/context';
 
 const FormListPage = () => {
-  const { formList } = useAdminContext();
+  const { formList, getFormList } = useAdminContext();
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    getFormList(abortController.signal);
+    return () => abortController.abort();
+  }, []);
 
   return (
     <>

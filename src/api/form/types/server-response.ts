@@ -18,7 +18,7 @@ type ValidateType = Validate['type'];
 type TargetType = number | [min: number, max: number] | string;
 
 export type Form = {
-  name: string; // form 작성 후 서버에 보낼 때의 이름
+  name: string; // form 작성 후 서버에 보낼 때의 이름. 질문의 UUID
   question: string; // user에게 보여줘야 하는 질문
   required: boolean; // 필수 질문 여부
   type: QuestionType;

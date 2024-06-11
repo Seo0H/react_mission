@@ -1,0 +1,26 @@
+.question-container {
+  width: 100%;
+  padding: 1rem 2rem;
+  border: 1px solid var(--gray-200);
+  border-radius: 0.5rem;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.input {
+}
+
+.question-required-label {
+  word-break: keep-all;
+  white-space: nowrap;
+}
+
+.dropdown-wrapper {
+  position: relative;
+  width: fit-content;
+}
