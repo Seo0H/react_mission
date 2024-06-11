@@ -17,7 +17,6 @@ const ThanksPage = lazy(() => import('@/views/thanks/index'));
 const LoginPage = lazy(() => import('@/views/login/index'));
 const MyPage = lazy(() => import('@/views/mypage/index'));
 
-const CreateFormPage = lazy(() => import('@/views/admin/create-form'));
 const FormListPage = lazy(() => import('@/views/admin/form-list'));
 const ModifyPage = lazy(() => import('@/views/admin/modify-form'));
 
@@ -84,7 +83,6 @@ export const routes: RouteObject[] = [
         children: [
           { path: '', loader: () => redirect('/admin/form-list') },
           { path: 'form-list', element: <FormListPage /> },
-          { path: 'create-form', element: <CreateFormPage /> },
           { path: 'modify-form/:id', element: <ModifyPage /> },
         ],
       },
