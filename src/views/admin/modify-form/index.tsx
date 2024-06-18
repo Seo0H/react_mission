@@ -7,9 +7,10 @@ import { Dropdown } from '@/components/common/dropdown';
 import { Checkbox } from '@/components/common/form/checkbox';
 import { Input } from '@/components/common/form/input';
 
-import { Form, QuestionType, FormData } from '@/api/form/types/server-response';
+import { Form, QuestionType } from '@/api/form/types/server-response';
 import { supabase } from '@/api/supabase';
 import { useAdminContext } from '@/provider/admin/context';
+import { debounce } from '@/utils/debounce';
 
 import styles from './index.module.css';
 
@@ -60,6 +61,7 @@ const defaultNewQuestion = (): Form => ({
 const ModifyFormPage = () => {
   const { id } = useParams();
   const { formList, getFormList } = useAdminContext();
+  const [isInputFocus, setInputFocus] = useState(false);
   // const [formData, setFormData] = useState(formList?.filter((form) => String(form.id) === id)[0]);
   const formData = useMemo(() => formList?.filter((form) => String(form.id) === id)[0], [formList]);
 
@@ -114,15 +116,33 @@ const ModifyFormPage = () => {
     [formData, supabase, getFormList],
   );
 
+  const handleInputSave = debounce(async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const questionNameOrTitle: Form['name'] | 'title' = event.target.name;
+    const wantToUpdateText = event.target.value;
+
+    if (!formData) return;
+
+    if (questionNameOrTitle === 'title') {
+      formData.title = wantToUpdateText;
+    } else {
+      const targetQuestionIdx = formData.forms.findIndex((form) => form.name === questionNameOrTitle);
+      formData.forms[targetQuestionIdx].question = wantToUpdateText;
+    }
+
+    await supabase.from('form').update(formData).eq('id', formData.id);
+    await getFormList();
+  }, 1000);
+
   return (
     <>
-      <Input name='title' placeholder='설문지 제목' defaultValue={formData?.title} />
+      <Input name='title' placeholder='설문지 제목' defaultValue={formData?.title} onChange={handleInputSave} />
       {formData?.forms.map((form, idx) => (
         <QuestionContainer
           key={`${form.name}`}
           onRemove={handleRemoveQuestion}
           onChangeType={handleChangeQuestionType}
           onRequired={handleQuestionRequire}
+          onTextInputChange={handleInputSave}
           {...form}
         />
       ))}
@@ -142,10 +162,12 @@ function QuestionContainer({
   onRemove,
   onChangeType,
   onRequired,
+  onTextInputChange,
 }: Form & {
   onRemove: (quistionId: Form['name']) => void;
   onChangeType: (questionName: Form['name'], wantToChangeType: Form['type']) => void;
   onRequired: (questionName: Form['name'], currentCheckState: Form['required']) => void;
+  onTextInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   const handleRemove = () => {
     onRemove(name);
@@ -154,7 +176,13 @@ function QuestionContainer({
   return (
     <div className={styles['question-container']}>
       <div className={styles['flex']}>
-        <Input name={`question`} placeholder='질문' className={styles.input} defaultValue={question} />
+        <Input
+          name={name}
+          placeholder='질문'
+          className={styles.input}
+          defaultValue={question}
+          onChange={onTextInputChange}
+        />
 
         <Dropdown defaultValue={type} value={type} name={`type`} onChange={(type) => onChangeType(name, type)}>
           <Dropdown.Trigger>{inputType[type].display}</Dropdown.Trigger>
