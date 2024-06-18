@@ -6,6 +6,8 @@ import { Link } from '@/components/common/link';
 import { supabase } from '@/api/supabase';
 import { useAdminContext } from '@/provider/admin/context';
 
+import { createDefaultQuestion } from '../modify-form/constants/default-question';
+
 import styles from './admin-header.module.css';
 
 const AdminHeader = () => {
@@ -16,7 +18,7 @@ const AdminHeader = () => {
       .from('form')
       .insert({
         title: '제목 없는 설문지.',
-        forms: [{ name: '', placeholder: '', question: '', required: false, type: 'text', validate: [] }],
+        forms: [createDefaultQuestion()],
       })
       .select();
 

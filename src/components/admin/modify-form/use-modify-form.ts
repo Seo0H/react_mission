@@ -6,14 +6,7 @@ import { useAdminContext } from '@/provider/admin/context';
 import { Tables } from '@/types/supabase';
 import { debounce } from '@/utils/debounce';
 
-const defaultNewQuestion = (): Form => ({
-  name: crypto.randomUUID(),
-  placeholder: '',
-  question: '',
-  required: false,
-  type: 'text',
-  validate: [],
-});
+import { createDefaultQuestion } from './constants/default-question';
 
 export function useModifyForm(formData: Tables<'form'>) {
   const { getFormList } = useAdminContext();
@@ -32,7 +25,7 @@ export function useModifyForm(formData: Tables<'form'>) {
   const addQuestion = useCallback(async () => {
     if (!formData) return;
 
-    const updatedForms = [...formData.forms, defaultNewQuestion()];
+    const updatedForms = [...formData.forms, createDefaultQuestion()];
     await _updateFormData(updatedForms);
   }, [formData, _updateFormData]);
 

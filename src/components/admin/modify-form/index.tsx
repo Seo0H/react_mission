@@ -11,6 +11,7 @@ export const ModifyFormContainer = ({ formData }: { formData: Tables<'form'> }) 
   return (
     <>
       <Input
+        key={formData.id}
         name='title'
         placeholder='설문지 제목'
         defaultValue={formData?.title}

@@ -29,6 +29,7 @@ export function QuestionContainer({
     <div className={styles['question-container']}>
       <div className={styles['flex']}>
         <Input
+          key={name}
           name={name}
           placeholder='질문'
           className={styles.input}
