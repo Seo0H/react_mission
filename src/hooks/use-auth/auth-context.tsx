@@ -46,12 +46,13 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
   }, [session, userInfo]);
 
   useEffect(() => {
+    // FIXME: 새로고침 할 시 무조건 main page로 redirect 됨
     (function handleNavigation() {
       if (
         (!session && isPathInclude(AUTH_NEEDED_PAGES, location.pathname)) ||
         (session && isPathInclude(AUTH_NOT_ALLOWED_PAGES, location.pathname))
       ) {
-        navigate('/', { replace: true });
+        // navigate('/', { replace: true });
       }
     })();
   }, [session, location.pathname]);
@@ -100,7 +101,6 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
 
   const _getUserDataFromDB = useCallback(
     async (signal: AbortSignal) => {
-      console.log(`_getUserDataFromDB 실행`);
       const { data, status } = await supabase.from('user').select('*').abortSignal(signal);
 
       // TODO: alert 제거 후 error 처리 필요
