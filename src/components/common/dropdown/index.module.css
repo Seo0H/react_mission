@@ -1,12 +1,12 @@
 .dropdown-container {
   display: flex;
   flex-direction: column;
-  position: absolute;
   min-width: 6rem;
+  position: relative;
+  display: inline-block;
+}
 
-  border: 1px solid var(--gray-300);
-  border-radius: 5px;
-  font-size: var(--font-size-s);
+.dropdown-btn-style {
 }
 
 .trigger {
@@ -20,6 +20,10 @@
 
   font-size: var(--font-size-s);
   transition: all 0.5s;
+
+  border: 1px solid var(--gray-300);
+  border-radius: 5px;
+  font-size: var(--font-size-s);
 }
 
 .trigger:hover {
@@ -48,4 +52,10 @@
 
 .input-hidden {
   display: none;
+}
+
+.dropdown-children {
+  position: absolute;
+  width: 100%;
+  top: 0;
 }

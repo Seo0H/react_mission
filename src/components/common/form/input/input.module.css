@@ -9,6 +9,10 @@
   box-shadow: var(--main-color) 0px 2px;
 }
 
+.input:read-only {
+  box-shadow: var(--gray-200) 0px 1px;
+}
+
 .input::placeholder {
   color: var(--gray-300);
 }
