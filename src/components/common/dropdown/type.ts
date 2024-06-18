@@ -11,4 +11,4 @@ export type DropdownProps<SelectType> = {
   defaultValue?: SelectType;
   value?: SelectType;
   onChange?: (value: SelectType) => void;
-} & Omit<ComponentProps<'div'>, 'onChange'>;
+} & Omit<ComponentProps<'input'>, 'onChange'>;

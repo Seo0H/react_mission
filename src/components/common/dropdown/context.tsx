@@ -37,8 +37,9 @@ const DropdownProviderInner = <SelectType,>(
 
   return (
     <DropdownContexts.Provider value={{ isOpen, setOpen, selectedValue, setSelectValue: handleSelectValueChange }}>
-      <div {...props} className={`${styles['dropdown-container']} ${className}`}>
-        <input ref={ref} className={`${styles['input-hidden']}`} value={String(selectedValue)} onChange={() => null} />
+      <div className={`${styles['dropdown-container']} ${className}`}>
+        {/* for form submit */}
+        <input ref={ref} className={`${styles['input-hidden']}`} value={String(selectedValue)} {...props} readOnly />
         <div className={styles['dropdown-children']}>{children}</div>
       </div>
     </DropdownContexts.Provider>
