@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 
+import { Button } from '@/components/common/buttons';
 import { Link } from '@/components/common/link';
 
 import { useAdminContext } from '@/provider/admin/context';
 
 const FormListPage = () => {
-  const { formList, getFormList } = useAdminContext();
+  const { formList, getFormList, removeForm } = useAdminContext();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -17,9 +18,10 @@ const FormListPage = () => {
     <>
       <h1>FORM LIST</h1>
       {formList?.map((form) => (
-        <Link.NoBgSmallText key={`${form.id}-form`} to={`/admin/modify-form/${form.id}`}>
-          {form.title}
-        </Link.NoBgSmallText>
+        <div key={`${form.id}-form`}>
+          <Link.NoBgSmallText to={`/admin/modify-form/${form.id}`}>{form.title}</Link.NoBgSmallText>
+          <Button.SmallNoBg onClick={() => removeForm(form.id)}>삭제</Button.SmallNoBg>
+        </div>
       ))}
     </>
   );

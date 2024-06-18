@@ -2,7 +2,6 @@ import { createContext, useCallback, useContext, useEffect, useState } from 'rea
 
 import { useNavigate } from 'react-router-dom';
 
-import { Form } from '@/api/form/types/server-response';
 import { supabase } from '@/api/supabase';
 import { useAuthContext } from '@/hooks/use-auth/auth-context';
 import { Tables } from '@/types/supabase';
@@ -10,6 +9,7 @@ import { Tables } from '@/types/supabase';
 type TAdminContext = {
   formList: Tables<'form'>[] | null;
   getFormList: (abortSignal?: AbortSignal) => Promise<void>;
+  removeForm: (formId: number, abortSignal?: AbortSignal) => Promise<void>;
 };
 
 const AdminContext = createContext<TAdminContext | null>(null);
@@ -56,5 +56,24 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     [supabase],
   );
 
-  return <AdminContext.Provider value={{ formList, getFormList }}>{children}</AdminContext.Provider>;
+  const removeForm = useCallback(
+    async (formId: number, abortSignal?: AbortSignal) => {
+      await supabase
+        .from('form')
+        .delete()
+        .eq('id', formId)
+        .abortSignal(abortSignal ?? new AbortController().signal)
+        .then(({ status }) => {
+          if (status >= 400) {
+            alert(`폼을 삭제하던 가져오던 중 문제가 발생했습니다. / STATUS : ${status}`);
+            return;
+          }
+        });
+
+      await getFormList();
+    },
+    [supabase],
+  );
+
+  return <AdminContext.Provider value={{ formList, getFormList, removeForm }}>{children}</AdminContext.Provider>;
 };
