@@ -1,0 +1,5 @@
+.invalidate-message {
+  height: 1rem;
+  width: 100%;
+  color: var(--red-500);
+}

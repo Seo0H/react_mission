@@ -25,3 +25,5 @@ export const isString = (value: unknown): value is string => typeof value === 's
 
 export const isEmptyObject = (value: unknown): value is { [K in string | number]: never } =>
   isObject(value) && !Object.keys(value).length;
+
+export const isDev = process.env.NODE_ENV === 'development';

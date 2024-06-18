@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { useCallback, useId } from 'react';
+import { useId } from 'react';
 
 import { Button } from '@/components/common/buttons';
 import ErrorMessage from '@/components/common/error/message';
-import { Radio } from '@/components/common/form/radio';
 import { ProgressBar } from '@/components/common/progress-bar/progress-bar';
 
 import { ConditionalInput } from '@/components/form';
@@ -78,10 +77,13 @@ export const FormController = () => {
             </div>
 
             <div className={styles['btn-wrapper']}>
-              <Button onClick={beforeQuestion} style={{ backgroundColor: `var(--gray-400)` }}>{`< Before`}</Button>
-              <Button key={buttonKey} onClick={buttonHandler}>
+              <Button.BlueBg
+                onClick={beforeQuestion}
+                style={{ backgroundColor: `var(--gray-400)` }}
+              >{`< Before`}</Button.BlueBg>
+              <Button.BlueBg key={buttonKey} onClick={buttonHandler}>
                 {isLastQuestion ? 'SUBMIT' : `OK >`}
-              </Button>
+              </Button.BlueBg>
               <PressEnter enterCallback={handleKeyDown} />
             </div>
           </section>

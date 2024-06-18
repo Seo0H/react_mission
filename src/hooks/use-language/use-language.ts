@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback } from 'react';
 
-import { useLocation, useMatch, useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import { languageOptionContents } from '@/components/lang/constants';
 import { userBrowserLanguage } from '@/hooks/use-language/constants';

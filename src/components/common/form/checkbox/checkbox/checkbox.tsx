@@ -8,14 +8,14 @@ import { UseCheckboxProps } from '../types';
 import styles from './checkbox.module.css';
 import { useCheckbox } from './use-checkbox';
 
-interface CheckboxProps extends UseCheckboxProps, Omit<ComponentPropsWithRef<'input'>, 'value'> {}
+interface CheckboxProps extends UseCheckboxProps, Omit<ComponentPropsWithRef<'input'>, 'value' | 'onChange'> {}
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(props, ref) {
   const { children, onChange: onChangeProp, className, value, isDisabled, ...rest } = props;
 
   const group = useCheckboxGroupContext();
 
-  let isChecked = props.isChecked;
+  let isChecked = props.isChecked || props.checked;
   if (group?.values?.length && value != null) {
     isChecked = group.values?.includes(String(value));
   }
@@ -38,7 +38,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
 
   return (
     <label>
-      <input type='checkbox' ref={ref} className={`${className} ${styles.checkbox}`} {...getInputProps()} {...rest} />
+      <input type='checkbox' ref={ref} className={`${className} ${styles.checkbox}`} {...rest} {...getInputProps()} />
       {children}
     </label>
   );

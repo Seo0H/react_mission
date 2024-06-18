@@ -7,4 +7,11 @@ SCORE.md
 # production
 /dist
 
-/.vscode
+# env
+.env
+
+# .vscode
+extensions.json
+
+# Mac
+.DS_Store
