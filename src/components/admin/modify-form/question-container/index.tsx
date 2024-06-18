@@ -6,8 +6,10 @@ import { Input } from '@/components/common/form/input';
 import { Form } from '@/api/form/types/server-response';
 
 import { inputType } from '../form-questions';
+import { useModifyForm } from '../use-modify-form';
 
 import styles from './index.module.css';
+
 export function QuestionContainer({
   type,
   question,
@@ -18,12 +20,7 @@ export function QuestionContainer({
   onChangeType,
   onRequired,
   onTextInputChange,
-}: Form & {
-  onRemove: (quistionId: Form['name']) => void;
-  onChangeType: (questionName: Form['name'], wantToChangeType: Form['type']) => void;
-  onRequired: (questionName: Form['name'], currentCheckState: Form['required']) => void;
-  onTextInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}) {
+}: Form & Omit<ReturnType<typeof useModifyForm>, 'addQuestion'>) {
   const handleRemove = () => {
     onRemove(name);
   };
