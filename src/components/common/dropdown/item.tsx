@@ -9,7 +9,7 @@ export const Item = <T,>({ value, children }: { value: T; children: React.ReactN
   const handelClick = useCallback(() => {
     setSelectValue(value);
     setOpen(false);
-  }, [value]);
+  }, [value, setSelectValue]);
 
   return (
     isOpen && (

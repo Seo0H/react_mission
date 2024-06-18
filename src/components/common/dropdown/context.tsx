@@ -27,13 +27,16 @@ const DropdownProviderInner = <SelectType,>(
     }
   }, [value]);
 
-  const handleSelectValueChange = useCallback((newValue: SelectType) => {
-    if (onChange) {
-      onChange(newValue);
-    } else {
-      setSelectValue(newValue);
-    }
-  }, []);
+  const handleSelectValueChange = useCallback(
+    (newValue: SelectType) => {
+      if (onChange) {
+        onChange(newValue);
+      } else {
+        setSelectValue(newValue);
+      }
+    },
+    [selectedValue, onChange, setSelectValue],
+  );
 
   return (
     <DropdownContexts.Provider value={{ isOpen, setOpen, selectedValue, setSelectValue: handleSelectValueChange }}>
